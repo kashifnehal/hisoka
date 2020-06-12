@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Route, Switch} from 'react-router-dom'
 import Layout from './hoc/Layout/Layout'
-import Following from './containers/Following/Following'
+import FollowingPage from './containers/Following/FollowingPage'
 
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
       <div>
         <Layout>
           <Switch>
-            <Route path="/following" component={Following} />
+            <Route path="/followingPage" component={FollowingPage} />
           </Switch>
         </Layout>
       </div>
