@@ -11,16 +11,16 @@ class FollowingPage extends Component{
     render(){
         return (
             <div>
-                <Container fluid>
+                <Container fluid style={{marginTop:'5%'}}>
                     <Row>
-                        <Col md={3} className="d-none d-md-block" style={{ border:'red 1px solid'}}>
+                        <Col lg={3} className="d-none d-lg-block" style={{ border:'red 1px solid'}}>
                             <ShortcutsCol /> 
                         </Col>
-                        <Col xs={12} md={6} style={{ border:'grey 1px solid'}}>
+                        <Col xs={12} lg={6} style={{ border:'grey 1px solid'}}>
                             {/* <Following /> */}
                             Main component
                         </Col>
-                        <Col md={3} className="d-none d-md-block" style={{ border:'green 1px solid'}}>
+                        <Col lg={3} className="d-none d-lg-block " style={{ border:'green 1px solid'}}>
                             <PagesToFollowCol />
                             <FriendsCol />
                         </Col>
