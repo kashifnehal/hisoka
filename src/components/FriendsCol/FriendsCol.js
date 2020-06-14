@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-class FriendsCol extends Component {
-    render () {
-        return (
-            <div>FRIENDS COL</div>
-        )
-    }
+const friendsCol = (props) => {
+    return (
+        <div>
+            SHORTCUT COL
+        </div>
+    )
 }
 
-export default FriendsCol;
+export default friendsCol;

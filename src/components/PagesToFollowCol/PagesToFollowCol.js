@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-class PagesToFollowCol extends Component {
-    render () {
-        return (
-            <div>PAGES TO FOLLOW</div>
-        )
-    }
+const pagesToFollowCol = (props) => {
+    return (
+        <div>
+            SHORTCUT COL
+        </div>
+    )
 }
 
-export default PagesToFollowCol;
+export default pagesToFollowCol;

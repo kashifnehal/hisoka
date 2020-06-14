@@ -7,19 +7,20 @@ import ShortcutsCol from '../../components/ShortcutsCol/ShortcutsCol'
 import PagesToFollowCol from '../../components/PagesToFollowCol/PagesToFollowCol'
 import FriendsCol from '../../components/FriendsCol/FriendsCol'
 
-class Following extends Component{
+class FollowingPage extends Component{
     render(){
         return (
             <div>
                 <Container fluid>
                     <Row>
-                        <Col md={3} style={{ border:'red 1px solid'}}>
+                        <Col md={3} className="d-none d-md-block" style={{ border:'red 1px solid'}}>
                             <ShortcutsCol /> 
                         </Col>
-                        <Col md={6} style={{ border:'grey 1px solid'}}>
-                            <Following />
+                        <Col xs={12} md={6} style={{ border:'grey 1px solid'}}>
+                            {/* <Following /> */}
+                            Main component
                         </Col>
-                        <Col md={3} style={{ border:'green 1px solid'}}>
+                        <Col md={3} className="d-none d-md-block" style={{ border:'green 1px solid'}}>
                             <PagesToFollowCol />
                             <FriendsCol />
                         </Col>
@@ -30,4 +31,4 @@ class Following extends Component{
     }
 }
 
-export default Following
+export default FollowingPage
