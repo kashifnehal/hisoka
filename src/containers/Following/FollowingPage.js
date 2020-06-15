@@ -6,21 +6,32 @@ import Col from 'react-bootstrap/Col'
 import ShortcutsCol from '../../components/ShortcutsCol/ShortcutsCol'
 import PagesToFollowCol from '../../components/PagesToFollowCol/PagesToFollowCol'
 import FriendsCol from '../../components/FriendsCol/FriendsCol'
+import classes from './Following.css'
 
 class FollowingPage extends Component{
     render(){
+        let attachedClassesLeft = ["d-none d-lg-block",classes.Left]
+        let attachedClassesRight = ["d-none d-lg-block",classes.Right]
         return (
             <div>
-                <Container fluid style={{marginTop:'5%'}}>
-                    <Row>
-                        <Col lg={3} className="d-none d-lg-block" style={{ border:'red 1px solid'}}>
+                <Container fluid style={{marginTop:'35%'}}>
+                    <Row >
+                        <Col lg={3} className={attachedClassesLeft.join(' ')}>
                             <ShortcutsCol /> 
                         </Col>
-                        <Col xs={12} lg={6} style={{ border:'grey 1px solid'}}>
+                        <Col xs={12} lg={6} className={classes.Main}>
                             {/* <Following /> */}
-                            Main component
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
                         </Col>
-                        <Col lg={3} className="d-none d-lg-block " style={{ border:'green 1px solid'}}>
+                        <Col lg={3} className={attachedClassesRight.join(' ')}>
                             <PagesToFollowCol />
                             <FriendsCol />
                         </Col>

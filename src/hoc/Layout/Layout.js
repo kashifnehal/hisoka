@@ -4,10 +4,11 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import Footbar from '../../components/Navigation/Footbar/Footbar'
 
 class Layout extends Component {
+
     render () {
         return(
             <Aux>
-                <Toolbar />
+                <Toolbar/>
                 <main>
                     {this.props.children}
                 </main>
