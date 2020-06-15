@@ -14,7 +14,7 @@ class FollowingPage extends Component{
         let attachedClassesRight = ["d-none d-lg-block",classes.Right]
         return (
             <div>
-                <Container fluid style={{marginTop:'35%'}}>
+                <Container fluid style={{marginTop:'10%'}}>
                     <Row >
                         <Col lg={3} className={attachedClassesLeft.join(' ')}>
                             <ShortcutsCol /> 

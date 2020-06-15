@@ -19,7 +19,7 @@ class SearchBar extends Component {
       const filteredData = prevState.data.filter(element => {
         return element.toLowerCase().includes(query.toLowerCase());
       });
-      console.log(filteredData)
+    //   console.log(filteredData)
       return {
         query,
         filteredData
@@ -39,6 +39,7 @@ class SearchBar extends Component {
   };
 
   searchBarClickedHandler = () => {
+      console.log('clicked')
       this.setState({searchBarClicked:true})
   }
   searchBarCanceledHandler = () => {
@@ -47,8 +48,8 @@ class SearchBar extends Component {
 
   componentDidMount() {
     this.getData();
-    console.log(this.state.data)
-    console.log(this.state.filteredData)
+    // console.log(this.state.data)
+    // console.log(this.state.filteredData)
   }
 
   render() {
@@ -64,13 +65,14 @@ class SearchBar extends Component {
                 onClick={this.searchBarClickedHandler}
                 key={Math.random}
             />
+            <Modal clicked={this.state.searchBarClicked} canceled={this.searchBarCanceledHandler}>
+                <SearchResult searchData={this.state.filteredData} />
+            </Modal>
             </form>
             {/* <div>{this.state.filteredData.map(i => <p>{i}</p>)}</div> */}
             
         </div>
-        <Modal clicked={this.state.searchBarClicked} canceled={this.searchBarCanceledHandler}>
-            <SearchResult searchData={this.state.filteredData} />
-        </Modal>
+        
       </Auxiliary>
     );
   }
