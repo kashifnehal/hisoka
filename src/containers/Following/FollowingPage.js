@@ -11,15 +11,15 @@ import classes from './Following.css'
 class FollowingPage extends Component{
     render(){
         let attachedClassesLeft = ["d-none d-lg-block",classes.Left]
-        let attachedClassesRight = ["d-none d-lg-block",classes.Right]
+        let attachedClassesRight = ["d-none d-md-block",classes.Right]
         return (
-            <div>
-                <Container fluid style={{marginTop:'10%'}}>
+            <div className={classes.FollowingPage}>
+                <Container fluid className={classes.FollowingContainer}>
                     <Row >
                         <Col lg={3} className={attachedClassesLeft.join(' ')}>
                             <ShortcutsCol /> 
                         </Col>
-                        <Col xs={12} lg={6} className={classes.Main}>
+                        <Col md={8} lg={6} className={classes.Main}>
                             {/* <Following /> */}
                             <h1>maingas oasi</h1>
                             <h1>maingas oasi</h1>
@@ -30,8 +30,12 @@ class FollowingPage extends Component{
                             <h1>maingas oasi</h1>
                             <h1>maingas oasi</h1>
                             <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
+                            <h1>maingas oasi</h1>
                         </Col>
-                        <Col lg={3} className={attachedClassesRight.join(' ')}>
+                        <Col xs={4} lg={3} className={attachedClassesRight.join(' ')}>
                             <PagesToFollowCol />
                             <FriendsCol />
                         </Col>

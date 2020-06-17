@@ -8,8 +8,73 @@
     display: flex;
     /* justify-content: space-between; */
     align-items: center;
-    padding: 0 20px;
+    /* padding: 0 20px; */
     box-sizing: border-box;
     z-index: 90;
     /* margin-top: 10%; */
+}
+
+/* .NavMain {} */
+
+.NavMain .NavRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.NavMain .NavRow .NavColLeft{
+    border:red 1px solid
+}
+
+/* .NavMain .NavRow .NavColLeft .Logo {} */
+
+.NavMain .NavRow .NavColLeft .Search {
+    display:flex;
+    align-items:center;
+    /* padding-top: 8px; */
+}
+
+.NavMain .NavRow .NavColMiddle{
+    border:grey 1px solid;
+    color:white; 
+    display:flex;
+    padding-left:5%
+}
+
+.NavMain .NavRow .NavColRight{
+    border:green 1px solid
+}
+
+.NavMain .NavRow .NavColRight{
+    color: red;
+}
+
+.NavMain .NavRow .NavColRight .ProfileAndIcons .NavIcons {
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    border:blue 1px solid
+}
+
+/* .NavMain .NavRow .NavColRight .ProfileNav {} */
+
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (max-width : 800px) {
+    .NavMain .NavRow .NavColLeft .Search {
+        display:none
+    }
+
+    .NavMain .NavRow .NavColRight .ProfileAndIcons {
+        display: none;
+    }
+}
+
+@media only screen
+and (min-width : 800px) {
+    .NavMain .NavRow .NavColRight .Sidebar{
+        display: none;
+    }
 }

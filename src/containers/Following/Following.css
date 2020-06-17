@@ -1,3 +1,11 @@
+.FollowingPage{
+    background-color: white;
+}
+
+.FollowingContainer{
+    margin-top: 100px;
+}
+
 .Left{
     border:red 1px solid;
     overflow-y: scroll;
