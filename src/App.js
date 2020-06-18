@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Route, Switch} from 'react-router-dom'
 import Layout from './hoc/Layout/Layout'
-import FollowingPage from './containers/Following/FollowingPage'
+import FollowingPage from './containers/FollowingPage/FollowingPage'
 
 
 class App extends Component {

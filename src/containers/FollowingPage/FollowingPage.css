@@ -1,0 +1,80 @@
+/* .FollowingPage{
+    background-color: white;
+} */
+
+.FollowingContainer{
+    margin-top: 100px;
+}
+
+.Left{
+    border:red 1px solid;
+    overflow-y: scroll;
+    height:80vh;
+    -ms-overflow-style: none;
+    background-color: white;
+}
+
+.Main{
+    border:grey 1px solid;
+    overflow:auto;
+    -ms-overflow-style: none;
+    height:80vh;
+    margin-left: 4%;
+    margin-right: 4%;
+    /* background-color: white; */
+}
+
+.Right{
+    border:green 1px solid;
+    overflow:auto;
+    -ms-overflow-style: none;
+    height:80vh;
+    background-color: white;
+}
+
+.Left::-webkit-scrollbar {
+    display: none;
+}
+.Main::-webkit-scrollbar {
+    display: none;
+}
+.Right::-webkit-scrollbar {
+    display: none;
+}
+
+@media only screen 
+and (max-width : 992px) {
+    .Left{
+        display: none;
+    }
+    .FollowingPage .FollowingContainer .Right{
+        margin-right: 5%;
+    }
+    .FollowingPage .FollowingContainer .Main{
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+}
+
+@media only screen 
+and (max-width : 768px) {
+    .Right{
+        display: none;
+    }
+}
+@media only screen 
+and (max-width : 768px)
+and (min-width : 480px) {
+    .FollowingPage .FollowingContainer .Main{
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+}
+
+@media only screen
+and (max-width : 480px){
+    .FollowingPage .FollowingContainer .Main{
+        margin-right: 0%;
+        margin-left: 0%;
+    }
+}

@@ -52,6 +52,18 @@ const shortcutsCol = (props) => {
             <p>asfdhls</p>
             <p>asfdhls</p>
             <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
+            <p>asfdhls</p>
         </div>
     )
 }
