@@ -7,3 +7,10 @@
 .Write .WriteContainer .WriteRow .WritePic{}
 
 .Write .WriteContainer .WriteRow .WritePic .WriteBox{} */
+
+.text::-webkit-scrollbar {
+    outline:none;
+    border:none;
+    display: none;
+    overflow: hidden;
+}
