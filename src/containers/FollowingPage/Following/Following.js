@@ -10,7 +10,8 @@ import Button from 'react-bootstrap/Button'
 // import Form from 'react-bootstrap/Form'
 import classes from './Following.css'
 import WriteImage from '../../../assets/images/2.jpg'
-import AddMedia from './AddMedia/AddMedia'
+// import AddMedia from './AddMedia/AddMedia'
+import Posts from '../../../components/Posts/Posts'
 
 
 
@@ -31,8 +32,8 @@ class Following extends Component {
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{backgroundColor:'white',marginTop:'5px'}}>
                     <Row className={classes.WriteRow}>
-                        <Col className={classes.WritePic} xs={2} style={{border:'red 1px solid',height:'150px'}}><Image src={WriteImage} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
-                        <Col className={classes.WriteBox} xs={10}style={{border:'green 1px solid'}}>
+                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={WriteImage} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
+                        <Col className={classes.WriteBox} xs={10}style={{}}>
                             <Row>
                                 <Col xs={12} >
                                     <textarea className={classes.text} rows="4" cols="40" placeholder="Hello! I am Groot..." style={{outline:'none',border:'none'}} ></textarea>
@@ -42,7 +43,7 @@ class Following extends Component {
                                 <Col xs={6}></Col>
                                 <Col>
                                     <label htmlFor="imageUpload"><ion-icon name="videocam-outline" size="large"></ion-icon></label>
-                                    <input type="file" id="imageUpload"onChange={this.fileSelectHandler} style={{display:'none'}}/>
+                                    <input type="file" id="imageUpload" onChange={this.fileSelectHandler} style={{display:'none'}}/>
                                 </Col>
                                 <Col>
                                     <button onClick={this.captureHandler}>capture</button>
@@ -52,6 +53,7 @@ class Following extends Component {
                         </Col>
                     </Row>
                 </Container>
+                <Posts />
             </Auxiliary>
         )
     }
