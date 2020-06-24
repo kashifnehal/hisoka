@@ -5,18 +5,18 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
-// import InputGroup from 'react-bootstrap/InputGroup'
-// import FormControl from 'react-bootstrap/FormControl'
+// import PostDetails from '../../../components/PostDetails/PostDetails'
+import EachPost from '../../../components/PostDetails/EachPost/EachPost'
 import Button from 'react-bootstrap/Button'
-// import Form from 'react-bootstrap/Form'
 import classes from './Following.css'
-import WriteImage from '../../../assets/images/2.jpg'
+// import WriteImage from '../../../assets/images/2.jpg'
 // import AddMedia from './AddMedia/AddMedia'
 
 
 
 class Following extends Component {
     state = {
+        postData:[],
         mediaClicked:false,
         pic:'profile pic',
         name:'kashif',
@@ -25,12 +25,24 @@ class Following extends Component {
         media:'',
         likes:0
     }
+
+    componentDidMount () {
+        axios.get('http://localhost:5000/postPage/')
+            .then(res => {
+                this.setState({postData:res.data})
+            })
+            .catch(err => {console.log(err)})
+    }
+    
+    postHandler = () => {
+        return this.state.postData.map(curpost => {
+            return <EachPost post={curpost} key={curpost._id} />
+        })
+    }
     
     fileSelectHandler = event => {
-        // console.log(event.target.files[0])
         this.setState({
             media:event.target.files[0],
-            // pic:event.target.files[0]
         })
     }
 
@@ -44,15 +56,6 @@ class Following extends Component {
 
     onSubmitHandler = (event) => {
         event.preventDefault();
-        
-        // const post = {
-        //     pic: this.state.pic,
-        //     name:this.state.name,
-        //     date:this.state.date,
-        //     caption:this.state.caption,
-        //     media:this.state.media,
-        //     likes:this.state.likes
-        // }
 
         const data = new FormData();
         data.append("pic",this.state.pic);
@@ -73,14 +76,17 @@ class Following extends Component {
             .then(res => console.log(res))
             .catch(err => console.log(err))
 
+        window.location = '/followingPage'
     }
 
     render () {
+        
+        
         return (
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{backgroundColor:'white',marginTop:'5px'}}>
                     <Row className={classes.WriteRow}>
-                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/' + 'IMAGE-1592981215755.jpg'} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
+                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/IMAGE-1592981215755.jpg'} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
                         <Col className={classes.WriteBox} xs={10}style={{}}>
                             <Row>
                                 <Col xs={12} >
@@ -102,7 +108,20 @@ class Following extends Component {
                         </Col>
                     </Row>
                 </Container>
-                
+                {this.postHandler()}
+                {/* <div>
+                    {this.state.postData.map(n => (
+                    
+                        <EachPost
+                            key={n.id} 
+                            pic={n.pic}
+                            name={n.name}
+                            date={n.data}
+                            caption={n.caption}
+                            media={n.media}
+                            likes={n.likes} />
+                    ))}
+                </div> */}
             </Auxiliary>
         )
     }
