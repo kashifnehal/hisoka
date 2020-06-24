@@ -6,6 +6,17 @@ import Col from 'react-bootstrap/Col'
 
 
 const eachPost = (props) => {
+    const d = props.post.createdAt
+    const e = new Date(d)
+    const n = e.toDateString()
+    // console.log(d)
+    // console.log(e)
+    // console.log(n)
+
+
+    // const d = new Date(props.post.createdAt);
+    // const n = d.toDateString();
+    // console.log(n);
     // console.log(props.post.media)
     return( 
         <Container fluid style={{backgroundColor:'white', marginTop:'15px',paddingTop:'10px'}}>
@@ -16,7 +27,7 @@ const eachPost = (props) => {
                         <Col><b>{props.post.name}</b></Col>
                     </Row>
                     <Row>
-                        <Col><i>{props.post.date}</i></Col>
+                        <Col><p><i>{n}</i></p></Col>
                     </Row>
                 </Col>
             </Row>

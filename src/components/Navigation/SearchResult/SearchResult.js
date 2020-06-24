@@ -3,7 +3,7 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 
 const searchResult = (props) => {
 
-    console.log(props.searchData)
+    // console.log(props.searchData)
     const res = Object.keys(props.searchData)
         .map(igKey => {
             return (
@@ -12,7 +12,7 @@ const searchResult = (props) => {
                 </li>
             )
         })
-    console.log(res)
+    // console.log(res)
     return(
         <Auxiliary>
             <ul>

@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 //  })
 
 router.get('/',function(req, res) {
-  Post.find()
+  Post.find().sort({createdAt:-1})
     .then(posts => res.json(posts))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -39,7 +39,7 @@ router.post("/add", upload.single("media"), async function(req,res,next){
     console.log(req.file)
     const pic = req.body.pic;
     const name = req.body.name;
-    const date = Date.parse(req.body.date);
+    // const date = Date.parse(req.body.date);
     const caption = req.body.caption;
     const media = req.file.filename;
     const likes = Number(req.body.likes)
@@ -47,7 +47,7 @@ router.post("/add", upload.single("media"), async function(req,res,next){
   const newPost = new Post({
     pic,
     name,
-    date,
+    // date,
     caption,
     media,
     likes
@@ -75,7 +75,7 @@ router.post('/update/:id', function(req, res) {
     .then(post => {
         post.pic = req.body.pic;
         post.name = req.body.name;
-        post.date = Date.parse(req.body.date);
+        // post.date = Date.parse(req.body.date);
         post.caption = req.body.caption;
         post.media = req.body.media
         post.likes = Number(req.body.likes)

@@ -41,7 +41,7 @@ class SearchBar extends Component {
   };
 
   searchBarClickedHandler = () => {
-      console.log('clicked')
+      // console.log('clicked')
       this.setState({searchBarClicked:true})
   }
   searchBarCanceledHandler = () => {
@@ -55,7 +55,7 @@ class SearchBar extends Component {
   }
 
   render() {
-      console.log(this.state.searchBarClicked)
+      // console.log(this.state.searchBarClicked)
     return (
       <Auxiliary>
         <div>

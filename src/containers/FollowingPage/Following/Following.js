@@ -20,7 +20,7 @@ class Following extends Component {
         mediaClicked:false,
         pic:'profile pic',
         name:'kashif',
-        date:'2020-08-01T15:28:32.886Z',
+        // date:'2020-08-01T15:28:32.886Z',
         caption:'',
         media:'',
         likes:0
@@ -60,7 +60,7 @@ class Following extends Component {
         const data = new FormData();
         data.append("pic",this.state.pic);
         data.append("name",this.state.name);
-        data.append("date",this.state.date);
+        // data.append("date",this.state.date);
         data.append("caption",this.state.caption);
         data.append("media",this.state.media);
         data.append("likes",this.state.likes);
