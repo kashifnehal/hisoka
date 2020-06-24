@@ -80,7 +80,7 @@ class Following extends Component {
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{backgroundColor:'white',marginTop:'5px'}}>
                     <Row className={classes.WriteRow}>
-                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={WriteImage} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
+                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/' + 'IMAGE-1592981215755.jpg'} roundedCircle style={{height:'50px', width:'50px'}}/></Col>
                         <Col className={classes.WriteBox} xs={10}style={{}}>
                             <Row>
                                 <Col xs={12} >
@@ -90,9 +90,9 @@ class Following extends Component {
                             <Row>
                                 <Col xs={6}></Col>
                                 <Col>
-                                    {/* <label htmlFor="file"><ion-icon name="videocam-outline" size="large"></ion-icon></label> */}
-                                    {/* <input type="file" id="file" onChange={this.fileSelectHandler} accept=".jpg" style={{display:'none'}}/> */}
-                                    <input type="file" name="media" onChange={this.fileSelectHandler} accept=".jpg"/>
+                                    <label htmlFor="file"><ion-icon name="videocam-outline" size="large"></ion-icon></label>
+                                    <input type="file" id="file" onChange={this.fileSelectHandler} name="media" style={{display:'none'}}/>
+                                    {/* <input type="file" name="media" onChange={this.fileSelectHandler} accept=".jpg"/> */}
                                 </Col>
                                 <Col>
                                     {/* <button onClick={this.captureHandler}>capture</button> */}
