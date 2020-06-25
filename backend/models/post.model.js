@@ -6,7 +6,7 @@ const postSchema = new Schema({
   pic: {type:String},
   name: { type: String,required:false,unique:false,trim:false,minlength:1 },
   // date: { type: Date, required: true },
-  caption: { type: String, required: true },
+  caption: { type: String, required: false },
   media:{type:String},
   likes:{type:Number}
 }, {

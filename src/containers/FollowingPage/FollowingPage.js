@@ -23,35 +23,6 @@ class FollowingPage extends Component{
                         </Col>
                         <Col xs={12} sm={9} md={6} lg={5} className={classes.Main}>
                             <Following />
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
-                            <h1>maingas oasi</h1>
                         </Col>
                         <Col md={3} lg={2} className={classes.Right}>
                             <PagesToFollowCol />
