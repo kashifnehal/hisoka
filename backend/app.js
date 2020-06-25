@@ -23,8 +23,14 @@ connection.once('open', () => {
 const postRouter = require('./routes/post');
 app.use('/postPage', postRouter);
 
-const profileRouter = require('./routes/profile');
-app.use('/profileDetails', profileRouter);
+const profileDetailsRouter = require('./routes/profileDetails');
+app.use('/OnlyProfileDetails', profileDetailsRouter);
+
+const profileRefsRouter = require('./routes/profileRefs');
+app.use('/profileRefs', profileRefsRouter);
+
+const aboutRouter = require('./routes/about');
+app.use('/aboutDetails', aboutRouter);
 
 
 app.listen(port, () => {

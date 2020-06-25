@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const aboutSchema = new Schema({
-    email:{type:String,required:true,unique:true},
+    email:{type:String,required:false,unique:false},
     relationship:{type:String,required:false},
     phone:{type:Number,required:false},
     university:{type:String,required:false},

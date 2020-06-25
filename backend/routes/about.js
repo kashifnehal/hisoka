@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 let About = require('../models/about.model');
+// let Profile = require('../models/profile.model');
 
 
 router.get('/',function(req,res){
@@ -9,6 +10,54 @@ router.get('/',function(req,res){
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
+
+// //tryin addition of about into profile
+
+// router.post('/add',async function(req,res,next){
+//     const email = req.body.email;
+//     const relationship = req.body.relationship;
+//     const phone = Number(req.body.phone);
+//     const university = req.body.university;
+//     const college = req.body.college;
+//     const course = req.body.course;
+//     const batchFrom = Date.parse(req.body.batchFrom);
+//     const batchTo = Date.parse(req.body.batchTo);
+//     const crush = req.body.name;
+//     const bunkMates = req.body.name;
+
+//     const newAbout = new About({
+//         email,
+//         relationship,
+//         phone,
+//         university,
+//         college,
+//         course,
+//         batchFrom,
+//         batchTo,
+//         crush,
+//         bunkMates
+//     },function(err,savedPost){
+//         Profile.findOne({username:"hohsj"},function(err,foundProfile){
+//             if(err){
+//                 console.log(err)
+//             } else {
+//                 foundProfile.about.push(savedPost)
+//                 foundProfile.save()
+//                 .then(() => res.json('about added'))
+//                 .catch(err => res.status(400).json('Error: ' + err));
+//             }
+//         })
+//     })
+
+//     // newAbout.save()
+//     // .then(() => res.json('about added'))
+//     // .catch(err => res.status(400).json('Error: ' + err));
+// })
+
+
+
+// ------------
+
 router.post('/add',async function(req,res,next){
     const email = req.body.email;
     const relationship = req.body.relationship;
@@ -16,8 +65,8 @@ router.post('/add',async function(req,res,next){
     const university = req.body.university;
     const college = req.body.college;
     const course = req.body.course;
-    const batchFrom = Date.parse(req.body.name);
-    const batchTo = Date.parse(req.body.name);
+    const batchFrom = Date.parse(req.body.batchFrom);
+    const batchTo = Date.parse(req.body.batchTo);
     const crush = req.body.name;
     const bunkMates = req.body.name;
 

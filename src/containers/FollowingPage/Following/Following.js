@@ -76,6 +76,8 @@ class Following extends Component {
             .then(res => console.log(res))
             .catch(err => console.log(err))
 
+        console.log('post added')
+
         window.location = '/followingPage'
     }
 
@@ -90,7 +92,7 @@ class Following extends Component {
                         <Col className={classes.WriteBox} xs={10}style={{}}>
                             <Row>
                                 <Col xs={12} >
-                                    <textarea className={classes.text} onChange={this.onChangeCaption} rows="4" cols="40" placeholder="Hello! I am Groot..." style={{outline:'none',border:'none'}} ></textarea>
+                                    <textarea className={classes.text} onChange={this.onChangeCaption} rows="4" cols="" placeholder="Hello! I am Groot..." style={{outline:'none',border:'none'}} ></textarea>
                                 </Col>
                             </Row>
                             <Row>
