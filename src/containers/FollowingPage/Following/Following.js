@@ -35,7 +35,9 @@ class Following extends Component {
     }
     
     postHandler = () => {
+        console.log(this.state.postData)
         return this.state.postData.map(curpost => {
+            console.log(curpost)
             return <EachPost post={curpost} key={curpost._id} />
         })
     }
@@ -111,19 +113,6 @@ class Following extends Component {
                     </Row>
                 </Container>
                 {this.postHandler()}
-                {/* <div>
-                    {this.state.postData.map(n => (
-                    
-                        <EachPost
-                            key={n.id} 
-                            pic={n.pic}
-                            name={n.name}
-                            date={n.data}
-                            caption={n.caption}
-                            media={n.media}
-                            likes={n.likes} />
-                    ))}
-                </div> */}
             </Auxiliary>
         )
     }
