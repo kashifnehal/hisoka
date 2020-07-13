@@ -58,7 +58,7 @@ router.get('/',function(req,res){
 
 // ------------
 
-router.post('/add',async function(req,res,next){
+router.post('/add', function(req,res,next){
     const email = req.body.email;
     const relationship = req.body.relationship;
     const phone = Number(req.body.phone);

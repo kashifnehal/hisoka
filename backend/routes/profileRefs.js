@@ -1,12 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
+const path = require("path");
+const multer = require("multer");
 
 let About = require('../models/about.model')
 let ProfileDetails = require('../models/profileDetails.model')
+let Post = require('../models/post.model');
+
+const storage = multer.diskStorage({
+    destination: "./../public/images/",
+    filename: function(req, file, cb){
+       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+    }
+ });
+ 
+ const upload = multer({
+    storage: storage,
+    // limits:{fileSize: 1000000},
+ });
 
 
-router.post('/add',async function(req,res,next){
+router.post('/:profileId/about', function(req,res){
     const email = req.body.email;
     const relationship = req.body.relationship;
     const phone = Number(req.body.phone);
@@ -30,7 +45,7 @@ router.post('/add',async function(req,res,next){
         crush,
         bunkMates
     })
-    ProfileDetails.findOne({username:'cool'})
+    ProfileDetails.findById(req.params.profileId)
     .then(foundUser => {
         foundUser.abouts.push(newAbout)
         foundUser.save()
@@ -39,9 +54,6 @@ router.post('/add',async function(req,res,next){
     })
     .catch(err => res.status(400).json('Error: ' + err));
 
-
-    
-    
     // ,function(err,savedAbout){
     //     ProfileDetails.findOne({username:"cool"},function(err,foundProfileDetails){
     //         if(err){
@@ -75,6 +87,34 @@ router.post('/add',async function(req,res,next){
     // newAbout.save()
     // .then(() => res.json('about added'))
     // .catch(err => res.status(400).json('Error: ' + err));
+})
+router.post("/addpost", upload.single("media"), function(req,res){
+    console.log(req.file)
+    const pic = req.body.pic;
+    const name = req.body.name;
+    // const date = Date.parse(req.body.date);
+    const caption = req.body.caption;
+    const media = req.file.filename;
+    const likes = Number(req.body.likes)
+
+  const newPost = new Post({
+    pic,
+    name,
+    // date,
+    caption,
+    media,
+    likes
+  });
+
+  ProfileDetails.findOne({username:'forpost'})
+    .then(foundUser => {
+        foundUser.userposts.push(newPost)
+        foundUser.save()
+        .then(() => res.json('post updated in user profile'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+
 })
 
 module.exports = router;

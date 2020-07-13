@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+// const router = require('express-promise-router')();
 const path = require("path");
 const multer = require("multer");
 let Post = require('../models/post.model');
+const postController = require('../controllers/post')
 
 const storage = multer.diskStorage({
     destination: "./../public/images/",
@@ -13,7 +15,7 @@ const storage = multer.diskStorage({
  
  const upload = multer({
     storage: storage,
-    limits:{fileSize: 1000000},
+    // limits:{fileSize: 1000000},
  });
  
 //  const upload = multer();
@@ -25,18 +27,18 @@ router.get('/',function(req, res) {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.post("/add", upload.single("media"), async function(req,res,next){
+router.post("/", upload.single("media"), function(req,res,next){
     console.log(req.file)
     const pic = req.body.pic;
-    const name = req.body.name;
+    const username = req.body.username;
     // const date = Date.parse(req.body.date);
     const caption = req.body.caption;
     const media = req.file.filename;
-    const likes = Number(req.body.likes)
+    const likes = Number(req.body.likes);
 
   const newPost = new Post({
     pic,
-    name,
+    username,
     // date,
     caption,
     media,
@@ -45,7 +47,10 @@ router.post("/add", upload.single("media"), async function(req,res,next){
 
   newPost.save()
   .then(() => res.json('Post added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+  .catch(err => {
+    console.log(err)
+    res.status(400).json('Error: ' + err)
+  });
 });
 
 router.get('/:id', function(req, res) {
@@ -64,11 +69,12 @@ router.post('/update/:id', function(req, res) {
   Post.findById(req.params.id)
     .then(post => {
         post.pic = req.body.pic;
-        post.name = req.body.name;
+        post.username = req.body.username;
         // post.date = Date.parse(req.body.date);
         post.caption = req.body.caption;
         post.media = req.file.filename
         post.likes = Number(req.body.likes)
+
 
       post.save()
         .then(() => res.json('Post updated!'))

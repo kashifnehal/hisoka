@@ -4,11 +4,15 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
   pic: {type:String},
-  name: { type: String,required:false,unique:false,trim:false,minlength:1 },
+  username: { type: String,required:false,unique:false,trim:false },
   // date: { type: Date, required: true },
   caption: { type: String, required: false },
   media:{type:String},
-  likes:{type:Number}
+  likes:{type:Number},
+  profileowner:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "About"
+    }]
 }, {
   timestamps: true,
 });

@@ -11,6 +11,10 @@ const profileDetailsSchema = new Schema({
     abouts:[{
         type:mongoose.Schema.Types.ObjectId,
         ref: "About"
+    }],
+    userposts:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "Post"
     }]
 }, {
 timestamps: true,

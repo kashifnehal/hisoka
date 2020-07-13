@@ -13,6 +13,7 @@ app.use(express.json());
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true }
 );
+
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
@@ -24,7 +25,7 @@ const postRouter = require('./routes/post');
 app.use('/postPage', postRouter);
 
 const profileDetailsRouter = require('./routes/profileDetails');
-app.use('/OnlyProfileDetails', profileDetailsRouter);
+app.use('/ProfileDetails', profileDetailsRouter);
 
 const profileRefsRouter = require('./routes/profileRefs');
 app.use('/profileRefs', profileRefsRouter);

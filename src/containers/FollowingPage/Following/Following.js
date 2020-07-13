@@ -58,7 +58,6 @@ class Following extends Component {
 
     onSubmitHandler = (event) => {
         event.preventDefault();
-
         const data = new FormData();
         data.append("pic",this.state.pic);
         data.append("name",this.state.name);
