@@ -87,18 +87,31 @@ router.patch('/:profileId', function(req,res){
     
 // })
 
+
+
+//getting posts only only person with their profileId
+// to be used for profile->timeline
 router.get('/:profileId/userposts', function(req,res){
+    ProfileDetails.findById(req.params.profileId).populate('userposts')
+    .then(profile => res.json(profile.userposts))
+    .catch(err => res.status(400).json('Error: ' + err));
     
 })
 
+
+//adding a new post will be saved in all posts 
+//and in that profile's userpost also post will be saved
 router.post('/:profileId/userposts', function(req,res){
     const newPost = new Post(req.body)
     ProfileDetails.findById(req.params.profileId)
     .then(foundProfile => {
         newPost.profileowner = foundProfile
+        newPost.pic = foundProfile.profilePic
+        newPost.username = foundProfile.username
         newPost.save()
         .then(() => res.json('newPost'))
         .catch(err => res.status(400).json('Error: ' + err));
+        
         foundProfile.userposts.push(newPost)
         foundProfile.save()
         .then(() => res.json('post profile'))

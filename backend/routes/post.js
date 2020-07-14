@@ -4,6 +4,7 @@ const router = express.Router();
 const path = require("path");
 const multer = require("multer");
 let Post = require('../models/post.model');
+let Comment = require('../models/comment.model')
 const postController = require('../controllers/post')
 
 const storage = multer.diskStorage({
@@ -82,4 +83,35 @@ router.post('/update/:id', function(req, res) {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+// =====================
+
+router.get('/:postId/comments',function(req,res){
+  Post.findById(req.params.postId).populate('comments')
+    .then(post => res.json(post.comments))
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+router.post('/:postId/comments', function(req,res){
+  const newComment = new Comment(req.body)
+  Post.findById(req.params.postId)
+  .then(foundPost => {
+      newComment.ofpost = foundPost
+      newComment.pic = foundPost.pic
+      newComment.username = foundPost.username
+      newComment.save()
+        .then(() => res.json('comment added in main'))
+        .catch(err => res.status(400).json('Error: ' + err));
+
+      foundPost.comments.push(newComment)
+      foundPost.save()
+      .then(() => res.json('comment pushed'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  })
+  .catch(err => res.status(400).json('Error: ' + err));
+
+})
+
+
 module.exports = router;
