@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs')
+const config = require('config')
+const jwt = require('jsonwebtoken')
+const auth = require('../../backend/middleware/auth')
 // const router = require('express-promise-router')();
 
 const path = require("path");
 const multer = require("multer");
 let ProfileDetails = require('../models/profileDetails.model');
 const Post = require('../models/post.model');
+const About = require('../models/about.model')
 // const { post } = require('./post');
 
 const storage = multer.diskStorage({
@@ -20,35 +25,83 @@ const storage = multer.diskStorage({
     limits:{fileSize: 1000000},
  });
 
-router.get('/',function(req,res){
+router.get('/',auth,function(req,res){
     ProfileDetails.find()
     .then(profileDetails => res.json(profileDetails))
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
-router.post('/', upload.single("media"), function(req,res){
-    // const coverPic = req.file.filename;
-    // const profilePic = req.file.filename;
-    const coverPic = req.body.coverPic;
-    const profilePic = req.body.profilePic;
-    const name = req.body.name;
-    const bio = req.body.bio;
-    const username = req.body.username;
-    const abouts = req.body.abouts;
+// === ADDING A NEW PROFILE== OR SIGN UP
+router.post('/',function(req,res){
+    const {username, password} = req.body;
 
-    const newProfileDetails = new ProfileDetails({
-        coverPic,
-        profilePic,
-        name,
-        bio,
-        username,
-        abouts
-    })
+    //simple validation
+    if(!username || !password) {
+        return res.status(400).json({msg:'Please enter all fields'})
+    }
 
-    newProfileDetails.save()
-    .then(() => res.json('profileDetails added'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    ProfileDetails.findOne({username})
+        .then(profile => {
+            if(profile){
+                return res.status(400).json({msg:'user already exists'})
+            }
+
+            const newProfileDetails = new ProfileDetails({
+                username,
+                password
+            })
+
+            //create salt & hash password
+            // here 10 is no. of rounds of encryption .. 
+            // more rounds more safe but takes more time .. 10 is default
+            bcrypt.genSalt(10, (err,salt) => {
+                bcrypt.hash(newProfileDetails.password, salt, (err,hash) =>{
+                    if(err) throw err;
+                    newProfileDetails.password = hash;
+                    newProfileDetails.save()
+                        .then(profile => {
+                        
+                            jwt.sign(
+                                {id:profile.id},
+                                config.get('jwtSecret'),
+                                {expiresIn:3600},
+                                (err,token) =>{
+                                    if(err) throw err
+                                    res.json({
+                                        token:token,
+                                        //or just token,
+                                        profile:{
+                                            id:profile.id,
+                                            username:profile.username,
+                                            password:profile.password
+                                        }
+                                    })
+                                }
+                            )
+                
+                        
+                    })
+                })
+            })
+        })
 })
+
+// router.post('/', upload.single("media"), function(req,res){
+//     // const coverPic = req.file.filename;
+//     // const profilePic = req.file.filename;
+//     // const coverPic = req.body.coverPic;
+//     // const profilePic = req.body.profilePic;
+//     // const name = req.body.name;
+//     // const bio = req.body.bio;
+//     // const username = req.body.username;
+//     // const abouts = req.body.abouts;
+
+//     const newProfileDetails = new ProfileDetails(req.body)
+
+//     newProfileDetails.save()
+//     .then(() => res.json('profileDetails added'))
+//     .catch(err => res.status(400).json('Error: ' + err));
+// })
 
 router.get('/:profileId',function(req,res){
     ProfileDetails.findById(req.params.profileId)
@@ -91,13 +144,12 @@ router.patch('/:profileId', function(req,res){
 
 //getting posts only only person with their profileId
 // to be used for profile->timeline
-router.get('/:profileId/userposts', function(req,res){
+router.get('/:profileId/userposts', auth, function(req,res){
     ProfileDetails.findById(req.params.profileId).populate('userposts')
     .then(profile => res.json(profile.userposts))
     .catch(err => res.status(400).json('Error: ' + err));
     
 })
-
 
 //adding a new post will be saved in all posts 
 //and in that profile's userpost also post will be saved
@@ -127,5 +179,20 @@ router.post('/:profileId/userposts', function(req,res){
     // .then(profileDetails => res.json('post added to profile',newPost))
     // .catch(err => res.status(400).json('Error: ' + err));
 })
+
+router.post('/:profileId/about', function(req,res){
+
+    const newAbout = new About(req.body)
+    ProfileDetails.findById(req.params.profileId)
+    .then(foundUser => {
+        foundUser.abouts.push(newAbout)
+        foundUser.save()
+        .then(() => res.json('both updated'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+// router.post('')
 
 module.exports = router;

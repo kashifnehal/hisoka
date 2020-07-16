@@ -8,6 +8,7 @@ const profileDetailsSchema = new Schema({
     name:{type:String},
     bio:{type:String},
     username:{type:String,required:false},
+    password:{type:String},
     abouts:[{
         type:mongoose.Schema.Types.ObjectId,
         ref: "About"

@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const config = require('config')
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -10,7 +11,8 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI;
+// const uri = process.env.ATLAS_URI;
+const uri = config.get('ATLAS_URI')
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true }
 );
 
@@ -27,8 +29,15 @@ app.use('/postPage', postRouter);
 const profileDetailsRouter = require('./routes/profileDetails');
 app.use('/ProfileDetails', profileDetailsRouter);
 
-const profileRefsRouter = require('./routes/profileRefs');
-app.use('/profileRefs', profileRefsRouter);
+const userRouter = require('./routes/user');
+app.use('/user', userRouter);
+
+const authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
+
+// === NOT USING====
+// const profileRefsRouter = require('./routes/profileRefs');
+// app.use('/profileRefs', profileRefsRouter);
 
 const aboutRouter = require('./routes/about');
 app.use('/aboutDetails', aboutRouter);

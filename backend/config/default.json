@@ -1,0 +1,4 @@
+{
+    "ATLAS_URI":"mongodb+srv://kashifnehal:kashif786@@cluster0-5nclg.gcp.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret":"sl_myJwtSecret"
+}

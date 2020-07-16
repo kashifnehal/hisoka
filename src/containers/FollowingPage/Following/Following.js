@@ -17,6 +17,7 @@ import classes from './Following.css'
 class Following extends Component {
     state = {
         postData:[],
+        allComments:[],
         mediaClicked:false,
         pic:'profile pic',
         name:'kashif',
@@ -38,8 +39,16 @@ class Following extends Component {
         console.log(this.state.postData)
         return this.state.postData.map(curpost => {
             console.log(curpost)
-            return <EachPost post={curpost} key={curpost._id} />
+            return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
         })
+    }
+
+    toCommentPageHandler = (postId) => {
+        console.log('comment fun activated',postId)
+        console.log('the req http://localhost:5000/postPage/'+postId+'/comments');
+        axios.get('http://localhost:5000/postPage/'+postId+'/comments')
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
     
     fileSelectHandler = event => {
@@ -73,18 +82,15 @@ class Following extends Component {
         // };
         console.log(data)
 
-        axios.post('http://localhost:5000/postPage/add', data)
+        axios.post('http://localhost:5000/postPage/', data)
             .then(res => console.log(res))
             .catch(err => console.log(err))
 
         console.log('post added')
-
         window.location = '/followingPage'
     }
 
     render () {
-        
-        
         return (
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{backgroundColor:'white',marginTop:'5px'}}>
