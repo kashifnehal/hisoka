@@ -18,10 +18,11 @@ class App extends Component {
   }
 
   render() {
+    console.log('auth in app', this.props.isAuthenticated);
     let firstPage = <WhitePage />
     if (this.props.isAuthenticated) {
       firstPage = <Layout />
-    } else {
+    } else if (this.props.isAuthenticated === false) {
       firstPage = <Login />
     }
 

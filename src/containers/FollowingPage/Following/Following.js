@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button'
 import classes from './Following.css'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { loadPost } from '../../../store/actions/followingActions'
+import { loadPost, addPost } from '../../../store/actions/followingActions'
 // import WriteImage from '../../../assets/images/2.jpg'
 // import AddMedia from './AddMedia/AddMedia'
 
@@ -78,7 +78,7 @@ class Following extends Component {
         this.setState({ caption: event.target.value })
     }
 
-    onSubmitHandler = (event) => {
+    onSubmitHandler = async (event) => {
         event.preventDefault();
         const data = new FormData();
         data.append("pic", this.state.pic);
@@ -94,12 +94,14 @@ class Following extends Component {
         //     }
         // };
         console.log(data)
+        await this.props.onAddPost(data)
+        this.props.onLoadPost()
 
-        axios.post('http://localhost:5000/postPage/', data)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        // axios.post('http://localhost:5000/postPage/', data)
+        //     .then(res => console.log(res))
+        //     .catch(err => console.log(err))
 
-        console.log('post added')
+        // console.log('post added')
         window.location = '/'
     }
 
@@ -152,6 +154,7 @@ const mapDispatchToProps = dispatch => {
     return {
         // onReturnErrors: () => dispatch(returnErrors()),
         onLoadPost: () => dispatch(loadPost()),
+        onAddPost: (data) => dispatch(addPost(data))
     }
 }
 
