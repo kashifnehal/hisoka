@@ -51,13 +51,13 @@ export const loadPost = () => {
 export const addPost = (data) => {
     console.log('inside addpost action')
     return async (dispatch, getState) => {
-        // dispatch(startLoadingPost());
 
         const addPostUrl =
             'http://localhost:5000/postPage/';
 
         try {
-            const res = await axios.post(addPostUrl, tokenConfig(getState), data);
+            console.log('try addpost data', data)
+            const res = await axios.post(addPostUrl, data, tokenConfig(getState));
             // dispatch(addPostSuccess(res.data))
         } catch (err) {
             // alert("Incorrect User ID / Password");

@@ -31,15 +31,21 @@ router.get('/', auth, function (req, res) {
 });
 
 router.post("/", upload.single("media"), function (req, res, next) {
-  // console.log(req.file)
-  // const pic = req.body.pic;
-  // const username = req.body.username;
-  // // const date = Date.parse(req.body.date);
-  // const caption = req.body.caption;
-  // const media = req.file.filename;
-  // const likes = Number(req.body.likes);
+  console.log(req.file)
+  const pic = req.body.pic;
+  const username = req.body.username;
+  // const date = Date.parse(req.body.date);
+  const caption = req.body.caption;
+  const media = req.file.filename;
+  const likes = Number(req.body.likes);
 
-  const newPost = new Post(req.body);
+  const newPost = new Post({
+    pic,
+    username,
+    caption,
+    media,
+    likes
+  });
 
   newPost.save()
     .then(() => res.json('Post added!'))

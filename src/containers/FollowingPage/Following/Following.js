@@ -40,7 +40,7 @@ class Following extends Component {
     }
 
     componentDidUpdate = () => {
-        console.log('in folowing cdidup', this.props.isAuthenticated)
+        // console.log('in folowing cdidup', this.props.isAuthenticated)
         if (!this.props.isAuthenticated) {
             this.props.history.push({
                 pathname: "/loginPage"
@@ -51,20 +51,21 @@ class Following extends Component {
     postHandler = () => {
         // console.log(this.state.postData)
         return this.props.allPosts.map(curpost => {
-            console.log(curpost)
+            // console.log(curpost)
             return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
         })
     }
 
     toCommentPageHandler = (postId) => {
-        console.log('comment fun activated', postId)
-        console.log('the req http://localhost:5000/postPage/' + postId + '/comments');
+        // console.log('comment fun activated', postId)
+        // console.log('the req http://localhost:5000/postPage/' + postId + '/comments');
         axios.get('http://localhost:5000/postPage/' + postId + '/comments')
             .then(res => console.log(res))
             .catch(err => console.log(err))
     }
 
     fileSelectHandler = event => {
+        console.log('media file', event.target.files[0])
         this.setState({
             media: event.target.files[0],
         })
@@ -93,9 +94,9 @@ class Following extends Component {
         //         'content-type': 'multipart/form-data'
         //     }
         // };
-        console.log(data)
+        console.log('whole data', data)
         await this.props.onAddPost(data)
-        this.props.onLoadPost()
+        // this.props.onLoadPost()
 
         // axios.post('http://localhost:5000/postPage/', data)
         //     .then(res => console.log(res))
@@ -106,13 +107,13 @@ class Following extends Component {
     }
 
     render() {
-        console.log('all posts', this.props.allPosts)
-        console.log('load user content', this.props.user)
+        // console.log('all posts', this.props.allPosts)
+        // console.log('load user content', this.props.user)
         return (
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
                     <Row className={classes.WriteRow}>
-                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/IMAGE-1592981215755.jpg'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
+                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/IMAGE-1592948142254.jpg'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
                         <Col className={classes.WriteBox} xs={10} style={{}}>
                             <Row>
                                 <Col xs={12} >
