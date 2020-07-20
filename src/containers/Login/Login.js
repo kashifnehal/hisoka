@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { register } from '../../store/actions/authActions'
 import { login } from '../../store/actions/authActions'
 import { clearErrors } from '../../store/actions/errorActions'
-import { logout } from '../../store/actions/authActions';
+import { logout, loadUser } from '../../store/actions/authActions';
 
 
 //=== USE CLEAR ERRORS, USED IN VIDEO I HAVE NOT USED YET
@@ -23,6 +23,10 @@ class Login extends Component {
         event.preventDefault();
         console.log('login function started')
         await this.props.onRegister(this.state.username, this.state.password)
+        console.log('checking is auth', this.props.isAuthenticated);
+        if (this.props.isAuthenticated) {
+            await this.props.onLoadUser()
+        }
         if (this.props.isAuthenticated) {
             this.props.history.push({
                 pathname: "/followingPage"
@@ -33,6 +37,9 @@ class Login extends Component {
         event.preventDefault();
         console.log('login function started')
         await this.props.onLogin(this.state.ulog, this.state.plog)
+        if (this.props.isAuthenticated) {
+            await this.props.onLoadUser()
+        }
         console.log('b4 history', this.props.isAuthenticated)
         if (this.props.isAuthenticated) {
             console.log('inside login history', this.props.isAuthenticated)
@@ -113,7 +120,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onRegister: (username, password) => dispatch(register(username, password)),
         onLogin: (username, password) => dispatch(login(username, password)),
-        onLogout: () => dispatch(logout())
+        onLogout: () => dispatch(logout()),
+        onLoadUser: () => dispatch(loadUser())
+
     }
 }
 

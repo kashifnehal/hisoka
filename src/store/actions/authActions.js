@@ -25,6 +25,7 @@ export const loadUser = () => async (dispatch, getState) => {
             type: USER_LOADED,
             payload: res.data
         })
+        console.log('loaded res data', res.data)
     } catch (err) {
         dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
@@ -37,7 +38,7 @@ export const loadUser = () => async (dispatch, getState) => {
 };
 
 // Register User
-export const register = (username, password) => (
+export const register = (username, password) => async (
     dispatch
 ) => {
     // Headers
@@ -50,27 +51,41 @@ export const register = (username, password) => (
 
     // Request body
     const body = JSON.stringify({ username, password });
+    try {
 
-    axios
-        .post('http://localhost:5000/profileDetails', body, config)
-        .then(res =>
-            dispatch({
-                type: REGISTER_SUCCESS,
-                payload: res.data
-            })
-        )
-        .catch(err => {
-            dispatch(
-                returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
-            );
-            dispatch({
-                type: REGISTER_FAIL
-            });
+        const res = await axios.post('http://localhost:5000/profileDetails', body, config)
+        dispatch({
+            type: REGISTER_SUCCESS,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+        );
+        dispatch({
+            type: REGISTER_FAIL
         });
+    }
+    // axios
+    //     .post('http://localhost:5000/profileDetails', body, config)
+    //     .then(res =>
+    //         dispatch({
+    //             type: REGISTER_SUCCESS,
+    //             payload: res.data
+    //         })
+    //     )
+    //     .catch(err => {
+    //         dispatch(
+    //             returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+    //         );
+    //         dispatch({
+    //             type: REGISTER_FAIL
+    //         });
+    //     });
 };
 
 // Login User
-export const login = (username, password) => (
+export const login = (username, password) => async (
     dispatch
 ) => {
     // Headers
@@ -82,23 +97,36 @@ export const login = (username, password) => (
 
     // Request body
     const body = JSON.stringify({ username, password });
+    try {
 
-    axios
-        .post('http://localhost:5000/auth', body, config)
-        .then(res =>
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: res.data
-            })
-        )
-        .catch(err => {
-            dispatch(
-                returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
-            );
-            dispatch({
-                type: LOGIN_FAIL
-            });
+        const res = await axios.post('http://localhost:5000/auth', body, config)
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+        );
+        dispatch({
+            type: LOGIN_FAIL
         });
+    }
+    // axios.post('http://localhost:5000/auth', body, config)
+    //     .then(res =>
+    //         dispatch({
+    //             type: LOGIN_SUCCESS,
+    //             payload: res.data
+    //         })
+    //     )
+    //     .catch(err => {
+    //         dispatch(
+    //             returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+    //         );
+    //         dispatch({
+    //             type: LOGIN_FAIL
+    //         });
+    //     });
 };
 
 // Logout User

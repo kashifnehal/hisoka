@@ -3,6 +3,8 @@ import * as actionTypes from './../actions/actionTypes'
 const initialState = {
     loadingPost: false,
     allPosts: [],
+    addingPostLoader: false,
+    newPost: []
 }
 
 export default function (state = initialState, action) {
@@ -17,6 +19,19 @@ export default function (state = initialState, action) {
                 ...state,
                 loadingPost: false,
                 allPosts: action.allPosts
+            };
+        case actionTypes.START_ADDING_POST:
+            return {
+                ...state,
+                addingPostLoader: true
+            };
+        case actionTypes.ADD_POST_SUCCESS:
+            console.log('from reducer newpost', action.newPost);
+            return {
+                ...state,
+                addingPostLoader: false,
+                allPosts: [action.newPost, ...state.allPosts],
+                addingPostLoader: false
             };
 
         default:

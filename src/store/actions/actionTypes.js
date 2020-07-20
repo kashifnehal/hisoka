@@ -4,6 +4,8 @@ export const START_LOADING_POST = 'START_LOADING_POST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS'
 export const FETCH_POST = 'FETCH_POST';
 export const ADD_POST = 'ADD_POST';
+export const START_ADDING_POST = 'START_ADDING_POST'
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
 export const DELETE_POST = 'DELETE_POST'
 export const ADD_ABOUT = 'ADD_ABOUT';
 

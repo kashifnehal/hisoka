@@ -13,37 +13,49 @@ const Post = require('../models/post.model');
 const About = require('../models/about.model')
 // const { post } = require('./post');
 
-const storage = multer.diskStorage({
-    destination: "./../public/ProfileImages/",
-    filename: function(req, file, cb){
-       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
-    }
- });
- 
- const upload = multer({
-    storage: storage,
-    limits:{fileSize: 1000000},
- });
 
-router.get('/',auth,function(req,res){
+const storage = multer.diskStorage({
+    destination: "./../public/images/",
+    filename: function (req, file, cb) {
+        cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    // limits:{fileSize: 1000000},
+});
+// const storage = multer.diskStorage({
+//     destination: "./../public/ProfileImages/",
+//     filename: function (req, file, cb) {
+//         cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+//     }
+// });
+
+// const upload = multer({
+//     storage: storage,
+//     // limits: { fileSize: 1000000 },
+// });
+
+router.get('/', auth, function (req, res) {
     ProfileDetails.find()
-    .then(profileDetails => res.json(profileDetails))
-    .catch(err => res.status(400).json('Error: ' + err));
+        .then(profileDetails => res.json(profileDetails))
+        .catch(err => res.status(400).json('Error: ' + err));
 })
 
 // === ADDING A NEW PROFILE== OR SIGN UP
-router.post('/',function(req,res){
-    const {username, password} = req.body;
+router.post('/', function (req, res) {
+    const { username, password } = req.body;
 
     //simple validation
-    if(!username || !password) {
-        return res.status(400).json({msg:'Please enter all fields'})
+    if (!username || !password) {
+        return res.status(400).json({ msg: 'Please enter all fields' })
     }
 
-    ProfileDetails.findOne({username})
+    ProfileDetails.findOne({ username })
         .then(profile => {
-            if(profile){
-                return res.status(400).json({msg:'user already exists'})
+            if (profile) {
+                return res.status(400).json({ msg: 'user already exists' })
             }
 
             const newProfileDetails = new ProfileDetails({
@@ -54,33 +66,33 @@ router.post('/',function(req,res){
             //create salt & hash password
             // here 10 is no. of rounds of encryption .. 
             // more rounds more safe but takes more time .. 10 is default
-            bcrypt.genSalt(10, (err,salt) => {
-                bcrypt.hash(newProfileDetails.password, salt, (err,hash) =>{
-                    if(err) throw err;
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newProfileDetails.password, salt, (err, hash) => {
+                    if (err) throw err;
                     newProfileDetails.password = hash;
                     newProfileDetails.save()
                         .then(profile => {
-                        
+
                             jwt.sign(
-                                {id:profile.id},
+                                { id: profile.id },
                                 config.get('jwtSecret'),
-                                {expiresIn:3600},
-                                (err,token) =>{
-                                    if(err) throw err
+                                { expiresIn: 3600 },
+                                (err, token) => {
+                                    if (err) throw err
                                     res.json({
-                                        token:token,
+                                        token: token,
                                         //or just token,
-                                        profile:{
-                                            id:profile.id,
-                                            username:profile.username,
-                                            password:profile.password
+                                        profile: {
+                                            id: profile.id,
+                                            username: profile.username,
+                                            password: profile.password
                                         }
                                     })
                                 }
                             )
-                
-                        
-                    })
+
+
+                        })
                 })
             })
         })
@@ -103,24 +115,24 @@ router.post('/',function(req,res){
 //     .catch(err => res.status(400).json('Error: ' + err));
 // })
 
-router.get('/:profileId',function(req,res){
+router.get('/:profileId', function (req, res) {
     ProfileDetails.findById(req.params.profileId)
-    .then(profileDetails => res.json(profileDetails))
-    .catch(err => res.status(400).json('Error: ' + err));
+        .then(profileDetails => res.json(profileDetails))
+        .catch(err => res.status(400).json('Error: ' + err));
 })
 
-router.delete('/:profileId',function(req,res){
+router.delete('/:profileId', function (req, res) {
     ProfileDetails.findByIdAndDelete(req.params.profileId)
-    .then(profileDetails => res.json('profileDetails deleted'))
-    .catch(err => res.status(400).json('Error: ' + err));
-    
+        .then(profileDetails => res.json('profileDetails deleted'))
+        .catch(err => res.status(400).json('Error: ' + err));
+
 })
 
-router.patch('/:profileId', function(req,res){
+router.patch('/:profileId', function (req, res) {
     profileData = req.body
-    ProfileDetails.findByIdAndUpdate(req.params.profileId,profileData)
-    .then(profileDetails => res.json('profileDetails patched'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    ProfileDetails.findByIdAndUpdate(req.params.profileId, profileData)
+        .then(profileDetails => res.json('profileDetails patched'))
+        .catch(err => res.status(400).json('Error: ' + err));
 })
 
 // router.post('/update/:profileId',function(req,res){
@@ -137,39 +149,54 @@ router.patch('/:profileId', function(req,res){
 //         .catch(err => res.status(400).json('Error: ' + err));
 //     })
 //     .catch(err => res.status(400).json('Error: ' + err));
-    
+
 // })
 
 
 
 //getting posts only only person with their profileId
 // to be used for profile->timeline
-router.get('/:profileId/userposts', auth, function(req,res){
+router.get('/:profileId/userposts', auth, function (req, res) {
     ProfileDetails.findById(req.params.profileId).populate('userposts')
-    .then(profile => res.json(profile.userposts))
-    .catch(err => res.status(400).json('Error: ' + err));
-    
+        .then(profile => res.json(profile.userposts))
+        .catch(err => res.status(400).json('Error: ' + err));
+
 })
 
 //adding a new post will be saved in all posts 
 //and in that profile's userpost also post will be saved
-router.post('/:profileId/userposts', function(req,res){
-    const newPost = new Post(req.body)
+
+
+router.post('/:profileId/userposts', upload.single("media"), function (req, res, next) {
+    // const newPost = new Post(req.body)
+    const caption = req.body.caption;
+    const media = req.file.filename;
+    const likes = Number(req.body.likes);
+
+    const newPost = new Post({
+        caption,
+        media,
+        likes
+    });
+
     ProfileDetails.findById(req.params.profileId)
-    .then(foundProfile => {
-        newPost.profileowner = foundProfile
-        newPost.pic = foundProfile.profilePic
-        newPost.username = foundProfile.username
-        newPost.save()
-        .then(() => res.json('newPost'))
+        .then(foundProfile => {
+            newPost.profileowner = foundProfile
+            // newPost.pic = foundProfile.profilePic
+            newPost.username = foundProfile.username
+            newPost.save()
+                .then(() => res.json(newPost))
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).json('Error: ' + err)
+                });
+
+            foundProfile.userposts.push(newPost)
+            foundProfile.save()
+            // .then(() => res.json('post profile'))
+            // .catch(err => res.status(400).json('Error: ' + err));
+        })
         .catch(err => res.status(400).json('Error: ' + err));
-        
-        foundProfile.userposts.push(newPost)
-        foundProfile.save()
-        .then(() => res.json('post profile'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
     // newPost.profileOwner = foundProfile
     // newPost.pic = foundProfile.profilePic
     // newPost.username = foundProfile.username
@@ -180,17 +207,17 @@ router.post('/:profileId/userposts', function(req,res){
     // .catch(err => res.status(400).json('Error: ' + err));
 })
 
-router.post('/:profileId/about', function(req,res){
+router.post('/:profileId/about', function (req, res) {
 
     const newAbout = new About(req.body)
     ProfileDetails.findById(req.params.profileId)
-    .then(foundUser => {
-        foundUser.abouts.push(newAbout)
-        foundUser.save()
-        .then(() => res.json('both updated'))
+        .then(foundUser => {
+            foundUser.abouts.push(newAbout)
+            foundUser.save()
+                .then(() => res.json('both updated'))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
         .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
 })
 
 // router.post('')

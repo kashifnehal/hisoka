@@ -22,8 +22,8 @@ class Following extends Component {
         postData: [],
         allComments: [],
         mediaClicked: false,
-        pic: 'profile pic',
-        name: 'kashif',
+        pic: '',
+        name: '',
         // date:'2020-08-01T15:28:32.886Z',
         caption: '',
         media: '',
@@ -41,6 +41,7 @@ class Following extends Component {
 
     componentDidUpdate = () => {
         // console.log('in folowing cdidup', this.props.isAuthenticated)
+
         if (!this.props.isAuthenticated) {
             this.props.history.push({
                 pathname: "/loginPage"
@@ -95,7 +96,7 @@ class Following extends Component {
         //     }
         // };
         console.log('whole data', data)
-        await this.props.onAddPost(data)
+        await this.props.onAddPost(data, this.props.user._id)
         // this.props.onLoadPost()
 
         // axios.post('http://localhost:5000/postPage/', data)
@@ -103,7 +104,7 @@ class Following extends Component {
         //     .catch(err => console.log(err))
 
         // console.log('post added')
-        window.location = '/'
+        // window.location = '/'
     }
 
     render() {
@@ -155,7 +156,7 @@ const mapDispatchToProps = dispatch => {
     return {
         // onReturnErrors: () => dispatch(returnErrors()),
         onLoadPost: () => dispatch(loadPost()),
-        onAddPost: (data) => dispatch(addPost(data))
+        onAddPost: (data, profileId) => dispatch(addPost(data, profileId))
     }
 }
 
