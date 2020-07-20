@@ -22,11 +22,11 @@ class Login extends Component {
     onStartRegister = async (event) => {
         event.preventDefault();
         console.log('login function started')
-        await this.props.onRegister(this.state.username, this.state.password)
+        const res2 = await this.props.onRegister(this.state.username, this.state.password)
         console.log('checking is auth', this.props.isAuthenticated);
-        if (this.props.isAuthenticated) {
-            await this.props.onLoadUser()
-        }
+        // if (this.props.isAuthenticated) {
+        // await this.props.onLoadUser()
+        // }
         if (this.props.isAuthenticated) {
             this.props.history.push({
                 pathname: "/followingPage"
@@ -36,10 +36,10 @@ class Login extends Component {
     onStartLogin = async (event) => {
         event.preventDefault();
         console.log('login function started')
-        await this.props.onLogin(this.state.ulog, this.state.plog)
-        if (this.props.isAuthenticated) {
-            await this.props.onLoadUser()
-        }
+        const res = await this.props.onLogin(this.state.ulog, this.state.plog)
+        // if (this.props.isAuthenticated) {
+        // await this.props.onLoadUser()
+        // }
         console.log('b4 history', this.props.isAuthenticated)
         if (this.props.isAuthenticated) {
             console.log('inside login history', this.props.isAuthenticated)

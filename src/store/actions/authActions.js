@@ -33,8 +33,6 @@ export const loadUser = () => async (dispatch, getState) => {
         });
     }
 
-
-
 };
 
 // Register User
@@ -58,6 +56,7 @@ export const register = (username, password) => async (
             type: REGISTER_SUCCESS,
             payload: res.data
         })
+        dispatch(loadUser())
     } catch (err) {
         dispatch(
             returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
@@ -98,12 +97,13 @@ export const login = (username, password) => async (
     // Request body
     const body = JSON.stringify({ username, password });
     try {
-
         const res = await axios.post('http://localhost:5000/auth', body, config)
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         })
+        dispatch(loadUser())
+
     } catch (err) {
         dispatch(
             returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')

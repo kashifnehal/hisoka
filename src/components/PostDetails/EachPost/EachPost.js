@@ -21,7 +21,7 @@ const eachPost = (props) => {
     // console.log(n);
     // console.log(props.post.media)
 
-    console.log(props.post.media)
+    // console.log(props.post.media)
     return (
         <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
             <Row>

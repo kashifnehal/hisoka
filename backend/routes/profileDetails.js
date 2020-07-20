@@ -21,6 +21,14 @@ const storage = multer.diskStorage({
     }
 });
 
+// ============= GOOD CATCH FORMAT ============
+// .catch(err => {
+//     res.status(500).json({
+//       message: "There was an error retrieving all users"
+//     });
+//   });
+//   ============================================
+
 const upload = multer({
     storage: storage,
     // limits:{fileSize: 1000000},

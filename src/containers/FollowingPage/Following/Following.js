@@ -66,7 +66,7 @@ class Following extends Component {
     }
 
     fileSelectHandler = event => {
-        console.log('media file', event.target.files[0])
+        // console.log('media file', event.target.files[0])
         this.setState({
             media: event.target.files[0],
         })
@@ -95,7 +95,7 @@ class Following extends Component {
         //         'content-type': 'multipart/form-data'
         //     }
         // };
-        console.log('whole data', data)
+        // console.log('whole data', data)
         await this.props.onAddPost(data, this.props.user._id)
         // this.props.onLoadPost()
 
