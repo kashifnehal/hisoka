@@ -121,8 +121,13 @@ router.delete('/:profileId', function (req, res) {
 
 
 //update profile details
-router.patch('/:profileId', function (req, res) {
-    profileData = req.body
+router.patch('/:profileId', upload.single("profilePic"), function (req, res) {
+    profileData = {
+        name: req.body.name,
+        bio: req.body.bio,
+        // coverPic: req.file.filename,
+        profilePic: req.file.filename
+    }
     ProfileDetails.findByIdAndUpdate(req.params.profileId, profileData)
         .then(profileDetails => res.json('profileDetails patched'))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -158,9 +163,7 @@ router.get('/:profileId/userposts', auth, function (req, res) {
 
 //adding a new post will be saved in all posts 
 //and in that profile's userpost also post will be saved
-
-
-router.post('/:profileId/userposts', upload.single("media"), function (req, res, next) {
+router.post('/:profileId/userposts', upload.single("media"), auth, function (req, res, next) {
     // const newPost = new Post(req.body)
     const caption = req.body.caption;
     const media = req.file.filename;

@@ -12,6 +12,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import followingReducer from './store/reducers/followingReducer';
 import commentReducer from './store/reducers/commentReducer';
+import profileReducer from './store/reducers/profileReducer';
 
 
 //this line can be problem as we are not using env anymore.
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     error: errorReducer,
     auth: authReducer,
     following: followingReducer,
-    comment: commentReducer
+    comment: commentReducer,
+    profile: profileReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(

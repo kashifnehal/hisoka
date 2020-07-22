@@ -41,6 +41,7 @@ class Following extends Component {
     }
 
     postHandler = () => {
+        // console.log('all post only', this.props.allPosts);
         return this.props.allPosts.map(curpost => {
             return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
         })
@@ -80,20 +81,35 @@ class Following extends Component {
         data.append("likes", this.state.likes);
 
         await this.props.onAddPost(data, this.props.user._id)
+        this.setState({ caption: '' })
+    }
 
+    gotoProfilePage = () => {
+        this.props.history.push({
+            pathname: "/profilePage"
+        })
     }
 
     render() {
+        let userProfilePic = <Image onClick={this.gotoProfilePage} src={process.env.PUBLIC_URL + '/images/default.png'} style={{ height: '50px', width: '50px' }} />
+
+        if (this.props.user !== null) {
+            if (this.props.user.profilePic !== "") {
+                userProfilePic = <Image src={process.env.PUBLIC_URL + '/images/' + String(this.props.user.profilePic)} onClick={this.gotoProfilePage} roundedCircle style={{ height: '50px', width: '50px' }} />
+            }
+        }
         console.log('profile details', this.props.proDetails)
         return (
             <Auxiliary className={classes.Write}>
-                <Container className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
+                <Container fluid className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
                     <Row className={classes.WriteRow}>
-                        <Col className={classes.WritePic} xs={2} style={{}}><Image src={process.env.PUBLIC_URL + '/images/IMAGE-1592948142254.jpg'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
+                        <Col className={classes.WritePic} xs={2} style={{}}>
+                            {userProfilePic}
+                        </Col>
                         <Col className={classes.WriteBox} xs={10} style={{}}>
                             <Row>
                                 <Col xs={12} >
-                                    <textarea className={classes.text} onChange={this.onChangeCaption} rows="4" cols="" placeholder="Hello! I am Groot..." style={{ outline: 'none', border: 'none' }} ></textarea>
+                                    <textarea className={classes.text} value={this.state.caption} onChange={this.onChangeCaption} rows="4" cols="" placeholder="Hello! I am Groot..." style={{ outline: 'none', border: 'none' }} ></textarea>
                                 </Col>
                             </Row>
                             <Row>
