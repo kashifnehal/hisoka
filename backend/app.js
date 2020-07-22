@@ -3,6 +3,13 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('config')
 
+//==SAW THIS SOMEWHERE====
+// app.use(methodOverride('_method'));
+// app.use(methodOverride('X-HTTP-Method'));
+// app.use(methodOverride('X-HTTP-Method-Override')); 
+// app.use(methodOverride('X-Method-Override')); 
+
+mongoose.set('useFindAndModify', false);
 // require('dotenv').config();
 
 const app = express();
@@ -13,7 +20,7 @@ app.use(express.json());
 
 // const uri = process.env.ATLAS_URI;
 const uri = config.get('ATLAS_URI')
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true }
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
 );
 
 const connection = mongoose.connection;
@@ -44,5 +51,5 @@ app.use('/aboutDetails', aboutRouter);
 
 
 app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });

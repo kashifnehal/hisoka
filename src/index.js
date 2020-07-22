@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import followingReducer from './store/reducers/followingReducer';
+import commentReducer from './store/reducers/commentReducer';
 
 
 //this line can be problem as we are not using env anymore.
@@ -20,7 +21,8 @@ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX
 const rootReducer = combineReducers({
     error: errorReducer,
     auth: authReducer,
-    following: followingReducer
+    following: followingReducer,
+    comment: commentReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(

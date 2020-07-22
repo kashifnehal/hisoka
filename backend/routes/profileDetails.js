@@ -33,17 +33,7 @@ const upload = multer({
     storage: storage,
     // limits:{fileSize: 1000000},
 });
-// const storage = multer.diskStorage({
-//     destination: "./../public/ProfileImages/",
-//     filename: function (req, file, cb) {
-//         cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
-//     }
-// });
 
-// const upload = multer({
-//     storage: storage,
-//     // limits: { fileSize: 1000000 },
-// });
 
 router.get('/', auth, function (req, res) {
     ProfileDetails.find()
@@ -66,10 +56,7 @@ router.post('/', function (req, res) {
                 return res.status(400).json({ msg: 'user already exists' })
             }
 
-            const newProfileDetails = new ProfileDetails({
-                username,
-                password
-            })
+            const newProfileDetails = new ProfileDetails(req.body)
 
             //create salt & hash password
             // here 10 is no. of rounds of encryption .. 
@@ -90,11 +77,7 @@ router.post('/', function (req, res) {
                                     res.json({
                                         token: token,
                                         //or just token,
-                                        profile: {
-                                            id: profile.id,
-                                            username: profile.username,
-                                            password: profile.password
-                                        }
+                                        profile
                                     })
                                 }
                             )
@@ -136,6 +119,8 @@ router.delete('/:profileId', function (req, res) {
 
 })
 
+
+//update profile details
 router.patch('/:profileId', function (req, res) {
     profileData = req.body
     ProfileDetails.findByIdAndUpdate(req.params.profileId, profileData)

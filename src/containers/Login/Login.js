@@ -12,6 +12,10 @@ import { logout, loadUser } from '../../store/actions/authActions';
 
 class Login extends Component {
     state = {
+        coverPic: '',
+        profilePic: '',
+        name: '',
+        bio: '',
         username: '',
         password: '',
         msg: '',
@@ -22,7 +26,15 @@ class Login extends Component {
     onStartRegister = async (event) => {
         event.preventDefault();
         console.log('login function started')
-        const res2 = await this.props.onRegister(this.state.username, this.state.password)
+        const registrationDetails = {
+            coverPic: this.state.coverPic,
+            profilePic: this.state.profilePic,
+            name: this.state.name,
+            bio: this.state.bio,
+            username: this.state.username,
+            password: this.state.password,
+        }
+        const res2 = await this.props.onRegister(registrationDetails)
         console.log('checking is auth', this.props.isAuthenticated);
         // if (this.props.isAuthenticated) {
         // await this.props.onLoadUser()
@@ -89,6 +101,7 @@ class Login extends Component {
             <div>
                 <form style={{ marginTop: '150px' }}>
                     <h1>REGISTRATION</h1>
+                    <input type="text" placeholder="name" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
                     <input type="text" placeholder="username" value={this.state.username} onChange={(e) => this.setState({ username: e.target.value })} />
                     <input type="text" placeholder="password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} />
                     <button onClick={this.onStartRegister}>submit</button>
@@ -118,7 +131,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onRegister: (username, password) => dispatch(register(username, password)),
+        onRegister: (registrationDetails) => dispatch(register(registrationDetails)),
         onLogin: (username, password) => dispatch(login(username, password)),
         onLogout: () => dispatch(logout()),
         onLoadUser: () => dispatch(loadUser())

@@ -27,7 +27,7 @@ export const loadUser = () => async (dispatch, getState) => {
         })
         console.log('loaded res data', res.data)
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status));
+        // dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
             type: AUTH_ERROR
         });
@@ -36,22 +36,25 @@ export const loadUser = () => async (dispatch, getState) => {
 };
 
 // Register User
-export const register = (username, password) => async (
-    dispatch
-) => {
+export const register = (registrationDetails) => async (dispatch) => {
     // Headers
+    console.log('r details', registrationDetails)
+    const username = registrationDetails.username
+    const password = registrationDetails.password
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    console.log('from register', username, password)
+    // console.log('from register', username, password)
 
     // Request body
-    const body = JSON.stringify({ username, password });
+
+    // const body = JSON.stringify({ username, password });
+    // const body = JSON.stringify({ registrationDetails });
     try {
 
-        const res = await axios.post('http://localhost:5000/profileDetails', body, config)
+        const res = await axios.post('http://localhost:5000/profileDetails', registrationDetails, config)
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data

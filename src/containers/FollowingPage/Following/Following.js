@@ -6,15 +6,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 // import PostDetails from '../../../components/PostDetails/PostDetails'
-import EachPost from '../../../components/PostDetails/EachPost/EachPost'
+import EachPost from '../../../components/EachFormat/EachPost/EachPost'
 import Button from 'react-bootstrap/Button'
 import classes from './Following.css'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import { loadPost, addPost } from '../../../store/actions/followingActions'
-// import WriteImage from '../../../assets/images/2.jpg'
-// import AddMedia from './AddMedia/AddMedia'
-
+import { loadComment } from '../../../store/actions/commentActions'
 
 
 class Following extends Component {
@@ -32,16 +30,9 @@ class Following extends Component {
 
     componentDidMount() {
         this.props.onLoadPost()
-        // axios.get('http://localhost:5000/postPage/')
-        //     .then(res => {
-        //         this.setState({ postData: res.data })
-        //     })
-        //     .catch(err => this.props.onReturnErrors(err.response.data, err.response.status))
     }
 
     componentDidUpdate = () => {
-        // console.log('in folowing cdidup', this.props.isAuthenticated)
-
         if (!this.props.isAuthenticated) {
             this.props.history.push({
                 pathname: "/loginPage"
@@ -50,23 +41,22 @@ class Following extends Component {
     }
 
     postHandler = () => {
-        // console.log(this.state.postData)
         return this.props.allPosts.map(curpost => {
-            // console.log(curpost)
             return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
         })
     }
 
     toCommentPageHandler = (postId) => {
-        // console.log('comment fun activated', postId)
-        // console.log('the req http://localhost:5000/postPage/' + postId + '/comments');
-        axios.get('http://localhost:5000/postPage/' + postId + '/comments')
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        this.props.history.push({
+            pathname: "/commentPage"
+        })
+        this.props.onLoadComment(postId)
+        // axios.get('http://localhost:5000/postPage/' + postId + '/comments')
+        //     .then(res => console.log(res))
+        //     .catch(err => console.log(err))
     }
 
     fileSelectHandler = event => {
-        // console.log('media file', event.target.files[0])
         this.setState({
             media: event.target.files[0],
         })
@@ -85,31 +75,16 @@ class Following extends Component {
         const data = new FormData();
         data.append("pic", this.state.pic);
         data.append("name", this.state.name);
-        // data.append("date",this.state.date);
         data.append("caption", this.state.caption);
         data.append("media", this.state.media);
         data.append("likes", this.state.likes);
 
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data'
-        //     }
-        // };
-        // console.log('whole data', data)
         await this.props.onAddPost(data, this.props.user._id)
-        // this.props.onLoadPost()
 
-        // axios.post('http://localhost:5000/postPage/', data)
-        //     .then(res => console.log(res))
-        //     .catch(err => console.log(err))
-
-        // console.log('post added')
-        // window.location = '/'
     }
 
     render() {
-        // console.log('all posts', this.props.allPosts)
-        // console.log('load user content', this.props.user)
+        console.log('profile details', this.props.proDetails)
         return (
             <Auxiliary className={classes.Write}>
                 <Container className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
@@ -146,17 +121,17 @@ class Following extends Component {
 
 const mapStateToProps = state => {
     return {
-        // isAuthenticated: state.auth.token !== null
         allPosts: state.following.allPosts,
         user: state.auth.user,
         isAuthenticated: state.auth.isAuthenticated,
+        proDetails: state.auth.proDetails
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        // onReturnErrors: () => dispatch(returnErrors()),
         onLoadPost: () => dispatch(loadPost()),
-        onAddPost: (data, profileId) => dispatch(addPost(data, profileId))
+        onAddPost: (data, profileId) => dispatch(addPost(data, profileId)),
+        onLoadComment: (postId) => dispatch(loadComment(postId))
     }
 }
 

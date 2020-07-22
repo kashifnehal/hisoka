@@ -102,16 +102,25 @@ router.post('/:postId/comments', function (req, res) {
       newComment.pic = foundPost.pic
       newComment.username = foundPost.username
       newComment.save()
-        .then(() => res.json('comment added in main'))
-        .catch(err => res.status(400).json('Error: ' + err));
+        .then(() => res.json(newComment))
+        .catch(err => {
+          console.log(err)
+          res.status(400).json('Error: ' + err)
+        });
 
       foundPost.comments.push(newComment)
       foundPost.save()
-        .then(() => res.json('comment pushed'))
-        .catch(err => res.status(400).json('Error: ' + err));
+      // .then(() => res.json('comment pushed'))
+      // .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
 
+})
+
+router.get('/profile', auth, (req, res) => {
+  ProfileDetails.findById(req.profile.id)
+    .select("-password")
+    .then(profile => res.json(profile))
 })
 
 

@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
                 ...state,
                 addingPostLoader: false,
                 allPosts: [action.newPost, ...state.allPosts],
-                addingPostLoader: false
+                // addingPostLoader: false
             };
 
         default:

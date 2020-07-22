@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
-import { data } from 'autoprefixer';
+// import { data } from 'autoprefixer';
 
 // export const loadPost = () => {
 //     return dispatch => {
@@ -80,4 +80,5 @@ export const addPost = (data, profileId) => {
         }
     };
 };
+
 
