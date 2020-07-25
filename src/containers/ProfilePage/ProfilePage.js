@@ -5,8 +5,9 @@ import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import { updateProfile, getUserPosts } from '../../store/actions/profileActions';
 import EachPost from '../../components/EachFormat/EachPost/EachPost'
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import About from './About/About';
+import Timeline from './Timeline/Timeline';
 
 
 class ProfilePage extends Component {
@@ -30,9 +31,12 @@ class ProfilePage extends Component {
         this.setState({ showEdit: false })
     }
 
-    componentDidUpdate = () => {
+    componentDidUpdate = async () => {
+        console.log('did update');
         if (this.state.updateFlag === false) {
             if (this.props.user !== null) {
+                console.log('before await did update');
+                const res2 = await this.props.OngetUserPosts(this.props.user._id)
                 this.setState({ name: this.props.user.name, bio: this.props.user.bio, updateFlag: true })
             }
         }
@@ -43,6 +47,7 @@ class ProfilePage extends Component {
         data.append("name", this.state.name);
         data.append("bio", this.state.bio);
         data.append("profilePic", this.state.profilePic);
+        data.append("university", this.state.university);
         // const data = {
         //     // coverPic: this.state.coverPic,
         //     // profilePic: this.state.profilePic,
@@ -68,6 +73,7 @@ class ProfilePage extends Component {
     }
 
     userPostsHandler = async () => {
+        console.log('inside userPost handler')
         if (!this.state.showUserPosts) {
             console.log('inside seeing post', this.state.showUserPosts);
             const res2 = await this.props.OngetUserPosts(this.props.user._id)
@@ -77,12 +83,10 @@ class ProfilePage extends Component {
         }
 
     }
-    userAboutHandler = () => {
+    userAboutHandler = async () => {
         if (!this.state.showUserAbout) {
-            // const res2 = await this.props.OngetUserPosts(this.props.user._id)
+            const res2 = await this.props.OngetUserPosts(this.props.user._id)
             this.setState({ showUserAbout: true })
-        } else {
-            this.setState({ showUserAbout: false })
         }
     }
 
@@ -94,17 +98,19 @@ class ProfilePage extends Component {
     }
     callUserPosts = () => {
         console.log('all post inside handler', this.props.allUserPosts);
-        return this.props.allUserPosts.map(curpost => {
-            return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
-        })
+        if (this.props.allUserPosts !== null) {
+            return this.props.allUserPosts.map(curpost => {
+                return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
+            })
+        }
     }
 
-    callUserAbouts = () => {
-        return <About />
-    }
+    // callUserAbouts = () => {
+    //     return <About />
+    // }
     render() {
         console.log('alluser post', this.props.allUserPosts)
-        // console.log('profile data frm page', this.props.user);
+        console.log('profile data frm page', this.props.user);
         let proDetails = null
         if (this.props.user !== null) {
             proDetails = (
@@ -119,12 +125,37 @@ class ProfilePage extends Component {
                     <p>name:{this.props.user.name}</p>
                     <p>bio:{this.props.user.bio}</p>
                     <p>username:{this.props.user.username}</p>
+                    <p>college/university:{this.props.user.university}</p>
                     <button onClick={this.setEditTrue}>EDIT</button>
                     {/* <p>Links- Timeline About Friends Photos More</p> */}<br /><br />
-                    <button onClick={this.userPostsHandler}>Timeline</button>&nbsp;&nbsp;
+
+
+                    {/* <button onClick={this.userPostsHandler}>Timeline</button>&nbsp;&nbsp;
                     <button onClick={this.userAboutHandler}>About</button>&nbsp;&nbsp;
                     <button onClick={this.userFriendsHandler}>Friends</button>&nbsp;&nbsp;
-                    <button onClick={this.userPhotosHandler}>Photos</button>
+                    <button onClick={this.userPhotosHandler}>Photos</button> */}
+                    <Container>
+                        <Row>
+                            <Col xs={3}></Col>
+                            <Col xs={6}>
+                                <Tabs defaultActiveKey="timeline" id="uncontrolled-tab-example" >
+                                    <Tab eventKey="timeline" title="Timeline" onClick={this.userPostsHandler} >
+                                        {this.callUserPosts()}
+                                        {/* <Timeline /> */}
+                                    </Tab>
+                                    <Tab eventKey="about" title="About">
+                                        <About />
+                                    </Tab>
+
+                                    <Tab eventKey="friends" title="Friends" >
+                                        Friends
+                                    </Tab>
+                                </Tabs>
+
+                            </Col>
+                            <Col xs={3}></Col>
+                        </Row>
+                    </Container>
                 </div>
             )
         }
@@ -146,11 +177,12 @@ class ProfilePage extends Component {
         }
 
         return (
-            <Auxiliary >
+            <Auxiliary>
                 {proDetails}
                 {editComp}
                 {/* {this.showUserPosts ? this.postHandler() : null} */}
-                <Container>
+
+                {/* <Container>
                     <Row>
                         <Col xs={3}></Col>
                         <Col xs={6}>
@@ -159,7 +191,7 @@ class ProfilePage extends Component {
                         </Col>
                         <Col xs={3}></Col>
                     </Row>
-                </Container>
+                </Container> */}
             </Auxiliary>
         )
     }

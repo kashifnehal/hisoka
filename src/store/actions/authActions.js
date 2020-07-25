@@ -16,7 +16,7 @@ import {
 
 // Check token & load user
 export const loadUser = () => async (dispatch, getState) => {
-    console.log('load user with profile inside authaction');
+    // console.log('load user with profile inside authaction');
     // User loading
     dispatch({ type: USER_LOADING });
     try {
@@ -25,7 +25,7 @@ export const loadUser = () => async (dispatch, getState) => {
             type: USER_LOADED,
             payload: res.data
         })
-        console.log('loaded res data', res.data)
+        // console.log('loaded res data', res.data)
     } catch (err) {
         // dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
@@ -38,7 +38,7 @@ export const loadUser = () => async (dispatch, getState) => {
 // Register User
 export const register = (registrationDetails) => async (dispatch) => {
     // Headers
-    console.log('r details', registrationDetails)
+    // console.log('r details', registrationDetails)
     const username = registrationDetails.username
     const password = registrationDetails.password
     const config = {
@@ -59,6 +59,7 @@ export const register = (registrationDetails) => async (dispatch) => {
             type: REGISTER_SUCCESS,
             payload: res.data
         })
+        // console.log('from reg action', res.data);
         dispatch(loadUser())
     } catch (err) {
         dispatch(

@@ -38,13 +38,15 @@ router.post("/", upload.single("media"), function (req, res, next) {
   const caption = req.body.caption;
   const media = req.file.filename;
   const likes = Number(req.body.likes);
+  const postPrivacy = req.body.postPrivacy
 
   const newPost = new Post({
     // pic,
     // username,
     caption,
     media,
-    likes
+    likes,
+    postPrivacy
   });
 
   newPost.save()

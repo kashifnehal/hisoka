@@ -9,6 +9,7 @@ const profileDetailsSchema = new Schema({
     bio: { type: String },
     username: { type: String, required: false },
     password: { type: String },
+    university: { type: String },
     abouts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "About"

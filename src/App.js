@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   render() {
-    console.log('auth in app', this.props.isAuthenticated);
+    // console.log('auth in app', this.props.isAuthenticated);
     let firstPage = <WhitePage />
     if (this.props.isAuthenticated) {
       firstPage = <Layout />

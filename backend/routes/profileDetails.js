@@ -168,18 +168,21 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
     const caption = req.body.caption;
     const media = req.file.filename;
     const likes = Number(req.body.likes);
+    const postPrivacy = req.body.postPrivacy;
 
     const newPost = new Post({
         caption,
         media,
-        likes
+        likes,
+        postPrivacy,
     });
 
     ProfileDetails.findById(req.params.profileId)
         .then(foundProfile => {
             newPost.profileowner = foundProfile
-            // newPost.pic = foundProfile.profilePic
+            newPost.pic = foundProfile.profilePic
             newPost.username = foundProfile.username
+            newPost.university = foundProfile.university
             newPost.save()
                 .then(() => res.json(newPost))
                 .catch(err => {
