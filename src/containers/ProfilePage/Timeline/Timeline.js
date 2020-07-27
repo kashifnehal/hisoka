@@ -27,7 +27,7 @@ class Timeline extends Component {
         return (
             <Auxiliary>
                 {/* {this.callUserPosts()} */}
-                {/* timeline */}
+                timeline
             </Auxiliary>
         );
     }

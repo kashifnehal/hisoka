@@ -96,8 +96,14 @@ router.get('/:postId/comments', function (req, res) {
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
-router.post('/:postId/comments', function (req, res) {
-  const newComment = new Comment(req.body)
+router.post('/:postId/comments', auth, function (req, res) {
+  // const newComment = new Comment(req.body)
+  const text = req.body.text;
+  const likes = req.body.likes
+  const newComment = new Comment({
+    text,
+    likes,
+  });
   Post.findById(req.params.postId)
     .then(foundPost => {
       newComment.ofpost = foundPost

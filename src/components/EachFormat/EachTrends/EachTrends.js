@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Auxiliary from './../../../hoc/Auxiliary/Auxiliary'
 
 
-const eachPost = (props) => {
+const eachTrends = (props) => {
     const d = props.post.createdAt
     const e = new Date(d)
     const n = e.toDateString()
@@ -18,10 +18,10 @@ const eachPost = (props) => {
 
     return (
         <Auxiliary>
-            {props.userUniversity === props.post.university ?
-                <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
+            <Container fluid style={{ marginTop: '15px', paddingTop: '10px' }}>
+                <Col lg={2}> </Col>
+                <Col xs={12} sm={9} md={6} lg={5} style={{ backgroundColor: 'white' }}>
                     <Row>
-                        {/* <p>{props.post._id}</p> */}
                         <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/default.png'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
                         <Col xs={10} >
                             <Row >
@@ -41,12 +41,12 @@ const eachPost = (props) => {
                     <Row>
                         <Col xs={6}><p>likes {props.post.likes}</p></Col>
                         <Col xs={6}><button onClick={props.callComment}>comments</button></Col>
-                    </Row>
+                    </Row></Col>
+                <Col md={3} lg={2}> </Col>
 
-                </Container>
-                : null}
+            </Container>
         </Auxiliary>
     )
 }
 
-export default eachPost
+export default eachTrends

@@ -1,1 +1,0 @@
-// =================== CONTENT FROM ALL COLLGES WITH POPULAR ALGORITHM ===============

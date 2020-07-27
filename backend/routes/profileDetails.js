@@ -11,6 +11,7 @@ const multer = require("multer");
 let ProfileDetails = require('../models/profileDetails.model');
 const Post = require('../models/post.model');
 const About = require('../models/about.model')
+const Whatif = require('../models/whatIf.model')
 // const { post } = require('./post');
 
 
@@ -177,7 +178,8 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
         postPrivacy,
     });
 
-    ProfileDetails.findById(req.params.profileId)
+    // ProfileDetails.findById(req.params.profileId).populate("profileowner").execPopulate()
+    ProfileDetails.findById(req.params.profileId).populate('profileowner')
         .then(foundProfile => {
             newPost.profileowner = foundProfile
             newPost.pic = foundProfile.profilePic
@@ -206,6 +208,38 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
     // .catch(err => res.status(400).json('Error: ' + err));
 })
 
+
+router.get('/:profileId/userWhatif', auth, function (req, res) {
+    ProfileDetails.findById(req.params.profileId).populate('userWhatif')
+        .then(profile => res.json(profile.userWhatif))
+        .catch(err => res.status(400).json('Error: ' + err));
+
+})
+
+//adding a new whatif will be saved in all whatif 
+//and in that profile's userWhatif also whatif will be saved
+router.post('/:profileId/userWhatif', function (req, res, next) {
+    const newWhatif = new Whatif(req.body)
+    ProfileDetails.findById(req.params.profileId)
+        .then(foundProfile => {
+            newWhatif.profileowner = foundProfile
+            newWhatif.save()
+                .then(() => res.json(newWhatif))
+
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).json('Error: ' + err)
+                });
+
+            foundProfile.userWhatif.push(newWhatif)
+            foundProfile.save()
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+})
+
+
+
+
 router.post('/:profileId/about', function (req, res) {
 
     const newAbout = new About(req.body)
@@ -219,6 +253,5 @@ router.post('/:profileId/about', function (req, res) {
         .catch(err => res.status(400).json('Error: ' + err));
 })
 
-// router.post('')
 
 module.exports = router;

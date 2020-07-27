@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import { loadPost, addPost } from '../../../store/actions/followingActions'
 import { loadComment } from '../../../store/actions/commentActions'
+import CommentPage from '../../CommentPage/CommentPage'
 // import AddPost from './AddPost/AddPost'
 
 
@@ -22,12 +23,15 @@ class Following extends Component {
         caption: '',
         media: '',
         likes: 0,
-        addPostModalShow: false,
         postPrivacy: 'public',
+        addPostModalShow: false,
+        callEachPost: false,
+        commentShow: false
     }
 
-    componentDidMount() {
-        this.props.onLoadPost()
+    componentDidMount = async () => {
+        this.setState({ callEachPost: true })
+        await this.props.onLoadPost()
     }
 
     componentDidUpdate = () => {
@@ -38,23 +42,29 @@ class Following extends Component {
         }
     }
 
-    postHandler = () => {
-        // console.log('all post only', this.props.allPosts);
-        if (this.props.user !== null) {
-            return this.props.allPosts.map(curpost => {
-                return <EachPost post={curpost} key={curpost._id} userUniversity={this.props.user.university} callComment={() => this.toCommentPageHandler(curpost._id)} />
-            })
-        }
-    }
+    // postHandler = () => {
+    //     // console.log('all post only', this.props.allPosts);
+    //     if (this.props.user !== null) {
+    //         return this.props.allPosts.map(curpost => {
+    //             return <EachPost post={curpost} key={curpost._id} userUniversity={this.props.user.university} callComment={() => this.toCommentPageHandler(curpost._id)} />
+    //         })
+    //     }
+    // }
+
+    // toCommentPageHandler = (postId) => {
+    //     this.props.history.push({
+    //         pathname: "/commentPage"
+    //     })
+    //     this.props.onLoadComment(postId)
+    // }
 
     toCommentPageHandler = (postId) => {
-        this.props.history.push({
-            pathname: "/commentPage"
-        })
+        this.setState({ commentShow: true })
         this.props.onLoadComment(postId)
-        // axios.get('http://localhost:5000/postPage/' + postId + '/comments')
-        //     .then(res => console.log(res))
-        //     .catch(err => console.log(err))
+    }
+
+    commentShowHandler = () => {
+        this.setState({ commentShow: false })
     }
 
     fileSelectHandler = event => {
@@ -74,8 +84,8 @@ class Following extends Component {
     onSubmitHandler = async (event) => {
         event.preventDefault();
         const data = new FormData();
-        data.append("pic", this.state.pic);
-        data.append("name", this.state.name);
+        // data.append("pic", this.state.pic);
+        // data.append("name", this.state.name);
         data.append("caption", this.state.caption);
         data.append("media", this.state.media);
         data.append("likes", this.state.likes);
@@ -103,7 +113,7 @@ class Following extends Component {
         // console.log('profile details', this.props.proDetails)
         return (
             <Auxiliary className={classes.Write}>
-                <Container fluid className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
+                <Container fluid className={classes.WriteContainer} style={{ backgroundColor: 'white', marginTop: '5px' }}>
                     <Row className={classes.WriteRow} style={{ paddingTop: '20px' }} onClick={() => this.setState({ addPostModalShow: true })}>
                         <Col className={classes.WritePic} xs={2} style={{}}>
                             {userProfilePic}
@@ -137,16 +147,26 @@ class Following extends Component {
                     </Row>
 
                 </Container>
-                {/* <Button variant="primary" onClick={() => this.setState({ addPostModalShow: true })}>
-                    Launch vertically centered modal
-                </Button> */}
+                {/* if (this.props.user !== null) {
+            return this.props.allPosts.map(curpost => {
+                return <EachPost post={curpost} key={curpost._id} userUniversity={this.props.user.university} callComment={() => this.toCommentPageHandler(curpost._id)} />
+            })
+        } */}
 
-                {/* <AddPost
-                    show={this.state.addPostModalShow}
-                    onHide={() => this.setState({ addPostModalShow: false })}
-                /> */}
+                {this.props.user !== null ?
+                    this.props.allPosts.map(curpost => (
+                        <EachPost
+                            post={curpost}
+                            key={curpost._id}
+                            userUniversity={this.props.user.university}
+                            callComment={() => this.toCommentPageHandler(curpost._id)}
+                        />
+                    )) : null}
 
-                {this.postHandler()}
+                <CommentPage commentShow={this.state.commentShow} commentShowHandler={this.commentShowHandler} />
+
+
+                {/* {this.state.callEachPost === true ? this.postHandler : null} */}
                 <Modal
                     show={this.state.addPostModalShow}
                     onHide={() => this.setState({ addPostModalShow: false })}
@@ -213,7 +233,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onLoadPost: () => dispatch(loadPost()),
         onAddPost: (data, profileId) => dispatch(addPost(data, profileId)),
-        onLoadComment: (postId) => dispatch(loadComment(postId))
+        onLoadComment: (postId) => dispatch(loadComment(postId)),
     }
 }
 

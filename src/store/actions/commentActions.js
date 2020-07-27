@@ -10,7 +10,6 @@ export const startLoadingComment = () => {
 }
 
 export const loadCommentSuccess = (allComments, postId) => {
-    // console.log('all comments', allComments);
     return {
         type: actionTypes.LOAD_COMMENT_SUCCESS,
         allComments: allComments,
@@ -19,6 +18,7 @@ export const loadCommentSuccess = (allComments, postId) => {
 }
 
 export const addCommentSuccess = (newComment) => {
+    console.log('newcomment', newComment)
     return {
         type: actionTypes.ADD_COMMENT_SUCCESS,
         newComment: newComment
@@ -40,16 +40,33 @@ export const loadComment = (postId) => {
     }
 }
 
+
 export const addComment = (data, postId) => {
-    console.log('comment add details', data, postId)
     return async (dispatch, getState) => {
         dispatch(startLoadingComment())
         const commentAddUrl = 'http://localhost:5000/postPage/' + postId + '/comments'
+
         try {
             const res = await axios.post(commentAddUrl, data, tokenConfig(getState))
             dispatch(addCommentSuccess(res.data))
         } catch (err) {
+            // alert("Incorrect User ID / Password");
             dispatch(returnErrors(err.response.data, err.response.status));
         }
-    }
-}
+    };
+};
+
+// export const addComment = (data, postId) => {
+//     console.log('comment add details', data, postId)
+//     return async (dispatch, getState) => {
+//         dispatch(startLoadingComment())
+//         const commentAddUrl = 'http://localhost:5000/postPage/' + postId + '/comments'
+//         try {
+//             const res = await axios.post(commentAddUrl, data, tokenConfig(getState))
+//             dispatch(addCommentSuccess(res.data))
+//             console.log('res data comment', res.data)
+//         } catch (err) {
+//             dispatch(returnErrors(err.response.data, err.response.status));
+//         }
+//     }
+// }

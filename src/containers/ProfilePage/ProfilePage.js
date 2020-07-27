@@ -32,10 +32,10 @@ class ProfilePage extends Component {
     }
 
     componentDidUpdate = async () => {
-        console.log('did update');
+        // console.log('did update');
         if (this.state.updateFlag === false) {
             if (this.props.user !== null) {
-                console.log('before await did update');
+                // console.log('before await did update');
                 const res2 = await this.props.OngetUserPosts(this.props.user._id)
                 this.setState({ name: this.props.user.name, bio: this.props.user.bio, updateFlag: true })
             }
@@ -59,23 +59,23 @@ class ProfilePage extends Component {
     }
 
     coverChangeHandler = event => {
-        console.log('pic files', event.target.files);
+        // console.log('pic files', event.target.files);
         this.setState({
             coverPic: event.target.files[0],
         })
     }
 
     profilePicChangeHandler = event => {
-        console.log('pic files', event.target.files);
+        // console.log('pic files', event.target.files);
         this.setState({
             profilePic: event.target.files[0],
         })
     }
 
     userPostsHandler = async () => {
-        console.log('inside userPost handler')
+        // console.log('inside userPost handler')
         if (!this.state.showUserPosts) {
-            console.log('inside seeing post', this.state.showUserPosts);
+            // console.log('inside seeing post', this.state.showUserPosts);
             const res2 = await this.props.OngetUserPosts(this.props.user._id)
             this.setState({ showUserPosts: true })
         } else {
@@ -109,8 +109,8 @@ class ProfilePage extends Component {
     //     return <About />
     // }
     render() {
-        console.log('alluser post', this.props.allUserPosts)
-        console.log('profile data frm page', this.props.user);
+        // console.log('alluser post', this.props.allUserPosts)
+        // console.log('profile data frm page', this.props.user);
         let proDetails = null
         if (this.props.user !== null) {
             proDetails = (

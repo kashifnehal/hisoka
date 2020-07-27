@@ -19,9 +19,19 @@ app.use(cors());
 app.use(express.json());
 
 // const uri = process.env.ATLAS_URI;
+
+// change uri to this if takes time.. in config/default.json
+// "mongodb+srv://kashifnehal:kashif786@@cluster0-5nclg.gcp.mongodb.net/test?retryWrites=true&w=majority&ssl=true"
 const uri = config.get('ATLAS_URI')
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
 );
+
+
+// //Get the default connection
+// var db = mongoose.connection;
+
+// //Bind connection to error event (to get notification of connection errors)
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const connection = mongoose.connection;
 connection.once('open', () => {

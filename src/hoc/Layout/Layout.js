@@ -8,6 +8,9 @@ import FollowingPage from '../../containers/FollowingPage/FollowingPage'
 import ProfilePage from '../../containers/ProfilePage/ProfilePage'
 import CommentPage from '../../containers/CommentPage/CommentPage'
 import Timeline from '../../containers/ProfilePage/Timeline/Timeline'
+import Trends from '../../containers/Trends/Trends'
+import { connect } from 'react-redux'
+import { withRouter } from "react-router";
 
 
 class Layout extends Component {
@@ -15,12 +18,13 @@ class Layout extends Component {
     render() {
         return (
             <Auxiliary classname={classes.Layout}>
-                <Toolbar />
+                <Toolbar universityName={this.props.user !== null ? this.props.user.university : null} />
                 <Switch>
                     <Route path="/" exact component={FollowingPage} />
                     <Route path="/timeline" exact component={Timeline} />
                     <Route path="/profilePage" component={ProfilePage} />
-                    <Route path="/commentPage" component={CommentPage} />
+                    {/* <Route path="/commentPage" component={CommentPage} /> */}
+                    <Route path="/trends" component={Trends} />
                 </Switch>
                 <Footbar />
             </Auxiliary>
@@ -28,4 +32,15 @@ class Layout extends Component {
     }
 }
 
-export default Layout
+
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout));

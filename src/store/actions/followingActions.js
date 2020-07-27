@@ -62,7 +62,7 @@ export const loadPost = () => {
 };
 
 export const addPost = (data, profileId) => {
-    console.log('inside addpost action')
+    console.log('inside addpost action', data, profileId)
     return async (dispatch, getState) => {
         dispatch(startAddingPost())
         const addPostUrl =

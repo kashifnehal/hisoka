@@ -19,6 +19,12 @@ const toolbar = (props) => {
             pathname: "/"
         })
     }
+
+    const gotoTrends = () => {
+        props.history.push({
+            pathname: "/trends"
+        })
+    }
     return (
         <header className={classes.Toolbar}>
             <Container fluid className={classes.NavMain}>
@@ -34,8 +40,8 @@ const toolbar = (props) => {
                         </Row>
                     </Col>
                     <Col className={classes.NavColMiddle} xs={6} sm={4} >
-                        <h4 onClick={gotoFollowing}>Following</h4>
-                        <h4 style={{ marginLeft: '15%' }}>Hot</h4>
+                        <h4 onClick={gotoFollowing} style={{ textTransform: 'capitalize' }}>{props.universityName}</h4>
+                        <h4 style={{ marginLeft: '15%' }} onClick={gotoTrends}>Trends</h4>
                         {/* <ion-icon name="add-circle-outline" size="large"></ion-icon>
                             <ion-icon name="add-circle-outline" size="large"></ion-icon>
                             <ion-icon name="add-circle-outline" size="large"></ion-icon>
