@@ -9,6 +9,7 @@ import ProfilePage from '../../containers/ProfilePage/ProfilePage'
 import CommentPage from '../../containers/CommentPage/CommentPage'
 import Timeline from '../../containers/ProfilePage/Timeline/Timeline'
 import Trends from '../../containers/Trends/Trends'
+import Whatif from '../../containers/WhatIf/WhatIf'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 
@@ -23,7 +24,7 @@ class Layout extends Component {
                     <Route path="/" exact component={FollowingPage} />
                     <Route path="/timeline" exact component={Timeline} />
                     <Route path="/profilePage" component={ProfilePage} />
-                    {/* <Route path="/commentPage" component={CommentPage} /> */}
+                    <Route path="/whatif" component={Whatif} />
                     <Route path="/trends" component={Trends} />
                 </Switch>
                 <Footbar />

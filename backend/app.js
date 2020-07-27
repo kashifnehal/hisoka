@@ -52,6 +52,9 @@ app.use('/user', userRouter);
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
+const whatifRouter = require('./routes/whatif');
+app.use('/whatif', whatifRouter);
+
 // === NOT USING====
 // const profileRefsRouter = require('./routes/profileRefs');
 // app.use('/profileRefs', profileRefsRouter);

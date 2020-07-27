@@ -13,6 +13,7 @@ import registerServiceWorker from './registerServiceWorker';
 import followingReducer from './store/reducers/followingReducer';
 import commentReducer from './store/reducers/commentReducer';
 import profileReducer from './store/reducers/profileReducer';
+import whatifReducer from './store/reducers/whatifReducer';
 
 
 //this line can be problem as we are not using env anymore.
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     following: followingReducer,
     comment: commentReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    whatif: whatifReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(

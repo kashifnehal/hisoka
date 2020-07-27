@@ -11,7 +11,7 @@ const multer = require("multer");
 let ProfileDetails = require('../models/profileDetails.model');
 const Post = require('../models/post.model');
 const About = require('../models/about.model')
-const Whatif = require('../models/whatIf.model')
+const Whatif = require('../models/whatif.model')
 // const { post } = require('./post');
 
 
@@ -209,17 +209,19 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
 })
 
 
-router.get('/:profileId/userWhatif', auth, function (req, res) {
-    ProfileDetails.findById(req.params.profileId).populate('userWhatif')
-        .then(profile => res.json(profile.userWhatif))
-        .catch(err => res.status(400).json('Error: ' + err));
-
-})
-
 //adding a new whatif will be saved in all whatif 
 //and in that profile's userWhatif also whatif will be saved
 router.post('/:profileId/userWhatif', function (req, res, next) {
-    const newWhatif = new Whatif(req.body)
+    const ifname = req.body.ifname;
+    const text = req.body.text;
+    const likes = Number(req.body.likes);
+    const newWhatif = new Whatif({
+        ifname,
+        text,
+        likes,
+
+    });
+    // const newWhatif = new Whatif(req.body)
     ProfileDetails.findById(req.params.profileId)
         .then(foundProfile => {
             newWhatif.profileowner = foundProfile
