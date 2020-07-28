@@ -48,7 +48,8 @@ export const addComment = (data, profileId, postId) => {
 
         try {
             const res = await axios.post(commentAddUrl, data, tokenConfig(getState))
-            dispatch(addCommentSuccess(res.data))
+            await dispatch(addCommentSuccess(res.data))
+            await dispatch(loadComment(postId))
         } catch (err) {
             // alert("Incorrect User ID / Password");
             dispatch(returnErrors(err.response.data, err.response.status));
