@@ -96,7 +96,8 @@ class Following extends Component {
         console.log('media ', data.get('media'));
 
         await this.props.onAddPost(data, this.props.user._id)
-        this.setState({ caption: '', addPostModalShow: false })
+        this.setState({ caption: '', addPostModalShow: false, media: '', likes: 0 })
+
 
     }
 

@@ -11,7 +11,7 @@ const eachComment = (props) => {
     return (
         <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
             <Row>
-                <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/default.png'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
+                <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/' + String(props.comment.pic)} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
                 <Col xs={10}>
                     <Row>
                         <Col><b>{props.comment.username}</b></Col>
@@ -25,7 +25,6 @@ const eachComment = (props) => {
                     </Row>
                 </Col>
             </Row>
-
         </Container>
     );
 }
