@@ -26,7 +26,8 @@ class Following extends Component {
         postPrivacy: 'public',
         addPostModalShow: false,
         callEachPost: false,
-        commentShow: false
+        commentShow: false,
+        currentHeart: 'white'
     }
 
     componentDidMount = async () => {
@@ -68,6 +69,7 @@ class Following extends Component {
     }
 
     fileSelectHandler = event => {
+        console.log('selected image', event.target.files[0]);
         this.setState({
             media: event.target.files[0],
         })
@@ -91,6 +93,8 @@ class Following extends Component {
         data.append("likes", this.state.likes);
         data.append("postPrivacy", this.state.postPrivacy);
 
+        console.log('media ', data.get('media'));
+
         await this.props.onAddPost(data, this.props.user._id)
         this.setState({ caption: '', addPostModalShow: false })
 
@@ -100,6 +104,14 @@ class Following extends Component {
         this.props.history.push({
             pathname: "/profilePage"
         })
+    }
+
+    heartToggleHandler = () => {
+        if (this.state.currentHeart === 'white') {
+            this.setState({ currentHeart: 'red' })
+        } else if (this.state.currentHeart === 'red') {
+            this.setState({ currentHeart: 'white' })
+        }
     }
 
     render() {
@@ -159,7 +171,9 @@ class Following extends Component {
                             post={curpost}
                             key={curpost._id}
                             userUniversity={this.props.user.university}
-                            callComment={() => this.toCommentPageHandler(curpost._id)}
+                            commentClicked={() => this.toCommentPageHandler(curpost._id)}
+                            heartClicked={this.heartToggleHandler}
+                            heart={this.state.currentHeart}
                         />
                     )) : null}
 

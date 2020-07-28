@@ -17,8 +17,8 @@ import UniversityRegistration from '../UniversityRegistration/UniversityRegistra
 
 class Login extends Component {
     state = {
-        coverPic: '',
-        profilePic: '',
+        coverPic: 'slaakdjf',
+        profilePic: 'default.png',
         name: '',
         bio: '',
         username: '',
@@ -41,6 +41,7 @@ class Login extends Component {
             password: this.state.password,
             university: this.state.university,
         }
+
         const res2 = await this.props.onRegister(registrationDetails)
         // console.log('checking is auth', this.props.isAuthenticated);
         // if (this.props.isAuthenticated) {

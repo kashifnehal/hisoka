@@ -11,7 +11,7 @@ import { addComment } from '../../store/actions/commentActions'
 class CommentPage extends Component {
     state = {
         text: '',
-        likes: 0
+        likes: 0,
     }
     commentHandler = () => {
         return this.props.allComments.map(curComment => {
@@ -30,7 +30,9 @@ class CommentPage extends Component {
 
         const data = {
             text: this.state.text,
-            likes: this.state.likes
+            likes: this.state.likes,
+            username: this.props.user.username,
+            pic: this.props.user.profilePic
         }
 
         console.log('from page', data, this.props.postId)
@@ -73,7 +75,8 @@ class CommentPage extends Component {
 const mapStateToProps = state => {
     return {
         allComments: state.comment.allComments,
-        postId: state.comment.postId
+        postId: state.comment.postId,
+        user: state.auth.user
     }
 }
 const mapDispatchToProps = dispatch => {

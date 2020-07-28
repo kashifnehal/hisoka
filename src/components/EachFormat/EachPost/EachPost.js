@@ -5,6 +5,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Link } from 'react-router-dom'
 import Auxiliary from './../../../hoc/Auxiliary/Auxiliary'
+import heartR from '../../../assets/images/h24R.png'
+import heartW from '../../../assets/images/h24W.png'
+import share from '../../../assets/images/share.png'
+import comment from '../../../assets/images/comment.png'
 
 
 const eachPost = (props) => {
@@ -12,9 +16,17 @@ const eachPost = (props) => {
     const e = new Date(d)
     const n = e.toDateString()
 
+    let heart = heartW
+    if (props.heart === "red") {
+        heart = heartR
+    } else if (props.heart === "white") {
+        heart = heartW
+    }
+
 
     // console.log('owner username', props.post.profileowner)
     // console.log('owner type', typeof (props.post.profileowner));
+    // console.log('from profile', props.post);
 
     return (
         <Auxiliary>
@@ -36,11 +48,15 @@ const eachPost = (props) => {
                         <Col xs={12}><p>{props.post.caption}</p></Col>
                     </Row>
                     <Row>
-                        <Col xs={12}><Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.media)} alt='no image' fluid /></Col>
+                        <Col xs={12}>{props.post.media === "" ? null : <Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.media)} alt='no image' fluid />}</Col>
                     </Row>
                     <Row>
-                        <Col xs={6}><p>likes {props.post.likes}</p></Col>
-                        <Col xs={6}><button onClick={props.callComment}>comments</button></Col>
+                        <Col xs={8}></Col>
+                        <Col xs={1}><Image src={heart} onClick={props.heartClicked} /></Col>
+                        <Col xs={1}><Image src={comment} onClick={props.commentClicked} /></Col>
+                        <Col xs={1}><Image src={share} onClick={props.shareClicked} /></Col>
+                        {/* <Col xs={1}><p>{props.post.likes}</p></Col>
+                        <Col xs={1}><button onClick={props.callComment}>comments</button></Col> */}
                     </Row>
 
                 </Container>

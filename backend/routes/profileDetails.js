@@ -43,8 +43,22 @@ router.get('/', auth, function (req, res) {
 })
 
 // === ADDING A NEW PROFILE== OR SIGN UP
-router.post('/', function (req, res) {
-    const { username, password } = req.body;
+router.post('/', upload.single("profilePic"), function (req, res) {
+    // const { username, password } = req.body;
+
+    const coverPic = req.body.coverPic;
+    let profilePic = null
+    const name = req.body.name;
+    const bio = req.body.bio;
+    const username = req.body.username;
+    const password = req.body.password;
+    const university = req.body.university;
+    if (typeof req.file === "undefined") {
+        profilePic = "user.png";
+    } else {
+        profilePic = req.file.filename
+    }
+
 
     //simple validation
     if (!username || !password) {
@@ -57,7 +71,15 @@ router.post('/', function (req, res) {
                 return res.status(400).json({ msg: 'user already exists' })
             }
 
-            const newProfileDetails = new ProfileDetails(req.body)
+            const newProfileDetails = new ProfileDetails({
+                coverPic,
+                profilePic,
+                name,
+                bio,
+                username,
+                password,
+                university
+            })
 
             //create salt & hash password
             // here 10 is no. of rounds of encryption .. 
@@ -167,9 +189,14 @@ router.get('/:profileId/userposts', auth, function (req, res) {
 router.post('/:profileId/userposts', upload.single("media"), auth, function (req, res, next) {
     // const newPost = new Post(req.body)
     const caption = req.body.caption;
-    const media = req.file.filename;
+    let media = null
     const likes = Number(req.body.likes);
     const postPrivacy = req.body.postPrivacy;
+    if (typeof req.file === "undefined") {
+        media = "";
+    } else {
+        media = req.file.filename
+    }
 
     const newPost = new Post({
         caption,

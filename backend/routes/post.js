@@ -30,32 +30,32 @@ router.get('/', auth, function (req, res) {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.post("/", upload.single("media"), function (req, res, next) {
-  console.log(req.file)
-  // const pic = req.body.pic;
-  // const username = req.body.username;
-  // const date = Date.parse(req.body.date);
-  const caption = req.body.caption;
-  const media = req.file.filename;
-  const likes = Number(req.body.likes);
-  const postPrivacy = req.body.postPrivacy
+// router.post("/", upload.single("media"), function (req, res, next) {
+//   console.log(req.file)
+//   // const pic = req.body.pic;
+//   // const username = req.body.username;
+//   // const date = Date.parse(req.body.date);
+//   const caption = req.body.caption;
+//   const media = req.file.filename;
+//   const likes = Number(req.body.likes);
+//   const postPrivacy = req.body.postPrivacy
 
-  const newPost = new Post({
-    // pic,
-    // username,
-    caption,
-    media,
-    likes,
-    postPrivacy
-  });
+//   const newPost = new Post({
+//     // pic,
+//     // username,
+//     caption,
+//     media,
+//     likes,
+//     postPrivacy
+//   });
 
-  newPost.save()
-    .then(() => res.json(newPost))
-    .catch(err => {
-      console.log(err)
-      res.status(400).json('Error: ' + err)
-    });
-});
+//   newPost.save()
+//     .then(() => res.json(newPost))
+//     .catch(err => {
+//       console.log(err)
+//       res.status(400).json('Error: ' + err)
+//     });
+// });
 
 router.get('/:id', function (req, res) {
   Post.findById(req.params.id)
@@ -99,16 +99,25 @@ router.get('/:postId/comments', function (req, res) {
 router.post('/:postId/comments', auth, function (req, res) {
   // const newComment = new Comment(req.body)
   const text = req.body.text;
-  const likes = req.body.likes
+  const likes = req.body.likes;
+  const username = req.body.username;
+  const pic = req.body.pic;
+  // if (typeof req.file === undefined) {
+  //   item.image = "/uploads/no-img.png";
+  // } else {
+  //   item.image = "/uploads/" + req.file.filename;
+  // }
   const newComment = new Comment({
     text,
     likes,
+    username,
+    pic
   });
   Post.findById(req.params.postId)
     .then(foundPost => {
       newComment.ofpost = foundPost
-      newComment.pic = foundPost.pic
-      newComment.username = foundPost.username
+      // newComment.pic = foundPost.pic
+      // newComment.username = foundPost.username
       newComment.save()
         .then(() => res.json(newComment))
         .catch(err => {

@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { updateProfile, getUserPosts } from '../../../store/actions/profileActions';
 import EachPost from '../../../components/EachFormat/EachPost/EachPost'
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
+import { loadComment } from '../../../store/actions/commentActions'
 
 class Timeline extends Component {
 
+    state = {
+        loadPostFlag: false
+    }
 
-    // componentDidMount = async () => {
-    //     console.log('from timeline mount');
-    //     this.props.OngetUserPosts(this.props.user._id)
-    // }
+    componentDidMount = () => {
+        this.setState({ loadPostFlag: true })
+    }
 
-    callUserPosts = () => {
-        // const res2 = await this.props.OngetUserPosts(this.props.user._id)
-        if (this.props.allUserPosts !== null) {
-            return this.props.allUserPosts.map(curpost => {
-                return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />
-            })
-        }
+    toCommentPageHandler = (postId) => {
+        this.setState({ commentShow: true })
+        this.props.onLoadComment(postId)
     }
 
     render() {
-
         return (
             <Auxiliary>
-                {/* {this.callUserPosts()} */}
-                timeline
+                {/* {timelinePost} */}
+                {this.state.loadPostFlag ?
+                    (this.props.allUserPosts.map(curpost => (
+                        <EachPost
+                            post={curpost}
+                            key={curpost._id}
+                            userUniversity={this.props.user.university}
+                            commentClicked={() => this.toCommentPageHandler(curpost._id)}
+                        />
+                    ))) : null}
             </Auxiliary>
         );
     }
@@ -37,17 +42,14 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         // isAuthenticated: state.auth.isAuthenticated,
-        allPosts: state.following.allPosts,
         allUserPosts: state.profile.allUserPosts,
-        profileUpdating: state.profile.profileUpdating,
 
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        // onLoadPost: () => dispatch(loadPost()),
-        // onUpdateProfile: (data, profileId) => dispatch(updateProfile(data, profileId)),
-        OngetUserPosts: (profileId) => dispatch(getUserPosts(profileId))
+        onLoadComment: (postId) => dispatch(loadComment(postId)),
+
     }
 }
 

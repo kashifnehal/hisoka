@@ -1,8 +1,8 @@
 import * as actionTypes from './../actions/actionTypes'
 
 const initialState = {
-    profileUpdating: false,
-    allUserPosts: null
+    profileUpdating: null,
+    allUserPosts: []
 }
 
 export default function (state = initialState, action) {
@@ -20,8 +20,8 @@ export default function (state = initialState, action) {
         case actionTypes.GET_USER_POST_SUCCESS:
             return {
                 ...state,
+                allUserPosts: action.allUserPosts,
                 profileUpdating: false,
-                allUserPosts: action.allUserPosts
 
             };
 

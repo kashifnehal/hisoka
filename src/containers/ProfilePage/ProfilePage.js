@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import { updateProfile, getUserPosts } from '../../store/actions/profileActions';
 import EachPost from '../../components/EachFormat/EachPost/EachPost'
-import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col, Tabs, Tab, Spinner } from 'react-bootstrap';
 import About from './About/About';
 import Timeline from './Timeline/Timeline';
 
@@ -24,23 +24,38 @@ class ProfilePage extends Component {
         showUserPhotos: false,
     }
 
-    setEditTrue = () => {
-        this.setState({ showEdit: true })
-    }
-    setEditFalse = () => {
-        this.setState({ showEdit: false })
+    componentDidMount = async () => {
+        if (this.props.user !== null) {
+            await this.props.OngetUserPosts(this.props.user._id)
+        }
     }
 
     componentDidUpdate = async () => {
-        // console.log('did update');
-        if (this.state.updateFlag === false) {
-            if (this.props.user !== null) {
-                // console.log('before await did update');
-                const res2 = await this.props.OngetUserPosts(this.props.user._id)
+        if (!this.state.updateFlag) {
+            if (this.props.isLoading === false) {
+                await this.props.OngetUserPosts(this.props.user._id)
                 this.setState({ name: this.props.user.name, bio: this.props.user.bio, updateFlag: true })
             }
         }
     }
+
+    // setEditTrue = () => {
+    //     this.setState({ showEdit: true })
+    // }
+    // setEditFalse = () => {
+    //     this.setState({ showEdit: false })
+    // }
+
+    // componentDidUpdate = async () => {
+    //     // console.log('did update');
+    //     if (this.state.updateFlag === false) {
+    //         if (this.props.user !== null) {
+    //             // console.log('before await did update');
+    //             const res2 = await this.props.OngetUserPosts(this.props.user._id)
+    //             this.setState({ name: this.props.user.name, bio: this.props.user.bio, updateFlag: true })
+    //         }
+    //     }
+    // }
 
     profileUpdateHandler = async () => {
         const data = new FormData();
@@ -72,30 +87,30 @@ class ProfilePage extends Component {
         })
     }
 
-    userPostsHandler = async () => {
-        // console.log('inside userPost handler')
-        if (!this.state.showUserPosts) {
-            // console.log('inside seeing post', this.state.showUserPosts);
-            const res2 = await this.props.OngetUserPosts(this.props.user._id)
-            this.setState({ showUserPosts: true })
-        } else {
-            this.setState({ showUserPosts: false })
-        }
+    // userPostsHandler = async () => {
+    //     // console.log('inside userPost handler')
+    //     if (!this.state.showUserPosts) {
+    //         // console.log('inside seeing post', this.state.showUserPosts);
+    //         const res2 = await this.props.OngetUserPosts(this.props.user._id)
+    //         this.setState({ showUserPosts: true })
+    //     } else {
+    //         this.setState({ showUserPosts: false })
+    //     }
 
-    }
-    userAboutHandler = async () => {
-        if (!this.state.showUserAbout) {
-            const res2 = await this.props.OngetUserPosts(this.props.user._id)
-            this.setState({ showUserAbout: true })
-        }
-    }
+    // }
+    // userAboutHandler = async () => {
+    //     if (!this.state.showUserAbout) {
+    //         const res2 = await this.props.OngetUserPosts(this.props.user._id)
+    //         this.setState({ showUserAbout: true })
+    //     }
+    // }
 
-    userFriendsHandler = () => {
-        this.setState({ showUserFriends: true })
-    }
-    userPhotosHandler = () => {
-        this.setState({ showUserPhotos: true })
-    }
+    // userFriendsHandler = () => {
+    //     this.setState({ showUserFriends: true })
+    // }
+    // userPhotosHandler = () => {
+    //     this.setState({ showUserPhotos: true })
+    // }
     callUserPosts = () => {
         console.log('all post inside handler', this.props.allUserPosts);
         if (this.props.allUserPosts !== null) {
@@ -110,9 +125,9 @@ class ProfilePage extends Component {
     // }
     render() {
         // console.log('alluser post', this.props.allUserPosts)
-        // console.log('profile data frm page', this.props.user);
+        // console.log('profile data frm page', this.props.user, this.props.isLoading);
         let proDetails = null
-        if (this.props.user !== null) {
+        if (this.props.isLoading === false) {
             proDetails = (
                 <div>
                     <h1 style={{ marginTop: '100px' }}>PROFILE</h1>
@@ -126,7 +141,7 @@ class ProfilePage extends Component {
                     <p>bio:{this.props.user.bio}</p>
                     <p>username:{this.props.user.username}</p>
                     <p>college/university:{this.props.user.university}</p>
-                    <button onClick={this.setEditTrue}>EDIT</button>
+                    <button onClick={() => this.setState({ showEdit: true })}>EDIT</button>
                     {/* <p>Links- Timeline About Friends Photos More</p> */}<br /><br />
 
 
@@ -134,29 +149,36 @@ class ProfilePage extends Component {
                     <button onClick={this.userAboutHandler}>About</button>&nbsp;&nbsp;
                     <button onClick={this.userFriendsHandler}>Friends</button>&nbsp;&nbsp;
                     <button onClick={this.userPhotosHandler}>Photos</button> */}
-                    <Container>
-                        <Row>
-                            <Col xs={3}></Col>
-                            <Col xs={6}>
-                                <Tabs defaultActiveKey="timeline" id="uncontrolled-tab-example" >
-                                    <Tab eventKey="timeline" title="Timeline" onClick={this.userPostsHandler} >
-                                        {this.callUserPosts()}
-                                        {/* <Timeline /> */}
-                                    </Tab>
-                                    <Tab eventKey="about" title="About">
-                                        <About />
-                                    </Tab>
 
-                                    <Tab eventKey="friends" title="Friends" >
-                                        Friends
-                                    </Tab>
-                                </Tabs>
-
-                            </Col>
-                            <Col xs={3}></Col>
-                        </Row>
-                    </Container>
                 </div>
+            )
+        }
+
+        let timelineDetails = <Spinner />
+        if (this.props.profileUpdating === false) {
+            timelineDetails = (
+                <Container>
+                    <Row>
+                        <Col xs={3}></Col>
+                        <Col xs={12} md={6}>
+                            <Tabs defaultActiveKey="timeline" id="uncontrolled-tab-example" >
+                                <Tab eventKey="timeline" title="Timeline" onClick={this.userPostsHandler} >
+                                    {/* {this.callUserPosts()} */}
+                                    <Timeline />
+                                </Tab>
+                                <Tab eventKey="about" title="About">
+                                    <About />
+                                </Tab>
+
+                                <Tab eventKey="friends" title="Friends" >
+                                    Friends
+                                    </Tab>
+                            </Tabs>
+
+                        </Col>
+                        <Col xs={3}></Col>
+                    </Row>
+                </Container>
             )
         }
         let editComp = null
@@ -170,7 +192,7 @@ class ProfilePage extends Component {
                     <input type="file" id="file" onChange={this.profilePicChangeHandler} name="media" style={{ display: 'none' }} />
                     <input type="text" placeholder="name" value={this.state.name} onChange={e => this.setState({ name: e.target.value })} />
                     <input type="text" placeholder="bio" value={this.state.bio} onChange={e => this.setState({ bio: e.target.value })} />
-                    <button onClick={this.setEditFalse}>CANCEL</button>
+                    <button onClick={() => this.setState({ showEdit: false })}>CANCEL</button>
                     <button onClick={this.profileUpdateHandler}>UPDATE</button>
                 </div>
             )
@@ -179,19 +201,8 @@ class ProfilePage extends Component {
         return (
             <Auxiliary>
                 {proDetails}
+                {timelineDetails}
                 {editComp}
-                {/* {this.showUserPosts ? this.postHandler() : null} */}
-
-                {/* <Container>
-                    <Row>
-                        <Col xs={3}></Col>
-                        <Col xs={6}>
-                            {this.state.showUserPosts ? this.callUserPosts() : null}
-                            {this.state.showUserAbout ? this.callUserAbouts() : null}
-                        </Col>
-                        <Col xs={3}></Col>
-                    </Row>
-                </Container> */}
             </Auxiliary>
         )
     }
@@ -204,6 +215,7 @@ const mapStateToProps = state => {
         isLoading: state.auth.isLoading,
         allPosts: state.following.allPosts,
         allUserPosts: state.profile.allUserPosts,
+        profileUpdating: state.profile.profileUpdating,
 
     }
 }
