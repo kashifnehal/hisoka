@@ -41,10 +41,10 @@ export const loadComment = (postId) => {
 }
 
 
-export const addComment = (data, postId) => {
+export const addComment = (data, profileId, postId) => {
     return async (dispatch, getState) => {
         dispatch(startLoadingComment())
-        const commentAddUrl = 'http://localhost:5000/postPage/' + postId + '/comments'
+        const commentAddUrl = 'http://localhost:5000/postPage/' + profileId + "/" + postId + '/comments'
 
         try {
             const res = await axios.post(commentAddUrl, data, tokenConfig(getState))

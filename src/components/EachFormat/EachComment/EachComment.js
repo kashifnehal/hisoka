@@ -8,10 +8,11 @@ const eachComment = (props) => {
     const d = props.comment.createdAt
     const e = new Date(d)
     const n = e.toDateString()
+    console.log('each comment', props.comment.profileowner);
     return (
         <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
             <Row>
-                <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/' + String(props.comment.pic)} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
+                <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/' + String(props.comment.profileowner[0].profilePic)} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
                 <Col xs={10}>
                     <Row>
                         <Col><b>{props.comment.username}</b></Col>

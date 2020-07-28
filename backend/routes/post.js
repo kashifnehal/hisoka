@@ -5,8 +5,11 @@ const path = require("path");
 const multer = require("multer");
 let Post = require('../models/post.model');
 let Comment = require('../models/comment.model')
+let ProfileDetails = require('../models/profileDetails.model')
 const postController = require('../controllers/post')
-const auth = require('../../backend/middleware/auth')
+const auth = require('../../backend/middleware/auth');
+const { populate } = require('../models/profileDetails.model');
+
 
 
 const storage = multer.diskStorage({
@@ -91,12 +94,12 @@ router.post('/update/:id', function (req, res) {
 // =====================
 
 router.get('/:postId/comments', function (req, res) {
-  Post.findById(req.params.postId).populate('comments')
+  Post.findById(req.params.postId).populate({ path: 'comments', populate: { path: 'profileowner' } })
     .then(post => res.json(post.comments))
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
-router.post('/:postId/comments', auth, function (req, res) {
+router.post('/:profileId/:postId/comments', auth, function (req, res) {
   // const newComment = new Comment(req.body)
   const text = req.body.text;
   const likes = req.body.likes;
@@ -118,12 +121,26 @@ router.post('/:postId/comments', auth, function (req, res) {
       newComment.ofpost = foundPost
       // newComment.pic = foundPost.pic
       // newComment.username = foundPost.username
-      newComment.save()
-        .then(() => res.json(newComment))
-        .catch(err => {
-          console.log(err)
-          res.status(400).json('Error: ' + err)
-        });
+      ProfileDetails.findById(req.params.profileId)
+        .then(foundProfile => {
+          newComment.profileowner = foundProfile
+
+          newComment.save()
+            .then(() => res.json(newComment))
+            .catch(err => {
+              console.log(err)
+              res.status(400).json('Error: ' + err)
+            });
+          foundProfile.commentsdone.push(newComment)
+          foundProfile.save()
+        })
+
+      // newComment.save()
+      //   .then(() => res.json(newComment))
+      //   .catch(err => {
+      //     console.log(err)
+      //     res.status(400).json('Error: ' + err)
+      //   });
 
       foundPost.comments.push(newComment)
       foundPost.save()
@@ -131,6 +148,8 @@ router.post('/:postId/comments', auth, function (req, res) {
       // .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
+
+
 
 })
 

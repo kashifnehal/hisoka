@@ -13,7 +13,7 @@ const postSchema = new Schema({
   likes: { type: Number },
   profileowner: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "About"
+    ref: "ProfileDetails"
   }],
   comments: [{
     type: mongoose.Schema.Types.ObjectId,

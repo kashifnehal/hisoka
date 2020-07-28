@@ -18,6 +18,10 @@ const profileDetailsSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Whatif"
     }],
+    commentsdone: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
     userposts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"

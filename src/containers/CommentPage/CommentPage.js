@@ -36,7 +36,7 @@ class CommentPage extends Component {
         }
 
         console.log('from page', data, this.props.postId)
-        await this.props.onAddComment(data, this.props.postId)
+        await this.props.onAddComment(data, this.props.user._id, this.props.postId)
 
     }
 
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onAddComment: (data, postId) => dispatch(addComment(data, postId))
+        onAddComment: (data, profileId, postId) => dispatch(addComment(data, profileId, postId))
     }
 }
 
