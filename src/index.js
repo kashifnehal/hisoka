@@ -14,6 +14,7 @@ import followingReducer from './store/reducers/followingReducer';
 import commentReducer from './store/reducers/commentReducer';
 import profileReducer from './store/reducers/profileReducer';
 import whatifReducer from './store/reducers/whatifReducer';
+import chatReducer from './store/reducers/chatReducer';
 
 
 //this line can be problem as we are not using env anymore.
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     following: followingReducer,
     comment: commentReducer,
     profile: profileReducer,
-    whatif: whatifReducer
+    whatif: whatifReducer,
+    chat: chatReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(

@@ -33,32 +33,6 @@ router.get('/', auth, function (req, res) {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// router.post("/", upload.single("media"), function (req, res, next) {
-//   console.log(req.file)
-//   // const pic = req.body.pic;
-//   // const username = req.body.username;
-//   // const date = Date.parse(req.body.date);
-//   const caption = req.body.caption;
-//   const media = req.file.filename;
-//   const likes = Number(req.body.likes);
-//   const postPrivacy = req.body.postPrivacy
-
-//   const newPost = new Post({
-//     // pic,
-//     // username,
-//     caption,
-//     media,
-//     likes,
-//     postPrivacy
-//   });
-
-//   newPost.save()
-//     .then(() => res.json(newPost))
-//     .catch(err => {
-//       console.log(err)
-//       res.status(400).json('Error: ' + err)
-//     });
-// });
 
 router.get('/:id', function (req, res) {
   Post.findById(req.params.id)

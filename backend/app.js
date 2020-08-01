@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('config')
+const socketio = require('socket.io');
 
 //==SAW THIS SOMEWHERE====
 // app.use(methodOverride('_method'));
@@ -17,14 +18,18 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+const Chat = require('./models/chat.model')
 
-// const uri = process.env.ATLAS_URI;
+
+const server = require("http").createServer(app);
+const io = socketio(server);
 
 // change uri to this if takes time.. in config/default.json
 // "mongodb+srv://kashifnehal:kashif786@@cluster0-5nclg.gcp.mongodb.net/test?retryWrites=true&w=majority&ssl=true"
 const uri = config.get('ATLAS_URI')
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
-);
+const connect = mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
+// .then(() => console.log('MongoDB Connected...'))
+// .catch(err => console.log(err));
 
 
 // //Get the default connection
@@ -38,7 +43,34 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
 
+io.on("connection", socket => {
 
+  socket.on("Input Chat Message", msg => {
+
+    connect.then(db => {
+      try {
+        let chat = new Chat({ message: msg.chatMessage, sender: msg.userId, type: msg.type })
+
+        chat.save((err, doc) => {
+          if (err) return res.json({ success: false, err })
+
+          Chat.find({ "_id": doc._id })
+            .populate("sender")
+            .exec((err, doc) => {
+
+              return io.emit("Output Chat Message", doc);
+            })
+        })
+      } catch (error) {
+        console.error(error);
+      }
+    })
+  })
+
+})
+
+
+// app.use('/chat', require('./routes/chat'));
 
 const postRouter = require('./routes/post');
 app.use('/postPage', postRouter);
@@ -55,6 +87,9 @@ app.use('/auth', authRouter);
 const whatifRouter = require('./routes/whatif');
 app.use('/whatif', whatifRouter);
 
+const chatRouter = require('./routes/chat');
+app.use('/chat', chatRouter);
+
 // === NOT USING====
 // const profileRefsRouter = require('./routes/profileRefs');
 // app.use('/profileRefs', profileRefsRouter);
@@ -63,6 +98,6 @@ const aboutRouter = require('./routes/about');
 app.use('/aboutDetails', aboutRouter);
 
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

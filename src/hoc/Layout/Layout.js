@@ -10,6 +10,7 @@ import CommentPage from '../../containers/CommentPage/CommentPage'
 import Timeline from '../../containers/ProfilePage/Timeline/Timeline'
 import Trends from '../../containers/Trends/Trends'
 import Whatif from '../../containers/WhatIf/WhatIf'
+import ChatPage from '../../containers/Chatpage/ChatPage'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 
@@ -26,6 +27,7 @@ class Layout extends Component {
                     <Route path="/profilePage" component={ProfilePage} />
                     <Route path="/whatif" component={Whatif} />
                     <Route path="/trends" component={Trends} />
+                    <Route path="/chat" component={ChatPage} />
                 </Switch>
                 <Footbar />
             </Auxiliary>

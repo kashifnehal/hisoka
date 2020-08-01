@@ -9,6 +9,7 @@ const eachComment = (props) => {
     const e = new Date(d)
     const n = e.toDateString()
     console.log('each comment', props.comment.profileowner);
+
     return (
         <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
             <Row>
