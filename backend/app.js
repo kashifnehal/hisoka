@@ -3,6 +3,20 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('config')
 const socketio = require('socket.io');
+const path = require("path");
+const multer = require("multer");
+
+
+const storage = multer.diskStorage({
+  destination: "./../public/images/",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({
+  storage: storage,
+  // limits:{fileSize: 1000000},
+}).single("file")
 
 //==SAW THIS SOMEWHERE====
 // app.use(methodOverride('_method'));
@@ -43,6 +57,15 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
 
+app.post("/chat/uploadfiles", (req, res) => {
+  upload(req, res, err => {
+    if (err) {
+      return res.json({ success: false, err })
+    }
+    return res.json({ success: true, url: res.req.file.filename });
+  })
+});
+
 io.on("connection", socket => {
 
   socket.on("Input Chat Message", msg => {
@@ -71,6 +94,7 @@ io.on("connection", socket => {
 
 
 // app.use('/chat', require('./routes/chat'));
+app.use('/uploads', express.static('uploads'));
 
 const postRouter = require('./routes/post');
 app.use('/postPage', postRouter);
