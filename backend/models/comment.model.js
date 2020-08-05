@@ -7,7 +7,7 @@ const commentSchema = new Schema({
   username: { type: String, required: false, unique: false, trim: false },
   // date: { type: Date, required: true },
   text: { type: String },
-  likes: { type: Number },
+  likeCount: { type: Number },
   profileowner: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "ProfileDetails"

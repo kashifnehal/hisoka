@@ -12,6 +12,7 @@ let ProfileDetails = require('../models/profileDetails.model');
 const Post = require('../models/post.model');
 const About = require('../models/about.model')
 const Whatif = require('../models/whatif.model')
+const Like = require('../models/like.model')
 // const { post } = require('./post');
 
 
@@ -145,11 +146,19 @@ router.delete('/:profileId', function (req, res) {
 
 //update profile details
 router.patch('/:profileId', upload.single("profilePic"), function (req, res) {
+    let profilePic = null
+    if (typeof req.file === "undefined") {
+        profilePic = "";
+    } else {
+        profilePic = req.file.filename
+    }
+
     profileData = {
         name: req.body.name,
         bio: req.body.bio,
         // coverPic: req.file.filename,
-        profilePic: req.file.filename
+        profilePic
+
     }
     ProfileDetails.findByIdAndUpdate(req.params.profileId, profileData)
         .then(profileDetails => res.json('profileDetails patched'))
@@ -190,7 +199,7 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
     // const newPost = new Post(req.body)
     const caption = req.body.caption;
     let media = null
-    const likes = Number(req.body.likes);
+    const likeCount = Number(req.body.likeCount);
     const postPrivacy = req.body.postPrivacy;
     if (typeof req.file === "undefined") {
         media = "";
@@ -201,7 +210,7 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
     const newPost = new Post({
         caption,
         media,
-        likes,
+        likeCount,
         postPrivacy,
     });
 
@@ -241,11 +250,11 @@ router.post('/:profileId/userposts', upload.single("media"), auth, function (req
 router.post('/:profileId/userWhatif', function (req, res, next) {
     const ifname = req.body.ifname;
     const text = req.body.text;
-    const likes = Number(req.body.likes);
+    const likeCount = Number(req.body.likeCount);
     const newWhatif = new Whatif({
         ifname,
         text,
-        likes,
+        likeCount,
 
     });
     // const newWhatif = new Whatif(req.body)
@@ -265,6 +274,22 @@ router.post('/:profileId/userWhatif', function (req, res, next) {
         })
         .catch(err => res.status(400).json('Error: ' + err));
 })
+
+router.post('/:profileId/:postId/likedposts', function (req, res, next) {
+    const newLike = Like(req.body)
+    // const newWhatif = new Whatif(req.body)
+    Post.findById(req.params.postId)
+        .then(foundPost => {
+            ProfileDetails.findById(req.params.profileId)
+                .then(foundProfile => {
+                    foundProfile.likedposts.push(foundPost)
+                    foundProfile.save()
+                })
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+})
+
+
 
 
 

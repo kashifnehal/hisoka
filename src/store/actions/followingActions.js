@@ -33,7 +33,7 @@ export const loadPostSuccess = (allPosts) => {
     }
 }
 export const addPostSuccess = (newPost) => {
-    console.log('to addpsuc', newPost);
+    // console.log('to addpsuc', newPost);
     return {
         type: actionTypes.ADD_POST_SUCCESS,
         newPost: newPost
@@ -43,7 +43,7 @@ export const addPostSuccess = (newPost) => {
 
 
 export const loadPost = () => {
-    console.log('inside loadpost action')
+    // console.log('inside loadpost action')
     return async (dispatch, getState) => {
         dispatch(startLoadingPost());
 
@@ -51,7 +51,7 @@ export const loadPost = () => {
             'http://localhost:5000/postPage/';
 
         try {
-            console.log('inside try f action');
+            // console.log('inside try f action');
             const res = await axios.get(getPostUrl, tokenConfig(getState));
             dispatch(loadPostSuccess(res.data))
         } catch (err) {
@@ -62,7 +62,7 @@ export const loadPost = () => {
 };
 
 export const addPost = (data, profileId) => {
-    console.log('inside addpost action', data, profileId)
+    // console.log('inside addpost action', data, profileId)
     return async (dispatch, getState) => {
         dispatch(startAddingPost())
         const addPostUrl =
@@ -70,10 +70,10 @@ export const addPost = (data, profileId) => {
             'http://localhost:5000/ProfileDetails/' + profileId + '/userposts';
 
         try {
-            console.log('try addpost data', data)
+            // console.log('try addpost data', data)
             const res = await axios.post(addPostUrl, data, tokenConfig(getState));
             dispatch(addPostSuccess(res.data))
-            console.log('post data in try', res.data);
+            // console.log('post data in try', res.data);
         } catch (err) {
             // alert("Incorrect User ID / Password");
             dispatch(returnErrors(err.response.data, err.response.status));

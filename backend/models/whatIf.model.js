@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const whatifSchema = new Schema({
     ifname: { type: String, required: false, unique: false, trim: false },
     text: { type: String, required: false },
-    likes: { type: Number },
+    likeCount: { type: Number },
     profileowner: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "About"

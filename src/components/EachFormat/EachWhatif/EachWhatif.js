@@ -15,7 +15,7 @@ class EachWhatif extends Component {
                 <div key={whatif._id} style={{ backgroundColor: 'white', marginTop: '15px' }}>
                     <p>{whatif.ifname}</p>
                     <p style={{ marginTop: '-20px' }}>{whatif.text}</p>
-                    <p style={{ marginTop: '-20px' }}>{whatif.likes}</p>
+                    <p style={{ marginTop: '-20px' }}>{whatif.likeCount}</p>
                 </div>
             )
         }))

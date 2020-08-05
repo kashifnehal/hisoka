@@ -6,11 +6,12 @@ import classes from './Layout.css'
 import { Route, Switch } from 'react-router-dom'
 import FollowingPage from '../../containers/FollowingPage/FollowingPage'
 import ProfilePage from '../../containers/ProfilePage/ProfilePage'
-import CommentPage from '../../containers/CommentPage/CommentPage'
+// import CommentPage from '../../containers/CommentPage/CommentPage'
 import Timeline from '../../containers/ProfilePage/Timeline/Timeline'
 import Trends from '../../containers/Trends/Trends'
 import Whatif from '../../containers/WhatIf/WhatIf'
 import ChatPage from '../../containers/Chatpage/ChatPage'
+import Logout from '../../containers/Logout/Logout'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 
@@ -28,6 +29,7 @@ class Layout extends Component {
                     <Route path="/whatif" component={Whatif} />
                     <Route path="/trends" component={Trends} />
                     <Route path="/chat" component={ChatPage} />
+                    <Route path="/logout" component={Logout} />
                 </Switch>
                 <Footbar />
             </Auxiliary>

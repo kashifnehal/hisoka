@@ -1,23 +1,31 @@
-// import React, { Fragment } from 'react';
-// import { NavLink } from 'reactstrap';
-// import { connect } from 'react-redux';
-// import { logout } from '../../store/actions/authActions';
-// // import { ILogoutProps } from '../../types/interfaces';
-
-// export const Logout = ({ logout }) => {
-//     console.log('hit logout');
-//     return (
-//         <Fragment>
-//             <NavLink onClick={logout} href="#">
-//                 Logout
-//       </NavLink>
-//         </Fragment>
-//     );
-// };
-
-// export default connect(null, { logout })(Logout);
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from "react-router";
+// import { logout } from '../../store/actions/authActions'
+import { logout } from '../../store/actions/authActions'
+import { Redirect } from 'react-router-dom'
 
 
 
 
-//=== NOT USING CURRENTLY====
+class Logout extends Component {
+    componentDidMount() {
+        this.props.onlogout()
+    }
+    render() {
+        return <Redirect to="/" />
+    }
+}
+
+
+const mapStateToProps = state => {
+    return {
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onlogout: () => dispatch(logout()),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Logout));

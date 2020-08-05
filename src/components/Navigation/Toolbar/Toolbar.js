@@ -1,11 +1,11 @@
 import React from 'react'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import { Container, Row, Col, Image } from 'react-bootstrap'
 import classes from './Toolbar.css'
 import SearchBar from '../../../containers/SearchBar/SearchBar'
 import ProfileNav from '../../../components/Navigation/ProfileNav/ProfileNav'
 import Logo from '../Logo/Logo'
+import Home from '../../../assets/images/home.png'
+import Chat from '../../../assets/images/chat.png'
 import { withRouter } from "react-router";
 
 const toolbar = (props) => {
@@ -54,9 +54,11 @@ const toolbar = (props) => {
                         </Row>
                         <Row className={classes.ProfileAndIcons}>
                             <Col className={classes.NavIcons} md={5} >
-                                <ion-icon name="home-outline" size="large"></ion-icon>
+                                <Image src={Home} />
+                                <Image src={Chat} />
+                                {/* <ion-icon name="home-outline" size="large"></ion-icon>
                                 <ion-icon name="notifications-outline" size="large"></ion-icon>
-                                <ion-icon name="chatbox-outline" size="large"></ion-icon>
+                                <ion-icon name="chatbox-outline" size="large"></ion-icon> */}
                                 {/* <ion-icon name="chatbox-outline" size="large"></ion-icon> */}
                             </Col>
                             <Col className={classes.ProfileNav} xs={7}>

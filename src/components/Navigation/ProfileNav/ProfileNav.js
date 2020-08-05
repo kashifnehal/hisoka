@@ -11,10 +11,10 @@ import { withRouter } from "react-router";
 class ProfileNav extends Component {
 
     startLogout = () => {
-        this.props.onlogout()
-        // this.props.history.push({
-        //     pathname: "profilePage"
-        // })
+        // this.props.onlogout()
+        this.props.history.push({
+            pathname: "/logout"
+        })
     }
     render() {
         return (

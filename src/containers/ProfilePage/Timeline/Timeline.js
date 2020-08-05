@@ -31,6 +31,8 @@ class Timeline extends Component {
                             key={curpost._id}
                             userUniversity={this.props.user.university}
                             commentClicked={() => this.toCommentPageHandler(curpost._id)}
+                            from="timeline"
+                            timelineProfilePic={this.props.user.profilePic}
                         />
                     ))) : null}
             </Auxiliary>

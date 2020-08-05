@@ -24,6 +24,7 @@ class ProfilePage extends Component {
         showUserPhotos: false,
     }
 
+
     componentDidMount = async () => {
         if (this.props.user !== null) {
             await this.props.OngetUserPosts(this.props.user._id)
@@ -124,10 +125,11 @@ class ProfilePage extends Component {
     //     return <About />
     // }
     render() {
+        const userLoaded = this.props.isLoading === false && this.props.user !== null
         // console.log('alluser post', this.props.allUserPosts)
         // console.log('profile data frm page', this.props.user, this.props.isLoading);
         let proDetails = null
-        if (this.props.isLoading === false) {
+        if (userLoaded) {
             proDetails = (
                 <div>
                     <h1 style={{ marginTop: '100px' }}>PROFILE</h1>

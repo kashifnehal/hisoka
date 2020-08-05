@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import { Container, Row, Col, Button, Image, Modal } from 'react-bootstrap'
 import EachPost from '../../../components/EachFormat/EachPost/EachPost'
@@ -22,12 +21,11 @@ class Following extends Component {
         // date:'2020-08-01T15:28:32.886Z',
         caption: '',
         media: '',
-        likes: 0,
+        likeCount: 0,
         postPrivacy: 'public',
         addPostModalShow: false,
         callEachPost: false,
         commentShow: false,
-        currentHeart: 'white'
     }
 
     componentDidMount = async () => {
@@ -69,7 +67,7 @@ class Following extends Component {
     }
 
     fileSelectHandler = event => {
-        console.log('selected image', event.target.files[0]);
+        // console.log('selected image', event.target.files[0]);
         this.setState({
             media: event.target.files[0],
         })
@@ -90,14 +88,13 @@ class Following extends Component {
         // data.append("name", this.state.name);
         data.append("caption", this.state.caption);
         data.append("media", this.state.media);
-        data.append("likes", this.state.likes);
+        data.append("likeCount", this.state.likeCount);
         data.append("postPrivacy", this.state.postPrivacy);
 
-        console.log('media ', data.get('media'));
+        // console.log('media ', data.get('media'));
 
         await this.props.onAddPost(data, this.props.user._id)
-        this.setState({ caption: '', addPostModalShow: false, media: '', likes: 0 })
-
+        this.setState({ caption: '', addPostModalShow: false, media: '', likeCount: 0 })
 
     }
 
@@ -107,16 +104,43 @@ class Following extends Component {
         })
     }
 
-    heartToggleHandler = () => {
-        if (this.state.currentHeart === 'white') {
-            this.setState({ currentHeart: 'red' })
-        } else if (this.state.currentHeart === 'red') {
-            this.setState({ currentHeart: 'white' })
+    heartClickedHandler = (heart) => {
+        if (heart === false) {
+            console.log('if heart', heart);
+            heart = true
+
+            //delete profile id from post req
+        } else if (heart === true) {
+            console.log('else heart')
+            heart = false
+            //add profile id in post. req
         }
     }
 
+    eachPostHandler = () => {
+        if (this.props.user !== null) {
+            return this.props.allPosts.map(curpost =>
+            // curpost.profileowner[0].profilePic !== undefined ?
+            {
+                return <EachPost
+                    post={curpost}
+                    key={curpost._id}
+                    userUniversity={this.props.user.university}
+                    commentClicked={() => this.toCommentPageHandler(curpost._id)}
+                    heartClicked={this.heartClickedHandler}
+                    heart={this.state.currentHeart}
+                    curUserId={this.props.user._id}
+                // curHeart={this.props.heart}
+                />
+            }
+                // : null
+            )
+        }
+    }
+
+
     render() {
-        let userProfilePic = <Image onClick={this.gotoProfilePage} src={process.env.PUBLIC_URL + '/images/default.png'} style={{ height: '50px', width: '50px' }} />
+        let userProfilePic = null
 
         if (this.props.user !== null) {
             if (this.props.user.profilePic !== "") {
@@ -127,12 +151,12 @@ class Following extends Component {
         return (
             <Auxiliary className={classes.Write}>
                 <Container fluid className={classes.WriteContainer} style={{ backgroundColor: 'white', marginTop: '5px' }}>
-                    <Row className={classes.WriteRow} style={{ paddingTop: '20px' }} onClick={() => this.setState({ addPostModalShow: true })}>
-                        <Col className={classes.WritePic} xs={2} style={{}}>
-                            {userProfilePic}
+                    <Row className={classes.WriteRow} style={{ paddingTop: '20px' }} >
+                        <Col className={classes.WritePic} xs={2} style={{}} onClick={this.gotoProfilePage}>
+                            <span>{userProfilePic}</span>
                         </Col>
-                        <Col className={classes.WriteBox} xs={10} style={{}}>
-                            <Row>
+                        <Col className={classes.WriteBox} xs={10} style={{}} onClick={() => this.setState({ addPostModalShow: true })}>
+                            <Row style={{ paddingLeft: '10px' }}>
                                 <Col xs={12} >
                                     <textarea disabled={true} className={classes.text} rows="1" cols="" placeholder="Hello! I am Groot..." style={{ outline: 'none', border: 'none' }} ></textarea>
                                 </Col>
@@ -165,18 +189,24 @@ class Following extends Component {
                 return <EachPost post={curpost} key={curpost._id} userUniversity={this.props.user.university} callComment={() => this.toCommentPageHandler(curpost._id)} />
             })
         } */}
-
-                {this.props.user !== null ?
-                    this.props.allPosts.map(curpost => (
-                        <EachPost
-                            post={curpost}
-                            key={curpost._id}
-                            userUniversity={this.props.user.university}
-                            commentClicked={() => this.toCommentPageHandler(curpost._id)}
-                            heartClicked={this.heartToggleHandler}
-                            heart={this.state.currentHeart}
-                        />
-                    )) : null}
+                {this.eachPostHandler()}
+                {/* {this.props.user !== null ?
+                    this.props.allPosts.map(curpost =>
+                        // curpost.profileowner[0].profilePic !== undefined ?
+                        (
+                            <EachPost
+                                post={curpost}
+                                key={curpost._id}
+                                userUniversity={this.props.user.university}
+                                commentClicked={() => this.toCommentPageHandler(curpost._id)}
+                                heartClicked={this.heartClickedHandler}
+                                heart={this.state.currentHeart}
+                                curUserId={this.props.user._id}
+                                curHeart={this.props.heart}
+                            />
+                        )
+                        // : null
+                    ) : null} */}
 
                 <CommentPage commentShow={this.state.commentShow} commentShowHandler={this.commentShowHandler} />
 
@@ -192,7 +222,7 @@ class Following extends Component {
                 >
 
                     <Modal.Body>
-                        <Container fluid className={classes.WriteContainer} fluid style={{ backgroundColor: 'white', marginTop: '5px' }}>
+                        <Container fluid className={classes.WriteContainer} style={{ backgroundColor: 'white', marginTop: '5px' }}>
                             <Row className={classes.WriteRow}>
                                 <Col className={classes.WritePic} xs={2} style={{}}>
                                     {userProfilePic}

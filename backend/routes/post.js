@@ -28,7 +28,7 @@ const upload = multer({
 
 
 router.get('/', auth, function (req, res) {
-  Post.find().sort({ createdAt: -1 })
+  Post.find().populate("profileowner").sort({ createdAt: -1 })
     .then(posts => res.json(posts))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -54,7 +54,7 @@ router.post('/update/:id', function (req, res) {
       // post.date = Date.parse(req.body.date);
       post.caption = req.body.caption;
       post.media = req.file.filename
-      post.likes = Number(req.body.likes)
+      post.likeCount = Number(req.body.likeCount)
 
 
       post.save()
@@ -76,7 +76,7 @@ router.get('/:postId/comments', function (req, res) {
 router.post('/:profileId/:postId/comments', auth, function (req, res) {
   // const newComment = new Comment(req.body)
   const text = req.body.text;
-  const likes = req.body.likes;
+  const likeCount = req.body.likeCount;
   const username = req.body.username;
   const pic = req.body.pic;
   // if (typeof req.file === undefined) {
@@ -86,7 +86,7 @@ router.post('/:profileId/:postId/comments', auth, function (req, res) {
   // }
   const newComment = new Comment({
     text,
-    likes,
+    likeCount,
     username,
     pic
   });
@@ -131,6 +131,15 @@ router.get('/profile', auth, (req, res) => {
   ProfileDetails.findById(req.profile.id)
     .select("-password")
     .then(profile => res.json(profile))
+})
+
+router.patch('/:postId', function (req, res) {
+  newLikeCount = {
+    likeCount: req.body.newLikeCount
+  }
+  Post.findByIdAndUpdate(req.params.postId, newLikeCount)
+    .then(postDetails => res.json('likes patched'))
+    .catch(err => res.status(400).json('Error: ' + err));
 })
 
 

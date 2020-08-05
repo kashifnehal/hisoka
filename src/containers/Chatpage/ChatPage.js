@@ -151,7 +151,7 @@ class ChatPage extends Component {
                         </Col>
 
                         <Col span={4}>
-                            <Button type="primary" style={{ width: '100%' }} onClick={this.submitChatMessage} htmlType="submit">
+                            <Button type="primary" style={{ width: '100%' }} onClick={this.submitChatMessage} type="submit">
                                 {/* <Icon type="enter" /> */} Submit
                                 </Button>
                         </Col>

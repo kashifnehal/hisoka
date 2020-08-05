@@ -18,6 +18,10 @@ const profileDetailsSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Whatif"
     }],
+    likedposts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Like"
+    }],
     commentsdone: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"

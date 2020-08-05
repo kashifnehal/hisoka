@@ -10,7 +10,11 @@ const postSchema = new Schema({
   media: { type: String },
   postPrivacy: { type: String },
   university: { type: String },
-  likes: { type: Number },
+  likeCount: { type: Number },
+  likedBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ProfileDetails"
+  }],
   profileowner: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "ProfileDetails"

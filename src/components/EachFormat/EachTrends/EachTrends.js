@@ -40,7 +40,7 @@ const eachTrends = (props) => {
                             <Col xs={12}><Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.media)} alt='no image' fluid /></Col>
                         </Row>
                         <Row>
-                            <Col xs={6}><p>likes {props.post.likes}</p></Col>
+                            <Col xs={6}><p>likes {props.post.likeCount}</p></Col>
                             <Col xs={6}><button onClick={props.callComment}>comments</button></Col>
                         </Row></Col>
                     <Col md={3} lg={2}> </Col>

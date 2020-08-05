@@ -11,7 +11,7 @@ import { addComment } from '../../store/actions/commentActions'
 class CommentPage extends Component {
     state = {
         text: '',
-        likes: 0,
+        likeCount: 0,
     }
     commentHandler = () => {
         return this.props.allComments.map(curComment => {
@@ -30,17 +30,22 @@ class CommentPage extends Component {
 
         const data = {
             text: this.state.text,
-            likes: this.state.likes,
+            likeCount: this.state.likeCount,
             username: this.props.user.username,
             pic: this.props.user.profilePic
         }
 
         console.log('from page', data, this.props.postId)
         await this.props.onAddComment(data, this.props.user._id, this.props.postId)
+        this.setState({ text: '' })
 
     }
 
     render() {
+        let commentProfilePic = null
+        if (this.props.isLoading === false && this.props.user !== null) {
+            commentProfilePic = <Image src={process.env.PUBLIC_URL + '/images/' + String(this.props.user.profilePic)} roundedCircle style={{ height: '40px', width: '40px' }} />
+        }
         // console.log('post id ', this.props.postId);
         // console.log('all comments', this.props.allComments)
         return (
@@ -56,9 +61,9 @@ class CommentPage extends Component {
                     <Modal.Body>
                         <Container fluid style={{ backgroundColor: '#efefef' }}>
                             <Row>
-                                <Col xs={2}><Image src={process.env.PUBLIC_URL + '/images/default.png'} roundedCircle style={{ height: '50px', width: '50px' }} /></Col>
+                                <Col xs={2}>{commentProfilePic}</Col>
                                 <Col xs={6}>
-                                    <textarea className={classes.text} rows="" cols="25" placeholder="Add Comment..." onChange={this.onChangeComment} style={{ outline: 'none', border: 'none', height: '30px' }} ></textarea>
+                                    <textarea className={classes.text} rows="" cols="25" placeholder="Add Comment..." value={this.state.text} onChange={this.onChangeComment} style={{ outline: 'none', border: 'none', height: '30px' }} ></textarea>
                                 </Col>
                                 <Col xs={2}><Button variant="primary" size="sm" onClick={this.onSubmitHandler}>Post</Button></Col>
                             </Row>
@@ -76,7 +81,8 @@ const mapStateToProps = state => {
     return {
         allComments: state.comment.allComments,
         postId: state.comment.postId,
-        user: state.auth.user
+        user: state.auth.user,
+        isLoading: state.auth.isLoading,
     }
 }
 const mapDispatchToProps = dispatch => {

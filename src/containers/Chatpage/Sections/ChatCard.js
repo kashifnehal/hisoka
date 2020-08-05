@@ -11,7 +11,7 @@ function ChatCard(props) {
 
             {props.type === "Text" ?
                 <p style={{ marginTop: '-20px' }}>{props.message}</p> :
-                <Image src={process.env.PUBLIC_URL + '/images/' + String(props.message)} alt='no image' fluid />
+                <Image src={process.env.PUBLIC_URL + '/images/' + String(props.message)} alt='no image' fluid style={{ height: '150px', width: '170px' }} />
             }
 
             {/* <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')} style={{ color: 'red', backgroundColor: 'blue' }}>

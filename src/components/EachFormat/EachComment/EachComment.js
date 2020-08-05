@@ -8,7 +8,7 @@ const eachComment = (props) => {
     const d = props.comment.createdAt
     const e = new Date(d)
     const n = e.toDateString()
-    console.log('each comment', props.comment.profileowner);
+    // console.log('each comment', props.comment.profileowner);
 
     return (
         <Container fluid style={{ backgroundColor: 'white', marginTop: '15px', paddingTop: '10px' }}>
@@ -22,8 +22,9 @@ const eachComment = (props) => {
                         <Col>{props.comment.text}</Col>
                     </Row>
                     <Row>
-                        <Col xs={6}>Likes:{props.comment.likes}</Col>
-                        <Col xs={6}>{props.comment.n}</Col>
+                        <Col xs={6}>Likes:{props.comment.likeCount}</Col>
+                        {/* <Col xs={6}>{props.comment.n}</Col> */}
+                        <Col><small><i>{n}</i></small></Col>
                     </Row>
                 </Col>
             </Row>

@@ -26,7 +26,7 @@ export default function (state = initialState, action) {
                 addingPostLoader: true
             };
         case actionTypes.ADD_POST_SUCCESS:
-            console.log('from reducer newpost', action.newPost);
+            // console.log('from reducer newpost', action.newPost);
             return {
                 ...state,
                 addingPostLoader: false,

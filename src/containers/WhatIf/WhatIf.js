@@ -13,7 +13,7 @@ class Whatif extends Component {
         addWhatifModalShow: false,
         ifname: '',
         text: '',
-        likes: 0,
+        likeCount: 0,
     }
 
     componentDidMount = async () => {
@@ -37,7 +37,7 @@ class Whatif extends Component {
         const data = {
             ifname: this.state.ifname,
             text: this.state.text,
-            likes: this.state.likes
+            likeCount: this.state.likeCount
         }
         console.log('whatif post data', data, this.props.user._id)
         await this.props.onAddWhatif(data, this.props.user._id)

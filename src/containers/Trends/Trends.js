@@ -20,7 +20,7 @@ class Trends extends Component {
         // date:'2020-08-01T15:28:32.886Z',
         caption: '',
         media: '',
-        likes: 0,
+        likeCount: 0,
         postPrivacy: 'public',
         addPostModalShow: false,
         callEachPost: false
