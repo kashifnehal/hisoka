@@ -10,6 +10,8 @@ import heartW from '../../../assets/images/h24W.png'
 import retweet from '../../../assets/images/retweet.png'
 import share from '../../../assets/images/share.png'
 import comment from '../../../assets/images/comment.png'
+import { withRouter } from "react-router";
+
 
 
 const eachPost = (props) => {
@@ -38,6 +40,13 @@ const eachPost = (props) => {
         }
     }
 
+    const gotoProfilePage = () => {
+        props.history.push({
+            pathname: "/profilePage",
+            state: { user: props.post.profileowner[0], otherUser: true }
+        })
+    }
+
 
     // sendData = () => {
     //     this.props.curHeart(heart);
@@ -49,9 +58,9 @@ const eachPost = (props) => {
     // console.log('from profile', props.post);
     // console.log('running each post')
     // console.log('the photo', typeof props.post.profileowner[0].profilePic)
-    let pic = <Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.pic)} roundedCircle style={{ height: '50px', width: '50px' }} />
+    let pic = <Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.pic)} roundedCircle style={{ height: '50px', width: '50px' }} onClick={gotoProfilePage} />
     if (props.post.profileowner[0].profilePic !== undefined) {
-        pic = <Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.profileowner[0].profilePic)} roundedCircle style={{ height: '50px', width: '50px' }} />
+        pic = <Image src={process.env.PUBLIC_URL + '/images/' + String(props.post.profileowner[0].profilePic)} roundedCircle style={{ height: '50px', width: '50px' }} onClick={gotoProfilePage} />
     }
 
     if (props.from === "timeline") {
@@ -98,4 +107,4 @@ const eachPost = (props) => {
     )
 }
 
-export default eachPost
+export default withRouter(eachPost)

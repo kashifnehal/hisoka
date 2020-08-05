@@ -42,7 +42,7 @@ class Timeline extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user,
+        // user: state.auth.user,
         // isAuthenticated: state.auth.isAuthenticated,
         allUserPosts: state.profile.allUserPosts,
 

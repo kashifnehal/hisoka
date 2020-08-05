@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import { loadPost, addPost } from '../../../store/actions/followingActions'
 import { loadComment } from '../../../store/actions/commentActions'
 import CommentPage from '../../CommentPage/CommentPage'
+import ProfilePage from '../../ProfilePage/ProfilePage'
 // import AddPost from './AddPost/AddPost'
 
 
@@ -26,6 +27,7 @@ class Following extends Component {
         addPostModalShow: false,
         callEachPost: false,
         commentShow: false,
+        showProfile: false
     }
 
     componentDidMount = async () => {
@@ -100,9 +102,15 @@ class Following extends Component {
 
     gotoProfilePage = () => {
         this.props.history.push({
-            pathname: "/profilePage"
+            pathname: "/profilePage",
+            state: { user: this.props.user }
         })
     }
+    // callProfileHandler = () => {
+    //     console.log('calling profilepage');
+    //     return <ProfilePage user={this.props.user} />
+    //     this.setState({ showProfile: false })
+    // }
 
     heartClickedHandler = (heart) => {
         if (heart === false) {
@@ -144,12 +152,13 @@ class Following extends Component {
 
         if (this.props.user !== null) {
             if (this.props.user.profilePic !== "") {
-                userProfilePic = <Image src={process.env.PUBLIC_URL + '/images/' + String(this.props.user.profilePic)} onClick={this.gotoProfilePage} roundedCircle style={{ height: '50px', width: '50px' }} />
+                userProfilePic = <Image src={process.env.PUBLIC_URL + '/images/' + String(this.props.user.profilePic)} roundedCircle style={{ height: '50px', width: '50px' }} onClick={this.gotoProfilePage} />
             }
         }
         // console.log('profile details', this.props.proDetails)
         return (
             <Auxiliary className={classes.Write}>
+                {/* {this.state.showProfile ? this.callProfileHandler() : null} */}
                 <Container fluid className={classes.WriteContainer} style={{ backgroundColor: 'white', marginTop: '5px' }}>
                     <Row className={classes.WriteRow} style={{ paddingTop: '20px' }} >
                         <Col className={classes.WritePic} xs={2} style={{}} onClick={this.gotoProfilePage}>
