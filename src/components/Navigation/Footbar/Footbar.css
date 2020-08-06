@@ -1,0 +1,35 @@
+.Footbar {
+    height: 40px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    /* padding: 0 20px; */
+    box-sizing: border-box;
+    z-index: 90;
+    /* margin-top: 10%; */
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+/* @media only screen 
+and (max-width : 400px) {
+    .NavMain .NavRow .NavColLeft .Search {
+        display:none
+    }
+
+    .NavMain .NavRow .NavColRight .ProfileAndIcons {
+        display: none;
+    }
+} */
+
+@media only screen
+and (min-width : 800px) {
+    .Footbar{
+        display: none;
+    }
+}

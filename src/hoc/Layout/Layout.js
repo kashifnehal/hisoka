@@ -12,26 +12,62 @@ import Trends from '../../containers/Trends/Trends'
 import Whatif from '../../containers/WhatIf/WhatIf'
 import ChatPage from '../../containers/Chatpage/ChatPage'
 import Logout from '../../containers/Logout/Logout'
+import Community from '../../containers/Community/Community'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 
 
 class Layout extends Component {
+    state = {
+        titleBar: 'home'
+    }
+
+    // componentDidMount = () => {
+    //     console.log('from did m', this.props.location.pathname);
+    // }
+
+    changeToHomeHandler = () => {
+        this.setState({ titleBar: 'home' })
+        this.props.history.push({
+            pathname: "/"
+        })
+    }
+    changeToSearchHandler = () => {
+        this.setState({ titleBar: 'search' })
+    }
+    changeToCommunityHandler = () => {
+        this.setState({ titleBar: 'community' })
+        this.props.history.push({
+            pathname: "/community"
+        })
+    }
+    changeToChatHandler = () => {
+        this.setState({ titleBar: 'chat' })
+        this.props.history.push({
+            pathname: "/chat"
+        })
+    }
 
     render() {
         return (
             <Auxiliary classname={classes.Layout}>
-                <Toolbar universityName={this.props.user !== null ? this.props.user.university : null} />
+                <Toolbar universityName={this.props.user !== null ? this.props.user.university : null} titleBar={this.state.titleBar} />
                 <Switch>
                     <Route path="/" exact component={FollowingPage} />
                     <Route path="/timeline" exact component={Timeline} />
                     <Route path="/profilePage" component={ProfilePage} />
                     <Route path="/whatif" component={Whatif} />
                     <Route path="/trends" component={Trends} />
+                    <Route path="/community" component={Community} />
                     <Route path="/chat" component={ChatPage} />
                     <Route path="/logout" component={Logout} />
                 </Switch>
-                <Footbar />
+                <Footbar
+                    changeToHome={this.changeToHomeHandler}
+                    changeToSearch={this.changeToSearchHandler}
+                    changeToCommunity={this.changeToCommunityHandler}
+                    changeToChat={this.changeToChatHandler}
+                />
             </Auxiliary>
         )
     }

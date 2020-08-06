@@ -111,52 +111,54 @@ class ChatPage extends Component {
     render() {
         // console.log('chats...', this.props.chats);
         return (
-            <Auxiliary style={{ marginTop: '100px' }}>
+            <Auxiliary>
 
-                <div>
-                    <p style={{ fontSize: '2rem', textAlign: 'center', marginTop: '100px' }}> Real Time Chat</p>
-                </div>
-
-                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    <div className="infinite-container" style={{ height: '350px', overflowY: 'scroll' }}>
-                        {this.props.chats && (
-                            this.renderCards()
-                        )}
-                        <div
-                            ref={el => {
-                                this.messagesEnd = el;
-                            }}
-                            style={{ float: "left", clear: "both" }}
-                        />
+                <Container style={{ marginTop: '100px' }}>
+                    <div>
+                        <p style={{ fontSize: '2rem', textAlign: 'center' }}> Real Time Chat</p>
                     </div>
 
-                    <Row >
-                        <Col span={18}>
-                            <input type="text" id="message" placeholder="Let's start talking" onChange={this.hanleSearchChange} value={this.state.chatMessage} />
+                    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                        <div className="infinite-container" style={{ height: '350px', overflowY: 'scroll' }}>
+                            {this.props.chats && (
+                                this.renderCards()
+                            )}
+                            <div
+                                ref={el => {
+                                    this.messagesEnd = el;
+                                }}
+                                style={{ float: "left", clear: "both" }}
+                            />
+                        </div>
 
-                        </Col>
-                        <Col span={2}>
-                            <Dropzone onDrop={this.onDrop}>
-                                {({ getRootProps, getInputProps }) => (
-                                    <section>
-                                        <div {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <Button>
-                                                {/* <Icon type="upload" /> */} Upload
+                        <Row style={{ marginTop: '15px' }}>
+                            <Col span={18}>
+                                <input type="text" id="message" placeholder="Let's start talking" onChange={this.hanleSearchChange} value={this.state.chatMessage} />
+
+                            </Col>
+                            <Col span={2}>
+                                <Dropzone onDrop={this.onDrop}>
+                                    {({ getRootProps, getInputProps }) => (
+                                        <section>
+                                            <div {...getRootProps()}>
+                                                <input {...getInputProps()} />
+                                                <Button>
+                                                    {/* <Icon type="upload" /> */} Upload
                                             </Button>
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone>
-                        </Col>
+                                            </div>
+                                        </section>
+                                    )}
+                                </Dropzone>
+                            </Col>
 
-                        <Col span={4}>
-                            <Button type="primary" style={{ width: '100%' }} onClick={this.submitChatMessage} type="submit">
-                                {/* <Icon type="enter" /> */} Submit
+                            <Col span={4}>
+                                <Button type="primary" style={{ width: '100%' }} onClick={this.submitChatMessage} type="submit">
+                                    {/* <Icon type="enter" /> */} Submit
                                 </Button>
-                        </Col>
-                    </Row>
-                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </Container>
 
 
                 {/* ================================ */}

@@ -9,6 +9,7 @@ import { loadPost, addPost } from '../../../store/actions/followingActions'
 import { loadComment } from '../../../store/actions/commentActions'
 import CommentPage from '../../CommentPage/CommentPage'
 import ProfilePage from '../../ProfilePage/ProfilePage'
+import camera from '../../../assets/images/camera.png'
 // import AddPost from './AddPost/AddPost'
 
 
@@ -180,7 +181,7 @@ class Following extends Component {
                                     </select> */}
                                 </Col>
                                 <Col xs={2}>
-                                    <label ><ion-icon name="videocam-outline" size="large"></ion-icon></label>
+                                    <label ><Image src={camera} /></label>
                                     {/* <input disabled={true} type="file" id="file" name="media" style={{ display: 'none' }} /> */}
                                     {/* <input type="file" name="media" onChange={this.fileSelectHandler} accept=".jpg"/> */}
                                 </Col>
@@ -252,7 +253,7 @@ class Following extends Component {
                                             </select>
                                         </Col>
                                         <Col xs={2}>
-                                            <label htmlFor="file"><ion-icon name="videocam-outline" size="large"></ion-icon></label>
+                                            <label htmlFor="file"><Image src={camera} /></label>
                                             <input type="file" id="file" onChange={this.fileSelectHandler} name="media" style={{ display: 'none' }} />
                                         </Col>
                                     </Row>

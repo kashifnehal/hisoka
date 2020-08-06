@@ -25,6 +25,28 @@ const toolbar = (props) => {
             pathname: "/trends"
         })
     }
+    console.log('titlebar is', props.titleBar);
+    let title = null
+    if (props.titleBar === 'home') {
+        title = (<Col className={classes.NavColMiddle} xs={6} sm={4} >
+            <h4 onClick={gotoFollowing} style={{ textTransform: 'capitalize' }}>{props.universityName}</h4>
+            <h4 style={{ marginLeft: '15%' }} onClick={gotoTrends}>Trends</h4>
+        </Col>)
+    } else if (props.titleBar === 'search') {
+        title = (<Col className={classes.Search} xs={6} sm={4} >
+            <SearchBar />
+        </Col>)
+    } else if (props.titleBar === 'community') {
+        title = (<Col className={classes.NavColMiddle} xs={6} sm={4} style={{ display: 'flex', justifyContent: 'space-around' }} >
+            <h4>Community</h4>
+        </Col>)
+    } else if (props.titleBar === 'chat') {
+        title = (<Col className={classes.NavColMiddle} xs={6} sm={4} style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <h4 >Chat</h4>
+        </Col>)
+    }
+
+
     return (
         <header className={classes.Toolbar}>
             <Container fluid className={classes.NavMain}>
@@ -39,15 +61,7 @@ const toolbar = (props) => {
                             </Col>
                         </Row>
                     </Col>
-                    <Col className={classes.NavColMiddle} xs={6} sm={4} >
-                        <h4 onClick={gotoFollowing} style={{ textTransform: 'capitalize' }}>{props.universityName}</h4>
-                        <h4 style={{ marginLeft: '15%' }} onClick={gotoTrends}>Trends</h4>
-                        {/* <ion-icon name="add-circle-outline" size="large"></ion-icon>
-                            <ion-icon name="add-circle-outline" size="large"></ion-icon>
-                            <ion-icon name="add-circle-outline" size="large"></ion-icon>
-                            <ion-icon name="add-circle-outline" size="large"></ion-icon>
-                            <ion-icon name="add-circle-outline" size="large"></ion-icon> */}
-                    </Col>
+                    {title}
                     <Col className={classes.NavColRight} xs={3} sm={4} >
                         <Row >
                             <Col className={classes.Sidebar}>right</Col>
