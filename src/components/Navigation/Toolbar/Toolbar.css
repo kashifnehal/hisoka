@@ -66,6 +66,9 @@ and (max-width : 800px) {
     .NavMain .NavRow .NavColLeft .Search {
         display:none
     }
+    .NavMain .NavRow .NavColLeft .Logo {
+        display:none
+    }
 
     .NavMain .NavRow .NavColRight .ProfileAndIcons {
         display: none;

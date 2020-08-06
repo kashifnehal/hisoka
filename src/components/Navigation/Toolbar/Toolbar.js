@@ -7,6 +7,7 @@ import Logo from '../Logo/Logo'
 import Home from '../../../assets/images/home.png'
 import Chat from '../../../assets/images/chat.png'
 import { withRouter } from "react-router";
+import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 
 const toolbar = (props) => {
     // let attachedSearch = ["d-none d-md-block",classes.Search]
@@ -53,18 +54,26 @@ const toolbar = (props) => {
                 <Row className={classes.NavRow}>
                     <Col className={classes.NavColLeft} xs={3} sm={3} >
                         <Row>
-                            <Col className={classes.Logo} xs={5}>
+                            <Col className={classes.Logo} md={5}>
                                 <Logo />
                             </Col>
+
                             <Col className={classes.Search} md={7} >
                                 <SearchBar />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <DrawerToggle clicked={props.drawerToggleClicked} />
                             </Col>
                         </Row>
                     </Col>
                     {title}
                     <Col className={classes.NavColRight} xs={3} sm={4} >
                         <Row >
-                            <Col className={classes.Sidebar}>right</Col>
+                            <Col className={classes.Sidebar}>
+                                Right
+                            </Col>
                         </Row>
                         <Row className={classes.ProfileAndIcons}>
                             <Col className={classes.NavIcons} md={5} >

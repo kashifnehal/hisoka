@@ -15,12 +15,27 @@ import Logout from '../../containers/Logout/Logout'
 import Community from '../../containers/Community/Community'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
 
 
 class Layout extends Component {
     state = {
-        titleBar: 'home'
+        titleBar: 'home',
+        showSideDrawer: false
     }
+
+    sideDrawerClosedHandler = () => {
+        this.setState({ showSideDrawer: false });
+    }
+    sideDrawerToggleHandler = () => {
+        const newShow = !this.state.showSideDrawer
+        this.setState({ showSideDrawer: newShow });
+    }
+
+    // sideDrawerToggleHandler = () => {
+    //     const newShow = !showSideDrawer
+    //     this.setState({ showSideDrawer: false });
+    // }
 
     // componentDidMount = () => {
     //     console.log('from did m', this.props.location.pathname);
@@ -51,7 +66,15 @@ class Layout extends Component {
     render() {
         return (
             <Auxiliary classname={classes.Layout}>
-                <Toolbar universityName={this.props.user !== null ? this.props.user.university : null} titleBar={this.state.titleBar} />
+                <Toolbar
+                    universityName={this.props.user !== null ? this.props.user.university : null}
+                    titleBar={this.state.titleBar}
+                    drawerToggleClicked={this.sideDrawerToggleHandler}
+                />
+                <SideDrawer
+                    open={this.state.showSideDrawer}
+                    closed={this.sideDrawerClosedHandler} />
+
                 <Switch>
                     <Route path="/" exact component={FollowingPage} />
                     <Route path="/timeline" exact component={Timeline} />
