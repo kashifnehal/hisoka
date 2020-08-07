@@ -26,7 +26,7 @@ const toolbar = (props) => {
             pathname: "/trends"
         })
     }
-    console.log('titlebar is', props.titleBar);
+    // console.log('titlebar is', props.titleBar);
     let title = null
     if (props.titleBar === 'home') {
         title = (<Col className={classes.NavColMiddle} xs={6} sm={4} >
@@ -37,13 +37,18 @@ const toolbar = (props) => {
         title = (<Col className={classes.Search} xs={6} sm={4} >
             <SearchBar />
         </Col>)
-    } else if (props.titleBar === 'community') {
+    } else if (props.titleBar === 'comtrends') {
         title = (<Col className={classes.NavColMiddle} xs={6} sm={4} style={{ display: 'flex', justifyContent: 'space-around' }} >
             <h4>Community</h4>
         </Col>)
     } else if (props.titleBar === 'chat') {
         title = (<Col className={classes.NavColMiddle} xs={6} sm={4} style={{ display: 'flex', justifyContent: 'space-around' }}>
             <h4 >Chat</h4>
+        </Col>)
+
+    } else if (props.titleBar === 'notification') {
+        title = (<Col className={classes.NavColMiddle} xs={6} sm={4} style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <h4 >Notification</h4>
         </Col>)
     }
 

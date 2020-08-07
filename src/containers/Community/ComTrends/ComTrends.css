@@ -1,0 +1,25 @@
+.ComTrends{
+    border: 0 solid red;
+}
+
+.ComTrendsMobile{
+    border: 0 solid red;
+
+}
+
+.ComTrendsDesktop{
+    border: 0 solid red;
+
+}
+
+
+@media (min-width: 800px) {
+    .ComTrendsMobile {
+        display: none;
+    }
+}
+@media (max-width: 800px) {
+    .ComTrendsDesktop {
+        display: none;
+    }
+}

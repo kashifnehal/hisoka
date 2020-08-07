@@ -5,6 +5,7 @@ import Home from '../../../assets/images/home.png'
 import chat from '../../../assets/images/chat.png'
 import search from '../../../assets/images/search.png'
 import community from '../../../assets/images/community.png'
+import notification from '../../../assets/images/notification.png'
 
 
 const footbar = (props) => {
@@ -14,7 +15,8 @@ const footbar = (props) => {
                 <Row>
                     <Col><Image src={Home} onClick={props.changeToHome} /></Col>
                     <Col><Image src={search} onClick={props.changeToSearch} /></Col>
-                    <Col><Image src={community} onClick={props.changeToCommunity} /></Col>
+                    <Col><Image src={community} onClick={props.changeToComTrends} /></Col>
+                    <Col><Image src={notification} onClick={props.changeToNotification} /></Col>
                     <Col><Image src={chat} onClick={props.changeToChat} /></Col>
                 </Row>
             </Container>

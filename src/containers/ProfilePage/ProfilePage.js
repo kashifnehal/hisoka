@@ -42,9 +42,9 @@ class ProfilePage extends Component {
     }
 
     componentDidUpdate = async (prevProps) => {
-        console.log('loading state', this.props.isLoading);
+        // console.log('loading state', this.props.isLoading);
         if (prevProps.user == this.props.user) {
-            console.log('same as prev')
+            // console.log('same as prev')
         }
         if (prevProps.user != this.props.user) {
             this.setState({ currentUser: this.props.user })
@@ -131,7 +131,7 @@ class ProfilePage extends Component {
     //     this.setState({ showUserPhotos: true })
     // }
     callUserPosts = () => {
-        console.log('all post inside handler', this.props.allUserPosts);
+        // console.log('all post inside handler', this.props.allUserPosts);
         if (this.props.allUserPosts !== null) {
             return this.props.allUserPosts.map(curpost => {
                 return <EachPost post={curpost} key={curpost._id} callComment={() => this.toCommentPageHandler(curpost._id)} />

@@ -16,6 +16,8 @@ import Community from '../../containers/Community/Community'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
+import Notification from '../../containers/Notification/Notification'
+import ComTrends from '../../containers/Community/ComTrends/ComTrends'
 
 
 class Layout extends Component {
@@ -50,16 +52,22 @@ class Layout extends Component {
     changeToSearchHandler = () => {
         this.setState({ titleBar: 'search' })
     }
-    changeToCommunityHandler = () => {
-        this.setState({ titleBar: 'community' })
+    changeToComTrendsHandler = () => {
+        this.setState({ titleBar: 'comtrends' })
         this.props.history.push({
-            pathname: "/community"
+            pathname: "/comtrends"
         })
     }
     changeToChatHandler = () => {
         this.setState({ titleBar: 'chat' })
         this.props.history.push({
             pathname: "/chat"
+        })
+    }
+    changeToNotificationHandler = () => {
+        this.setState({ titleBar: 'notification' })
+        this.props.history.push({
+            pathname: "/notification"
         })
     }
 
@@ -82,13 +90,16 @@ class Layout extends Component {
                     <Route path="/whatif" component={Whatif} />
                     <Route path="/trends" component={Trends} />
                     <Route path="/community" component={Community} />
+                    <Route path="/comtrends" component={ComTrends} />
                     <Route path="/chat" component={ChatPage} />
                     <Route path="/logout" component={Logout} />
+                    <Route path="/notification" component={Notification} />
                 </Switch>
                 <Footbar
                     changeToHome={this.changeToHomeHandler}
                     changeToSearch={this.changeToSearchHandler}
-                    changeToCommunity={this.changeToCommunityHandler}
+                    changeToComTrends={this.changeToComTrendsHandler}
+                    changeToNotification={this.changeToNotificationHandler}
                     changeToChat={this.changeToChatHandler}
                 />
             </Auxiliary>
