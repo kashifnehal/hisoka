@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Modal, Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col, Modal, Tabs, Tab, Button } from 'react-bootstrap'
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import classes from './ComTrends.css';
+import { connect } from 'react-redux'
+import { withRouter } from "react-router";
+import { loadCommunity, addCommunity } from '../../../store/actions/communityActions'
 
 class ComTrends extends Component {
     state = {
         showCreateComModal: false,
-        communityPrivacy: '',
-        communityName: ''
+        communityPrivacy: 'public',
+        name: '',
+        pic: ''
+    }
+
+    componentDidMount = async () => {
+        await this.props.onLoadCommunity(this.props.user._id)
     }
 
     closeCreateComModalHandler = () => {
@@ -16,7 +24,20 @@ class ComTrends extends Component {
     showCreateComModalHandler = () => {
         this.setState({ showCreateComModal: true })
     }
+    onSubmitHandler = async (event) => {
+        event.preventDefault();
+        const data = {
+            pic: this.state.pic,
+            name: this.state.name,
+            communityPrivacy: this.state.communityPrivacy,
+        }
+        await this.props.onAddCommunity(data, this.props.user._id)
+        this.setState({ name: '', communityPrivacy: 'public', showCreateComModal: false })
+    }
+
+
     render() {
+        console.log('allcomm', this.props.allCommunity);
         return (
             <Auxiliary style={{ paddingTop: '100px' }}>
                 <Container className={classes.ComTrendsDesktop}>
@@ -27,7 +48,6 @@ class ComTrends extends Component {
                     <h3 style={{ paddingTop: '100px' }}>Your Communities</h3>
                     <h3 style={{ paddingTop: '100px' }}>Trending in Silicon</h3>
                     <h3 style={{ paddingTop: '100px' }}>Trending Overall</h3>
-
                 </Container>
                 <Container>
                     <Row>
@@ -43,8 +63,8 @@ class ComTrends extends Component {
                                 <Container fluid>
                                     <Row>
                                         <Col>
-                                            <label htmlFor="communityName">Community Name</label>
-                                            <input type="text" id="communityName" onChange={(e) => this.setState({ communityName: e.target.value })} name="communityName" />
+                                            <label htmlFor="name">Community Name</label>
+                                            <input type="text" id="name" onChange={(e) => this.setState({ name: e.target.value })} name="name" />
                                         </Col>
                                     </Row>
                                     <br />
@@ -53,14 +73,20 @@ class ComTrends extends Component {
                                             <label htmlFor="communityPrivacy">Community Privacy</label>
                                             <select name="communityPrivacy" id="communityPrivacy" onChange={e => this.setState({ communityPrivacy: e.target.value })}>
                                                 <option value="public" >Public</option>
-                                                {/* {this.props.user !== null ? <option value={this.props.user.university}>{this.props.user.university}</option> : null} */}
-                                                <option value="followers">silicon</option>
+                                                {this.props.user !== null ? <option value={this.props.user.university}>{this.props.user.university}</option> : null}
+                                                <option value="followers">Followers</option>
                                             </select>
                                         </Col>
                                     </Row>
 
                                 </Container>
                             </Modal.Body>
+                            <Modal.Footer >
+                                <Row >
+                                    <Col><Button variant="primary" size="sm" onClick={this.closeCreateComModalHandler}>Close</Button></Col>
+                                    <Col><Button variant="primary" size="sm" onClick={this.onSubmitHandler}>Post</Button></Col>
+                                </Row>
+                            </Modal.Footer>
                         </Modal>
                     </Row>
                 </Container>
@@ -98,4 +124,18 @@ class ComTrends extends Component {
     }
 }
 
-export default ComTrends;
+
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user,
+        allCommunity: state.community.allCommunity,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onLoadCommunity: (profileId) => dispatch(loadCommunity(profileId)),
+        onAddCommunity: (data, profileId) => dispatch(addCommunity(data, profileId))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ComTrends));

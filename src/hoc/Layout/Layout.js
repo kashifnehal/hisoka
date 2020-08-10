@@ -12,7 +12,7 @@ import Trends from '../../containers/Trends/Trends'
 import Whatif from '../../containers/WhatIf/WhatIf'
 import ChatPage from '../../containers/Chatpage/ChatPage'
 import Logout from '../../containers/Logout/Logout'
-import Community from '../../containers/Community/Community'
+import Community from '../../containers/Community/CommunityPage'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'

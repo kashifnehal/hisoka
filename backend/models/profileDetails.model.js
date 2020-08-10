@@ -26,6 +26,10 @@ const profileDetailsSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     }],
+    communities: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Community"
+    }],
     userposts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"

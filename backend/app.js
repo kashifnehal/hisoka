@@ -114,9 +114,8 @@ app.use('/whatif', whatifRouter);
 const chatRouter = require('./routes/chat');
 app.use('/chat', chatRouter);
 
-// === NOT USING====
-// const profileRefsRouter = require('./routes/profileRefs');
-// app.use('/profileRefs', profileRefsRouter);
+const communityRouter = require('./routes/community');
+app.use('/community', communityRouter);
 
 const aboutRouter = require('./routes/about');
 app.use('/aboutDetails', aboutRouter);
