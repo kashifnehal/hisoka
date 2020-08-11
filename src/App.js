@@ -18,9 +18,8 @@ class App extends Component {
   }
 
   render() {
-    // console.log('auth in app', this.props.isAuthenticated);
     let firstPage = <WhitePage />
-    if (this.props.isAuthenticated) {
+    if (this.props.isAuthenticated && this.props.user !== null) {
       firstPage = <Layout />
     } else if (this.props.isAuthenticated === false) {
       firstPage = <Login />
@@ -38,6 +37,7 @@ const mapStateToProps = state => {
   return {
     // isAuthenticated: state.auth.token !== null
     isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user
   }
 }
 const mapDispatchToProps = dispatch => {

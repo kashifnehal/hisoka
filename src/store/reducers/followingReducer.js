@@ -1,8 +1,9 @@
 import * as actionTypes from './../actions/actionTypes'
 
 const initialState = {
-    loadingPost: false,
+    loadingPost: null,
     allPosts: [],
+    allUnivPosts: [],
     addingPostLoader: false,
     newPost: []
 }
@@ -20,6 +21,12 @@ export default function (state = initialState, action) {
                 loadingPost: false,
                 allPosts: action.allPosts
             };
+        case actionTypes.LOAD_UNIV_POST_SUCCESS:
+            return {
+                ...state,
+                loadingPost: false,
+                allUnivPosts: action.allUnivPosts
+            };
         case actionTypes.START_ADDING_POST:
             return {
                 ...state,
@@ -30,7 +37,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 addingPostLoader: false,
-                allPosts: [action.newPost, ...state.allPosts],
+                allUnivPosts: [action.newPost, ...state.allUnivPosts],
                 // addingPostLoader: false
             };
 

@@ -34,14 +34,19 @@ class Layout extends Component {
         this.setState({ showSideDrawer: newShow });
     }
 
-    // sideDrawerToggleHandler = () => {
-    //     const newShow = !showSideDrawer
-    //     this.setState({ showSideDrawer: false });
-    // }
-
-    // componentDidMount = () => {
-    //     console.log('from did m', this.props.location.pathname);
-    // }
+    componentDidMount = () => {
+        if (this.props.user !== null) {
+            if (this.props.location.pathname === "/") {
+                this.setState({ titleBar: 'home' })
+            } else if (this.props.location.pathname === '/community' || this.props.location.pathname === '/comtrends') {
+                this.setState({ titleBar: 'comtrends' })
+            } else if (this.props.location.pathname === '/chat') {
+                this.setState({ titleBar: 'chat' })
+            } else if (this.props.location.pathname === '/notification') {
+                this.setState({ titleBar: 'notification' })
+            }
+        }
+    }
 
     changeToHomeHandler = () => {
         this.setState({ titleBar: 'home' })

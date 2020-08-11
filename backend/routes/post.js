@@ -8,7 +8,6 @@ let Comment = require('../models/comment.model')
 let ProfileDetails = require('../models/profileDetails.model')
 const postController = require('../controllers/post')
 const auth = require('../../backend/middleware/auth');
-const { populate } = require('../models/profileDetails.model');
 
 
 
@@ -30,6 +29,12 @@ const upload = multer({
 router.get('/', auth, function (req, res) {
   Post.find().populate("profileowner").sort({ createdAt: -1 })
     .then(posts => res.json(posts))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.get('/:university', function (req, res) {
+  Post.find({ university: req.params.university }).populate("profileowner").sort({ createdAt: -1 })
+    .then(post => res.json(post))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 

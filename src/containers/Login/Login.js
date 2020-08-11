@@ -47,11 +47,11 @@ class Login extends Component {
         // if (this.props.isAuthenticated) {
         // await this.props.onLoadUser()
         // }
-        if (this.props.isAuthenticated) {
-            this.props.history.push({
-                pathname: "/followingPage"
-            })
-        }
+        // if (this.props.isAuthenticated) {
+        //     this.props.history.push({
+        //         pathname: "/followingPage"
+        //     })
+        // }
     }
     onStartLogin = async (event) => {
         event.preventDefault();
@@ -61,12 +61,7 @@ class Login extends Component {
         // await this.props.onLoadUser()
         // }
         // console.log('b4 history', this.props.isAuthenticated)
-        if (this.props.isAuthenticated) {
-            // console.log('inside login history', this.props.isAuthenticated)
-            this.props.history.push({
-                pathname: "/followingPage"
-            })
-        }
+
     }
 
     onStartLogout = (event) => {
@@ -86,6 +81,13 @@ class Login extends Component {
                 this.setState({ msg: null })
             }
         }
+        // console.log('form login', this.props.user)
+        // if (this.props.user !== null) {
+        //     console.log('inside login history', this.props.isAuthenticated)
+        //     this.props.history.push({
+        //         pathname: "/"
+        //     })
+        // }
         // if (error !== prevProps.error) {
         //     console.log('inside if');
         //     //check for register error
@@ -148,7 +150,8 @@ const mapStateToProps = state => {
     return {
         // isAuthenticated: state.auth.token !== null
         isAuthenticated: state.auth.isAuthenticated,
-        error: state.error
+        error: state.error,
+        user: state.auth.user,
     }
 }
 const mapDispatchToProps = dispatch => {

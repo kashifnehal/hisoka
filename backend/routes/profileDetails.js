@@ -192,7 +192,6 @@ router.get('/:profileId/userposts', auth, function (req, res) {
         .catch(err => res.status(400).json('Error: ' + err));
 
 })
-
 //adding a new post will be saved in all posts 
 //and in that profile's userpost also post will be saved
 router.post('/:profileId/userposts', upload.single("media"), auth, function (req, res, next) {

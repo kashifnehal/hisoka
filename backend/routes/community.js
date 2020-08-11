@@ -20,17 +20,33 @@ const upload = multer({
     storage: storage,
 });
 
+router.get('/', function (req, res) {
+    Community.find().sort({ createdAt: -1 })
+        .then(com => res.json(com))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+router.get('/of/:university', function (req, res) {
+    Community.find({ university: req.params.university }).sort({ createdAt: -1 })
+        .then(com => res.json(com))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.get('/:profileId', function (req, res) {
-    ProfileDetails.findById(req.params.profileId).populate("communities")
+    ProfileDetails.findById(req.params.profileId).populate({ path: 'communities', populate: { path: 'profileowner' } })
         .then(profile => res.json(profile.communities))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
-router.post('/:profileId', function (req, res, next) {
-    const pic = req.body.pic
+router.post('/:profileId', upload.single("pic"), function (req, res, next) {
+    const pic = "community.jpg"
     const name = req.body.name;
     const communityPrivacy = req.body.communityPrivacy;
+    // if (typeof req.file === "undefined") {
+    //     pic = "community.jpg";
+    // } else {
+    //     pic = req.file.filename
+    // }
     const newCommunity = new Community({
         pic,
         name,
@@ -53,5 +69,6 @@ router.post('/:profileId', function (req, res, next) {
         })
         .catch(err => res.status(400).json('Error: ' + err));
 })
+
 
 module.exports = router;

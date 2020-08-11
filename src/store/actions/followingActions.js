@@ -32,6 +32,14 @@ export const loadPostSuccess = (allPosts) => {
         allPosts: allPosts
     }
 }
+
+export const loadUnivPostSuccess = (allUnivPosts) => {
+    return {
+        type: actionTypes.LOAD_UNIV_POST_SUCCESS,
+        allUnivPosts: allUnivPosts
+    }
+}
+
 export const addPostSuccess = (newPost) => {
     // console.log('to addpsuc', newPost);
     return {
@@ -54,6 +62,25 @@ export const loadPost = () => {
             // console.log('inside try f action');
             const res = await axios.get(getPostUrl, tokenConfig(getState));
             dispatch(loadPostSuccess(res.data))
+        } catch (err) {
+            // alert("Incorrect User ID / Password");
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    };
+};
+
+export const loadUnivPost = (univName) => {
+    // console.log('inside loadpost action')
+    return async (dispatch, getState) => {
+        dispatch(startLoadingPost());
+
+        const getPostUrl =
+            'http://localhost:5000/postPage/' + univName;
+
+        try {
+            // console.log('inside try f action');
+            const res = await axios.get(getPostUrl, tokenConfig(getState));
+            dispatch(loadUnivPostSuccess(res.data))
         } catch (err) {
             // alert("Incorrect User ID / Password");
             dispatch(returnErrors(err.response.data, err.response.status));

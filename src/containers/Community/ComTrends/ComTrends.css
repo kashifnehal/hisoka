@@ -12,6 +12,17 @@
 
 }
 
+.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+.scrollmenu a {
+    display: inline-block;
+    text-align: center;
+    padding: 14px;
+}
+
 
 @media (min-width: 800px) {
     .ComTrendsMobile {

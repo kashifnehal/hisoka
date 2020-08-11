@@ -4,7 +4,10 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import classes from './ComTrends.css';
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { loadCommunity, addCommunity } from '../../../store/actions/communityActions'
+import { loadCommunity, loadUserCommunity, addCommunity, loadUnivCommunity } from '../../../store/actions/communityActions'
+import FolCommunity from '../../../components/commmunityTabs/FolCommunity/FolCommunity'
+import UnivCommunity from '../../../components/commmunityTabs/UnivCommunity/UnivCommunity'
+import OverallCommunity from '../../../components/commmunityTabs/OverallCommunity/OverallCommunity'
 
 class ComTrends extends Component {
     state = {
@@ -15,7 +18,11 @@ class ComTrends extends Component {
     }
 
     componentDidMount = async () => {
-        await this.props.onLoadCommunity(this.props.user._id)
+        if (this.props.user !== null) {
+            await this.props.onLoadCommunity()
+            await this.props.onLoadUserCommunity(this.props.user._id)
+            await this.props.onLoadUnivCommunity(this.props.user.university)
+        }
     }
 
     closeCreateComModalHandler = () => {
@@ -32,22 +39,49 @@ class ComTrends extends Component {
             communityPrivacy: this.state.communityPrivacy,
         }
         await this.props.onAddCommunity(data, this.props.user._id)
-        this.setState({ name: '', communityPrivacy: 'public', showCreateComModal: false })
+
+        this.props.history.push({
+            pathname: "/community",
+            state: { name: this.state.name, communityPrivacy: this.state.communityPrivacy }
+        })
     }
 
 
     render() {
-        console.log('allcomm', this.props.allCommunity);
+
         return (
             <Auxiliary style={{ paddingTop: '100px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '150px 50px 0 50px' }}>
+                    <button >Yo Admin</button>
+                    <button onClick={this.showCreateComModalHandler}>+ CreateOne</button>
+                </div>
                 <Container className={classes.ComTrendsDesktop}>
-                    <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Col><button >Yo Admin</button></Col>
-                        <Col><button onClick={this.showCreateComModalHandler}>+ CreateOne</button></Col>
-                    </Row>
                     <h3 style={{ paddingTop: '100px' }}>Your Communities</h3>
-                    <h3 style={{ paddingTop: '100px' }}>Trending in Silicon</h3>
+                    <Row className={classes.scrollmenu}>
+                        <Col >
+                            <br /><button>Show All</button><br />
+                            <h6>comm you followed</h6>
+                            {/* {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                                return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
+                            }) : null} */}
+                        </Col>
+                    </Row>
+                    <h3 style={{ paddingTop: '100px' }}>Trending in {this.props.user.university}</h3>
+                    <Row className={classes.scrollmenu}>
+                        <Col>
+                            {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
+                                return <a><UnivCommunity key={curcom._id} curcom={curcom} /></a>
+                            }) : null}
+                        </Col>
+                    </Row>
                     <h3 style={{ paddingTop: '100px' }}>Trending Overall</h3>
+                    <Row className={classes.scrollmenu} style={{ marginBottom: '50px' }}>
+                        <Col>
+                            {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
+                                return <a><OverallCommunity key={curcom._id} curcom={curcom} /></a>
+                            }) : null}
+                        </Col>
+                    </Row>
                 </Container>
                 <Container>
                     <Row>
@@ -96,21 +130,28 @@ class ComTrends extends Component {
                             <Row>
                                 <Col><button >Yo Admin</button></Col>
                                 <Col><button onClick={this.showCreateComModalHandler}>+ CreateOne</button></Col>
-                            </Row><br />
+                            </Row>
+                            <br />
                             <Row>
                                 <Col>
                                     <h6>Showing Trending Communities from</h6>
                                     <Tabs defaultActiveKey="following" id="uncontrolled-tab-example" >
                                         <Tab eventKey="following" title="Following" onClick={this.userPostsHandler} >
                                             <br /><button>Show All</button><br />
-                                            Communities You Follow
+                                            {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                                                return <FolCommunity key={curcom._id} curcom={curcom} />
+                                            }) : null}
                                         </Tab>
                                         <Tab eventKey="silicon" title="Silicon">
-                                            Trending in Silicon
+                                            {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
+                                                return <UnivCommunity key={curcom._id} curcom={curcom} />
+                                            }) : null}
                                         </Tab>
 
                                         <Tab eventKey="friends" title="Overall" >
-                                            Trending Overall
+                                            {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
+                                                return <OverallCommunity key={curcom._id} curcom={curcom} />
+                                            }) : null}
                                         </Tab>
                                     </Tabs>
                                 </Col>
@@ -129,11 +170,18 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         allCommunity: state.community.allCommunity,
+        allUserCommunity: state.community.allUserCommunity,
+        allUnivCommunity: state.community.allUnivCommunity,
+        loadingCommunity: state.community.loadingCommunity,
+        loadingUserCommunity: state.community.loadingUserCommunity,
+        loadingUnivCommunity: state.community.loadingUnivCommunity,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onLoadCommunity: (profileId) => dispatch(loadCommunity(profileId)),
+        onLoadCommunity: () => dispatch(loadCommunity()),
+        onLoadUserCommunity: (profileId) => dispatch(loadUserCommunity(profileId)),
+        onLoadUnivCommunity: (univName) => dispatch(loadUnivCommunity(univName)),
         onAddCommunity: (data, profileId) => dispatch(addCommunity(data, profileId))
     }
 }

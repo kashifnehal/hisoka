@@ -5,7 +5,7 @@ import EachPost from '../../../components/EachFormat/EachPost/EachPost'
 import classes from './Following.css'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { loadPost, addPost } from '../../../store/actions/followingActions'
+import { loadPost, addPost, loadUnivPost } from '../../../store/actions/followingActions'
 import { loadComment } from '../../../store/actions/commentActions'
 import CommentPage from '../../CommentPage/CommentPage'
 import ProfilePage from '../../ProfilePage/ProfilePage'
@@ -33,7 +33,9 @@ class Following extends Component {
 
     componentDidMount = async () => {
         this.setState({ callEachPost: true })
-        await this.props.onLoadPost()
+        // if (this.props.user !== null) {
+        await this.props.onLoadUnivPost(this.props.user.university)
+        // }
     }
 
     componentDidUpdate = () => {
@@ -70,7 +72,6 @@ class Following extends Component {
     }
 
     fileSelectHandler = event => {
-        // console.log('selected image', event.target.files[0]);
         this.setState({
             media: event.target.files[0],
         })
@@ -108,7 +109,6 @@ class Following extends Component {
         })
     }
     // callProfileHandler = () => {
-    //     console.log('calling profilepage');
     //     return <ProfilePage user={this.props.user} />
     //     this.setState({ showProfile: false })
     // }
@@ -128,7 +128,7 @@ class Following extends Component {
 
     eachPostHandler = () => {
         if (this.props.user !== null) {
-            return this.props.allPosts.map(curpost =>
+            return this.props.allUnivPosts.map(curpost =>
             // curpost.profileowner[0].profilePic !== undefined ?
             {
                 return <EachPost
@@ -149,14 +149,13 @@ class Following extends Component {
 
 
     render() {
-        let userProfilePic = null
 
+        let userProfilePic = null
         if (this.props.user !== null) {
             if (this.props.user.profilePic !== "") {
                 userProfilePic = <Image src={process.env.PUBLIC_URL + '/images/' + String(this.props.user.profilePic)} roundedCircle style={{ height: '50px', width: '50px' }} onClick={this.gotoProfilePage} />
             }
         }
-        // console.log('profile details', this.props.proDetails)
         return (
             <Auxiliary className={classes.Write}>
                 {/* {this.state.showProfile ? this.callProfileHandler() : null} */}
@@ -279,14 +278,17 @@ class Following extends Component {
 const mapStateToProps = state => {
     return {
         allPosts: state.following.allPosts,
+        allUnivPosts: state.following.allUnivPosts,
         user: state.auth.user,
         isAuthenticated: state.auth.isAuthenticated,
-        proDetails: state.auth.proDetails
+        proDetails: state.auth.proDetails,
+        loadingPost: state.following.loadingPost,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         onLoadPost: () => dispatch(loadPost()),
+        onLoadUnivPost: (univName) => dispatch(loadUnivPost(univName)),
         onAddPost: (data, profileId) => dispatch(addPost(data, profileId)),
         onLoadComment: (postId) => dispatch(loadComment(postId)),
     }

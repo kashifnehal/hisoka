@@ -27,9 +27,9 @@ export default function (state = initialState, action) {
             // console.log('user data', action.payload)
             return {
                 ...state,
-                isAuthenticated: true,
                 user: action.payload,
                 isLoading: false,
+                isAuthenticated: true,
 
             };
         case LOGIN_SUCCESS:
