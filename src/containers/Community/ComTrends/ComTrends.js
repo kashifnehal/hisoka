@@ -14,7 +14,13 @@ class ComTrends extends Component {
         showCreateComModal: false,
         communityPrivacy: 'public',
         name: '',
-        pic: ''
+        pic: '',
+        showAdminCom: false
+    }
+
+    toggleAdminCom = () => {
+        const newshowAdcom = !this.state.showAdminCom
+        this.setState({ showAdminCom: newshowAdcom })
     }
 
     componentDidMount = async () => {
@@ -48,41 +54,58 @@ class ComTrends extends Component {
 
 
     render() {
+        let adminDeskCom = (
+            <Container className={classes.ComTrendsDesktop}>
+                <h3 style={{ paddingTop: '100px' }}>Followed Communities</h3>
+                <Row className={classes.scrollmenu}>
+                    <Col >
+                        {/* <br /><button>Show All</button><br /> */}
+                        <h6>comm you followed</h6>
+                        {/* {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                                return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
+                            }) : null} */}
+                    </Col>
+                </Row>
+                <h3 style={{ paddingTop: '100px' }}>Trending in {this.props.user.university}</h3>
+                <Row className={classes.scrollmenu}>
+                    <Col>
+                        {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
+                            return <a><UnivCommunity key={curcom._id} curcom={curcom} /></a>
+                        }) : null}
+                    </Col>
+                </Row>
+                <h3 style={{ paddingTop: '100px' }}>Trending Overall</h3>
+                <Row className={classes.scrollmenu} style={{ marginBottom: '50px' }}>
+                    <Col>
+                        {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
+                            return <a><OverallCommunity key={curcom._id} curcom={curcom} /></a>
+                        }) : null}
+                    </Col>
+                </Row>
+            </Container>
+        )
+        if (this.state.showAdminCom) {
+            adminDeskCom = <Container>
+                <h3 style={{ paddingTop: '100px' }}>Your Communities</h3>
+                <Row className={classes.scrollmenu}>
+                    <Col >
+                        <br /><button>Show All</button><br />
+                        {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                            return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
+                        }) : null}
+                    </Col>
+                </Row>
+            </Container>
+        }
+
 
         return (
             <Auxiliary style={{ paddingTop: '100px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '150px 50px 0 50px' }}>
-                    <button >Yo Admin</button>
+                    <button onClick={this.toggleAdminCom} >{this.state.showAdminCom ? 'Close' : 'Yo Admin'}</button>
                     <button onClick={this.showCreateComModalHandler}>+ CreateOne</button>
                 </div>
-                <Container className={classes.ComTrendsDesktop}>
-                    <h3 style={{ paddingTop: '100px' }}>Your Communities</h3>
-                    <Row className={classes.scrollmenu}>
-                        <Col >
-                            <br /><button>Show All</button><br />
-                            <h6>comm you followed</h6>
-                            {/* {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                                return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
-                            }) : null} */}
-                        </Col>
-                    </Row>
-                    <h3 style={{ paddingTop: '100px' }}>Trending in {this.props.user.university}</h3>
-                    <Row className={classes.scrollmenu}>
-                        <Col>
-                            {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
-                                return <a><UnivCommunity key={curcom._id} curcom={curcom} /></a>
-                            }) : null}
-                        </Col>
-                    </Row>
-                    <h3 style={{ paddingTop: '100px' }}>Trending Overall</h3>
-                    <Row className={classes.scrollmenu} style={{ marginBottom: '50px' }}>
-                        <Col>
-                            {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
-                                return <a><OverallCommunity key={curcom._id} curcom={curcom} /></a>
-                            }) : null}
-                        </Col>
-                    </Row>
-                </Container>
+                {adminDeskCom}
                 <Container>
                     <Row>
                         <Modal
