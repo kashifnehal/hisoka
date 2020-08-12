@@ -1,28 +1,21 @@
 .ComTrends{
     border: 0 solid red;
 }
-
 .ComTrendsMobile{
     border: 0 solid red;
-
 }
-
 .ComTrendsDesktop{
     border: 0 solid red;
-
 }
-
 .scrollmenu {
     overflow: auto;
     white-space: nowrap;
-  }
-  
-.scrollmenu a {
+  } 
+.scrollmenu div {
     display: inline-block;
     text-align: center;
-    padding: 14px;
+    padding: 10px;
 }
-
 
 @media (min-width: 800px) {
     .ComTrendsMobile {

@@ -53,9 +53,20 @@ export const addCommunitySuccess = (newCommunity) => {
     }
 }
 
+export const startFolComLoader = () => {
+    return {
+        type: actionTypes.START_FOLCOM_LOADER
+    }
+}
+export const stopFolComLoader = () => {
+    return {
+        type: actionTypes.STOP_FOLCOM_LOADER
+    }
+}
+
 export const loadCommunity = () => {
     return async (dispatch, getState) => {
-        dispatch(startLoadingCommunity)
+        dispatch(startLoadingCommunity())
         const loadCommunityUrl = 'http://localhost:5000/community/'
         try {
             const res = await axios.get(loadCommunityUrl, tokenConfig(getState))
@@ -67,7 +78,7 @@ export const loadCommunity = () => {
 }
 export const loadUserCommunity = (profileId) => {
     return async (dispatch, getState) => {
-        dispatch(startLoadingUserCommunity)
+        dispatch(startLoadingUserCommunity())
         const loadUserCommunityUrl = 'http://localhost:5000/community/' + profileId
         try {
             const res = await axios.get(loadUserCommunityUrl, tokenConfig(getState))
@@ -80,12 +91,10 @@ export const loadUserCommunity = (profileId) => {
 
 export const loadUnivCommunity = (univName) => {
     return async (dispatch, getState) => {
-        dispatch(startLoadingUnivCommunity)
+        dispatch(startLoadingUnivCommunity())
         const loadUnivCommunityUrl = 'http://localhost:5000/community/of/' + univName
-        console.log('univ name', univName);
         try {
             const res = await axios.get(loadUnivCommunityUrl, tokenConfig(getState))
-            console.log('univ data', res.data);
             dispatch(loadUnivCommunitySuccess(res.data))
         } catch (err) {
             dispatch(returnErrors(err.response.data, err.response.status));
@@ -95,7 +104,7 @@ export const loadUnivCommunity = (univName) => {
 
 export const addCommunity = (data, profileId) => {
     return async (dispatch, getState) => {
-        dispatch(startAddingCommunity)
+        dispatch(startAddingCommunity())
         const addCommunityUrl = 'http://localhost:5000/community/' + profileId
         try {
             const res = await axios.post(addCommunityUrl, data, tokenConfig(getState))
@@ -105,3 +114,29 @@ export const addCommunity = (data, profileId) => {
         }
     }
 }
+export const addInFolCom = (profileId, comId) => {
+    return async (dispatch, getState) => {
+        dispatch(startFolComLoader())
+        const addInFolComUrl = 'http://localhost:5000/community/follow/' + profileId + '/' + comId
+        console.log('url', addInFolComUrl);
+        try {
+            const res = await axios.post(addInFolComUrl, tokenConfig(getState))
+            dispatch(stopFolComLoader())
+        } catch (err) {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    }
+}
+export const deleteInFolCom = (profileId, comId) => {
+    return async (dispatch, getState) => {
+        dispatch(startFolComLoader())
+        const deleteInFolComUrl = 'http://localhost:5000/community/delete/' + profileId + '/' + comId
+        try {
+            const res = await axios.post(deleteInFolComUrl, tokenConfig(getState))
+            dispatch(stopFolComLoader())
+        } catch (err) {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    }
+}
+

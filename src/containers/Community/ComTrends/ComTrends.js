@@ -4,10 +4,11 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import classes from './ComTrends.css';
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { loadCommunity, loadUserCommunity, addCommunity, loadUnivCommunity } from '../../../store/actions/communityActions'
+import { loadCommunity, loadUserCommunity, addCommunity, loadUnivCommunity, addInFolCom } from '../../../store/actions/communityActions'
 import FolCommunity from '../../../components/commmunityTabs/FolCommunity/FolCommunity'
 import UnivCommunity from '../../../components/commmunityTabs/UnivCommunity/UnivCommunity'
 import OverallCommunity from '../../../components/commmunityTabs/OverallCommunity/OverallCommunity'
+import axios from 'axios'
 
 class ComTrends extends Component {
     state = {
@@ -18,7 +19,14 @@ class ComTrends extends Component {
         showAdminCom: false
     }
 
+    // followHandler = async (comId, followText) => {
+    //     console.log(comId, followText);
+    //     await this.props.onAddInFolCom(this.props.user._id, comId)
+    //     // axios.post('http://localhost:5000/community/follow/' + this.props.user._id + '/' + comId)
+    // }
+
     toggleAdminCom = () => {
+        console.log('clicked');
         const newshowAdcom = !this.state.showAdminCom
         this.setState({ showAdminCom: newshowAdcom })
     }
@@ -54,31 +62,31 @@ class ComTrends extends Component {
 
 
     render() {
+        // console.log('load ', this.props.loadingCommunity);
+        // console.log('load univ ', this.props.loadingUnivCommunity);
+        // console.log('load user', this.props.loadingUserCommunity);
         let adminDeskCom = (
-            <Container className={classes.ComTrendsDesktop}>
-                <h3 style={{ paddingTop: '100px' }}>Followed Communities</h3>
+            <Container >
+                <h3 style={{ paddingTop: '10px' }}>Followed Communities</h3>
                 <Row className={classes.scrollmenu}>
                     <Col >
                         {/* <br /><button>Show All</button><br /> */}
                         <h6>comm you followed</h6>
-                        {/* {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                                return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
-                            }) : null} */}
                     </Col>
                 </Row>
-                <h3 style={{ paddingTop: '100px' }}>Trending in {this.props.user.university}</h3>
+                <h3 style={{ paddingTop: '10px' }}>Trending in {this.props.user.university}</h3>
                 <Row className={classes.scrollmenu}>
                     <Col>
                         {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
-                            return <a><UnivCommunity key={curcom._id} curcom={curcom} /></a>
+                            return <div><UnivCommunity key={curcom._id} curcom={curcom} /></div>
                         }) : null}
                     </Col>
                 </Row>
-                <h3 style={{ paddingTop: '100px' }}>Trending Overall</h3>
+                <h3 style={{ paddingTop: '10px' }}>Trending Overall</h3>
                 <Row className={classes.scrollmenu} style={{ marginBottom: '50px' }}>
                     <Col>
                         {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
-                            return <a><OverallCommunity key={curcom._id} curcom={curcom} /></a>
+                            return <div><OverallCommunity key={curcom._id} followClicked={this.followHandler} curcom={curcom} /></div>
                         }) : null}
                     </Col>
                 </Row>
@@ -86,26 +94,65 @@ class ComTrends extends Component {
         )
         if (this.state.showAdminCom) {
             adminDeskCom = <Container>
-                <h3 style={{ paddingTop: '100px' }}>Your Communities</h3>
+                <h3 style={{ paddingTop: '10px' }}>Your Communities</h3>
                 <Row className={classes.scrollmenu}>
                     <Col >
                         <br /><button>Show All</button><br />
                         {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                            return <a><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></a>
+                            return <div><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></div>
                         }) : null}
                     </Col>
                 </Row>
             </Container>
         }
 
+        let adminMobCom = (
+            <Col>
+                <h6>Showing Trending Communities from</h6>
+                <Tabs defaultActiveKey="following" id="uncontrolled-tab-example" >
+                    <Tab eventKey="following" title="Following" onClick={this.userPostsHandler} >
+                        {/* <br /><button>Show All</button><br />
+                        {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                            return <FolCommunity key={curcom._id} curcom={curcom} />
+                        }) : null} */}
+                        <h6>com you follow</h6>
+                    </Tab>
+                    <Tab eventKey="silicon" title="Silicon">
+                        {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
+                            return <UnivCommunity key={curcom._id} curcom={curcom} />
+                        }) : null}
+                    </Tab>
+
+                    <Tab eventKey="friends" title="Overall" >
+                        {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
+                            return <OverallCommunity key={curcom._id} userFolCom={this.props.user.folCommunities} curcom={curcom} />
+                        }) : null}
+                    </Tab>
+                </Tabs>
+            </Col>
+        )
+        if (this.state.showAdminCom) {
+            adminMobCom = <Col>
+                <h3 style={{ paddingTop: '10px' }}>Your Communities</h3>
+                <br /><button>Show All</button><br />
+                {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
+                    return <FolCommunity key={curcom._id} curcom={curcom} />
+                }) : null}
+            </Col>
+        }
+
 
         return (
-            <Auxiliary style={{ paddingTop: '100px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '150px 50px 0 50px' }}>
-                    <button onClick={this.toggleAdminCom} >{this.state.showAdminCom ? 'Close' : 'Yo Admin'}</button>
-                    <button onClick={this.showCreateComModalHandler}>+ CreateOne</button>
-                </div>
-                {adminDeskCom}
+            <Auxiliary >
+                <Container className={classes.ComTrendsDesktop} style={{ paddingTop: '100px' }}>
+                    <Container>
+                        <Row style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button onClick={this.toggleAdminCom} style={{ marginRight: '30px' }}>{this.state.showAdminCom ? 'Close' : 'Yo Admin'}</Button>
+                            <Button onClick={this.showCreateComModalHandler}>+ CreateOne</Button>
+                        </Row>
+                    </Container>
+                    {adminDeskCom}
+                </Container>
                 <Container>
                     <Row>
                         <Modal
@@ -151,33 +198,12 @@ class ComTrends extends Component {
                     <Row style={{ paddingTop: '100px' }}>
                         <Container>
                             <Row>
-                                <Col><button >Yo Admin</button></Col>
-                                <Col><button onClick={this.showCreateComModalHandler}>+ CreateOne</button></Col>
+                                <Col><Button onClick={this.toggleAdminCom} style={{ marginRight: '30px' }}>{this.state.showAdminCom ? 'Close' : 'Yo Admin'}</Button></Col>
+                                <Col><Button onClick={this.showCreateComModalHandler}>+ CreateOne</Button></Col>
                             </Row>
                             <br />
                             <Row>
-                                <Col>
-                                    <h6>Showing Trending Communities from</h6>
-                                    <Tabs defaultActiveKey="following" id="uncontrolled-tab-example" >
-                                        <Tab eventKey="following" title="Following" onClick={this.userPostsHandler} >
-                                            <br /><button>Show All</button><br />
-                                            {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                                                return <FolCommunity key={curcom._id} curcom={curcom} />
-                                            }) : null}
-                                        </Tab>
-                                        <Tab eventKey="silicon" title="Silicon">
-                                            {this.props.loadingUnivCommunity === false ? this.props.allUnivCommunity.map(curcom => {
-                                                return <UnivCommunity key={curcom._id} curcom={curcom} />
-                                            }) : null}
-                                        </Tab>
-
-                                        <Tab eventKey="friends" title="Overall" >
-                                            {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
-                                                return <OverallCommunity key={curcom._id} curcom={curcom} />
-                                            }) : null}
-                                        </Tab>
-                                    </Tabs>
-                                </Col>
+                                {adminMobCom}
                             </Row>
                         </Container>
                     </Row>
@@ -205,7 +231,8 @@ const mapDispatchToProps = dispatch => {
         onLoadCommunity: () => dispatch(loadCommunity()),
         onLoadUserCommunity: (profileId) => dispatch(loadUserCommunity(profileId)),
         onLoadUnivCommunity: (univName) => dispatch(loadUnivCommunity(univName)),
-        onAddCommunity: (data, profileId) => dispatch(addCommunity(data, profileId))
+        onAddCommunity: (data, profileId) => dispatch(addCommunity(data, profileId)),
+        // onAddInFolCom: (profileId, comId) => dispatch(addInFolCom(profileId, comId)),
     }
 }
 

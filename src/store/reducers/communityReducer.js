@@ -7,6 +7,7 @@ const initialState = {
     loadingCommunity: null,
     loadingUnivCommunity: null,
     loadingUserCommunity: null,
+    folComLoader: false
 }
 
 
@@ -50,6 +51,18 @@ export default function (state = initialState, action) {
                 ...state,
                 loadingCommunity: false,
                 allCommunity: [action.newCommunity, ...state.allCommunity],
+            };
+        case actionTypes.START_FOLCOM_LOADER:
+            console.log('in start loader');
+            return {
+                ...state,
+                folComLoader: true,
+            };
+        case actionTypes.STOP_FOLCOM_LOADER:
+            console.log('in stop loader');
+            return {
+                ...state,
+                folComLoader: false,
             };
 
         default:

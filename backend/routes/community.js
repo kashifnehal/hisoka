@@ -7,7 +7,8 @@ let Comment = require('../models/comment.model')
 let ProfileDetails = require('../models/profileDetails.model')
 const postController = require('../controllers/post')
 const auth = require('../../backend/middleware/auth');
-let Community = require('../models/community.model')
+let Community = require('../models/community.model');
+const { route } = require('./profileDetails');
 
 const storage = multer.diskStorage({
     destination: "./../public/images/",
@@ -32,8 +33,8 @@ router.get('/of/:university', function (req, res) {
 });
 
 router.get('/:profileId', function (req, res) {
-    ProfileDetails.findById(req.params.profileId).populate({ path: 'communities', populate: { path: 'profileowner' } })
-        .then(profile => res.json(profile.communities))
+    ProfileDetails.findById(req.params.profileId).populate({ path: 'yourCommunities', populate: { path: 'profileowner' } })
+        .then(profile => res.json(profile.yourCommunities))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -64,11 +65,46 @@ router.post('/:profileId', upload.single("pic"), function (req, res, next) {
                         res.status(400).json('Error: ' + err)
                     });
 
-            foundProfile.communities.push(newCommunity)
+            foundProfile.yourCommunities.push(newCommunity)
             foundProfile.save()
         })
         .catch(err => res.status(400).json('Error: ' + err));
 })
+
+router.post('/delete/:profileId/:comId', function (req, res, next) {
+    Community.findById(req.params.comId)
+        .then(foundCom => {
+            ProfileDetails.findById(req.params.profileId)
+                .then(foundProfile => {
+                    foundProfile.folCommunities.pull(foundCom)
+                    foundProfile.save()
+                        .then(() => res.json('deleted'))
+                        .catch(err => {
+                            console.log(err)
+                            res.status(400).json('Error: ' + err)
+                        });
+                })
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+})
+
+router.post('/follow/:profileId/:comId', function (req, res, next) {
+    Community.findById(req.params.comId)
+        .then(foundCom => {
+            ProfileDetails.findById(req.params.profileId)
+                .then(foundProfile => {
+                    foundProfile.folCommunities.push(foundCom)
+                    foundProfile.save()
+                        .then(() => res.json(foundProfile))
+                        .catch(err => {
+                            console.log(err)
+                            res.status(400).json('Error: ' + err)
+                        });
+                })
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+})
+
 
 
 module.exports = router;
