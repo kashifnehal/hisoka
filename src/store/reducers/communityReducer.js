@@ -4,9 +4,11 @@ const initialState = {
     allCommunity: null,
     allUserCommunity: null,
     allUnivCommunity: null,
+    allFolCommunity: null,
     loadingCommunity: null,
     loadingUnivCommunity: null,
     loadingUserCommunity: null,
+    loadingFolCommunity: null,
     folComLoader: false
 }
 
@@ -63,6 +65,17 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 folComLoader: false,
+            };
+        case actionTypes.START_LOADING_FOL_COMMUNITY:
+            return {
+                ...state,
+                loadingFolCommunity: true,
+            };
+        case actionTypes.LOAD_FOL_COMMUNITY_SUCCESS:
+            return {
+                ...state,
+                loadingFolCommunity: false,
+                allFolCommunity: action.allFolCommunity,
             };
 
         default:

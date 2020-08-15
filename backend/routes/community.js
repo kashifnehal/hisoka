@@ -37,6 +37,11 @@ router.get('/:profileId', function (req, res) {
         .then(profile => res.json(profile.yourCommunities))
         .catch(err => res.status(400).json('Error: ' + err));
 });
+router.get('/following/:profileId', function (req, res) {
+    ProfileDetails.findById(req.params.profileId).populate({ path: 'folCommunities', populate: { path: 'profileowner' } })
+        .then(profile => res.json(profile.folCommunities))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 
 
 router.post('/:profileId', upload.single("pic"), function (req, res, next) {

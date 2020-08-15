@@ -2,7 +2,7 @@ import React from 'react';
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import { Image } from 'react-bootstrap'
 
-const FolCommunity = (props) => {
+const UserCommunity = (props) => {
     let pic = <Image src={process.env.PUBLIC_URL + '/images/' + String(props.curcom.pic)} style={{ height: '80px', width: '150px' }} />
     return (
         <Auxiliary>
@@ -16,4 +16,4 @@ const FolCommunity = (props) => {
     );
 };
 
-export default FolCommunity;
+export default UserCommunity;

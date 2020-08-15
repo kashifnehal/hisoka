@@ -37,9 +37,9 @@ class OverallCommunity extends Component {
                 <div style={{ backgroundColor: 'white' }}>
                     <p>{pic}</p>
                     <Button onClick={this.followClicked} size="sm">{this.state.followText}</Button>
-                    <p>name:{this.props.curcom.name}</p>
-                    <p>university:{this.props.curcom.university}</p>
-                    <p>privacy:{this.props.curcom.communityPrivacy}</p>
+                    <p><b>name</b>:{this.props.curcom.name}</p>
+                    <p><b>university</b>:{this.props.curcom.university}</p>
+                    <p><b>privacy</b>:{this.props.curcom.communityPrivacy}</p>
                 </div>
             </Auxiliary>
         );

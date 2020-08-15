@@ -2,7 +2,6 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
-import { startAddingPost } from './followingActions';
 
 export const startLoadingCommunity = () => {
     return {
@@ -19,9 +18,11 @@ export const startLoadingUnivCommunity = () => {
         type: actionTypes.START_LOADING_UNIV_COMMUNITY
     }
 }
-
-
-
+export const startLoadingFolCommunity = () => {
+    return {
+        type: actionTypes.START_LOADING_FOL_COMMUNITY
+    }
+}
 export const loadCommunitySuccess = (allCommunity) => {
     return {
         type: actionTypes.LOAD_COMMUNITY_SUCCESS,
@@ -38,6 +39,12 @@ export const loadUnivCommunitySuccess = (allUnivCommunity) => {
     return {
         type: actionTypes.LOAD_UNIV_COMMUNITY_SUCCESS,
         allUnivCommunity: allUnivCommunity
+    }
+}
+export const loadFolCommunitySuccess = (allFolCommunity) => {
+    return {
+        type: actionTypes.LOAD_FOL_COMMUNITY_SUCCESS,
+        allFolCommunity: allFolCommunity
     }
 }
 
@@ -88,7 +95,22 @@ export const loadUserCommunity = (profileId) => {
         }
     }
 }
-
+export const loadFolCommunity = (profileId) => {
+    return async (dispatch, getState) => {
+        console.log('inside load');
+        dispatch(startLoadingFolCommunity())
+        const loadFolCommunityUrl = 'http://localhost:5000/community/following/' + profileId
+        try {
+            console.log('in try')
+            const res = await axios.get(loadFolCommunityUrl, tokenConfig(getState))
+            console.log('done res');
+            dispatch(loadFolCommunitySuccess(res.data))
+            console.log('fol data', res.data);
+        } catch (err) {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    }
+}
 export const loadUnivCommunity = (univName) => {
     return async (dispatch, getState) => {
         dispatch(startLoadingUnivCommunity())
@@ -101,7 +123,6 @@ export const loadUnivCommunity = (univName) => {
         }
     }
 }
-
 export const addCommunity = (data, profileId) => {
     return async (dispatch, getState) => {
         dispatch(startAddingCommunity())

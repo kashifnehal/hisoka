@@ -27,9 +27,6 @@ class ProfilePage extends Component {
         changeCurrentUser: false
     }
 
-
-
-
     componentDidMount = async () => {
         if (this.state.currentUser !== null) {
             await this.props.OngetUserPosts(this.state.currentUser._id)

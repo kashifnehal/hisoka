@@ -4,11 +4,11 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import classes from './ComTrends.css';
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { loadCommunity, loadUserCommunity, addCommunity, loadUnivCommunity, addInFolCom } from '../../../store/actions/communityActions'
+import { loadCommunity, loadUserCommunity, loadFolCommunity, addCommunity, loadUnivCommunity, addInFolCom } from '../../../store/actions/communityActions'
 import FolCommunity from '../../../components/commmunityTabs/FolCommunity/FolCommunity'
 import UnivCommunity from '../../../components/commmunityTabs/UnivCommunity/UnivCommunity'
 import OverallCommunity from '../../../components/commmunityTabs/OverallCommunity/OverallCommunity'
-import axios from 'axios'
+import UserCommunity from '../../../components/commmunityTabs/UserCommunity/UserCommunity'
 
 class ComTrends extends Component {
     state = {
@@ -18,13 +18,6 @@ class ComTrends extends Component {
         pic: '',
         showAdminCom: false
     }
-
-    // followHandler = async (comId, followText) => {
-    //     console.log(comId, followText);
-    //     await this.props.onAddInFolCom(this.props.user._id, comId)
-    //     // axios.post('http://localhost:5000/community/follow/' + this.props.user._id + '/' + comId)
-    // }
-
     toggleAdminCom = () => {
         console.log('clicked');
         const newshowAdcom = !this.state.showAdminCom
@@ -35,6 +28,7 @@ class ComTrends extends Component {
         if (this.props.user !== null) {
             await this.props.onLoadCommunity()
             await this.props.onLoadUserCommunity(this.props.user._id)
+            await this.props.onLoadFolCommunity(this.props.user._id)
             await this.props.onLoadUnivCommunity(this.props.user.university)
         }
     }
@@ -62,9 +56,8 @@ class ComTrends extends Component {
 
 
     render() {
-        // console.log('load ', this.props.loadingCommunity);
-        // console.log('load univ ', this.props.loadingUnivCommunity);
-        // console.log('load user', this.props.loadingUserCommunity);
+        console.log('load fol', this.props.allFolCommunity);
+        console.log('load fol', this.props.allUnivCommunity);
         let adminDeskCom = (
             <Container >
                 <h3 style={{ paddingTop: '10px' }}>Followed Communities</h3>
@@ -72,6 +65,9 @@ class ComTrends extends Component {
                     <Col >
                         {/* <br /><button>Show All</button><br /> */}
                         <h6>comm you followed</h6>
+                        {this.props.loadingFolCommunity === false ? this.props.allFolCommunity.map(curcom => {
+                            return <div><FolCommunity key={curcom._id} curcom={curcom} /></div>
+                        }) : null}
                     </Col>
                 </Row>
                 <h3 style={{ paddingTop: '10px' }}>Trending in {this.props.user.university}</h3>
@@ -86,7 +82,7 @@ class ComTrends extends Component {
                 <Row className={classes.scrollmenu} style={{ marginBottom: '50px' }}>
                     <Col>
                         {this.props.loadingCommunity === false ? this.props.allCommunity.map(curcom => {
-                            return <div><OverallCommunity key={curcom._id} followClicked={this.followHandler} curcom={curcom} /></div>
+                            return <div><OverallCommunity key={curcom._id} curcom={curcom} /></div>
                         }) : null}
                     </Col>
                 </Row>
@@ -99,7 +95,7 @@ class ComTrends extends Component {
                     <Col >
                         <br /><button>Show All</button><br />
                         {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                            return <div><FolCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></div>
+                            return <div><UserCommunity className={classes.eachCard} key={curcom._id} curcom={curcom} /></div>
                         }) : null}
                     </Col>
                 </Row>
@@ -111,10 +107,9 @@ class ComTrends extends Component {
                 <h6>Showing Trending Communities from</h6>
                 <Tabs defaultActiveKey="following" id="uncontrolled-tab-example" >
                     <Tab eventKey="following" title="Following" onClick={this.userPostsHandler} >
-                        {/* <br /><button>Show All</button><br />
-                        {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                            return <FolCommunity key={curcom._id} curcom={curcom} />
-                        }) : null} */}
+                        {this.props.loadingFolCommunity === false ? this.props.allFolCommunity.map(curcom => {
+                            return <div><FolCommunity key={curcom._id} curcom={curcom} /></div>
+                        }) : null}
                         <h6>com you follow</h6>
                     </Tab>
                     <Tab eventKey="silicon" title="Silicon">
@@ -136,7 +131,7 @@ class ComTrends extends Component {
                 <h3 style={{ paddingTop: '10px' }}>Your Communities</h3>
                 <br /><button>Show All</button><br />
                 {this.props.loadingUserCommunity === false ? this.props.allUserCommunity.map(curcom => {
-                    return <FolCommunity key={curcom._id} curcom={curcom} />
+                    return <UserCommunity key={curcom._id} curcom={curcom} />
                 }) : null}
             </Col>
         }
@@ -220,16 +215,19 @@ const mapStateToProps = state => {
         user: state.auth.user,
         allCommunity: state.community.allCommunity,
         allUserCommunity: state.community.allUserCommunity,
+        allFolCommunity: state.community.allFolCommunity,
         allUnivCommunity: state.community.allUnivCommunity,
         loadingCommunity: state.community.loadingCommunity,
         loadingUserCommunity: state.community.loadingUserCommunity,
         loadingUnivCommunity: state.community.loadingUnivCommunity,
+        loadingFolCommunity: state.community.loadingFolCommunity,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         onLoadCommunity: () => dispatch(loadCommunity()),
         onLoadUserCommunity: (profileId) => dispatch(loadUserCommunity(profileId)),
+        onLoadFolCommunity: (profileId) => dispatch(loadFolCommunity(profileId)),
         onLoadUnivCommunity: (univName) => dispatch(loadUnivCommunity(univName)),
         onAddCommunity: (data, profileId) => dispatch(addCommunity(data, profileId)),
         // onAddInFolCom: (profileId, comId) => dispatch(addInFolCom(profileId, comId)),
